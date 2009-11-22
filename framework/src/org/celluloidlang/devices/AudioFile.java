@@ -7,6 +7,10 @@ import org.celluloidlang.constraints.Input;
 
 public class AudioFile extends Observable implements Input, Audio{
 
+	public AudioFile(String pathtofile) {
+		
+	}
+	
 	@Override
 	public void play() {
 		// TODO Auto-generated method stub
