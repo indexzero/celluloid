@@ -8,5 +8,5 @@ public interface StaticInput extends Input {
 
 	public void rewind(Double multiplier);
 
-	public void seek(Time seek);
+	public void seek(double seek);
 }

@@ -2,13 +2,13 @@ package org.celluloidlang.core;
 
 public class ConstraintFunction {
 	
-	private long time;
+	private double time;
 	
-	public ConstraintFunction(long executeTime) {
+	public ConstraintFunction(double executeTime) {
 		this.time = executeTime;
 	}
 	
-	public long getTime() {
+	public double getTime() {
 		return time;
 	}
 	

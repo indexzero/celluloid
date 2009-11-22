@@ -2,18 +2,24 @@ package org.celluloidlang.examples;
 
 import java.util.Observable;
 
-import org.celluloidlang.core.Timeline;
-import org.celluloidlang.core.VideoOut;
+import org.celluloidlang.core.*;
+import org.celluloidlang.devices.AudioFile;
 
 public class HelloWorld {
 	public static void main(String[] args) {
 
-		Timeline timeline1 = new Timeline();
-		AudioFile audio1 = new AudioFile("file1.wav");
-		VideoOut output1 = new VideoOut("monitor");
-
-		timeline1.addConstraint("play", audio1, 0);
-		timeline1.play(output1, output1);
+		final Timeline timeline1 = new Timeline();
+		final AudioFile audio1 = new AudioFile("file1.wav");
+		
+		//play audio1 at 30 seconds
+		ConstraintFunction audio1cf = new ConstraintFunction(30000) {
+			public void execute() {
+				audio1.play();
+			}
+		};
+		timeline1.addConstraintFunction(audio1cf);
+		
+		//timeline1.play(output1, output1);
 
 	}
 
