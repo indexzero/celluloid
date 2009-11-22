@@ -1,0 +1,16 @@
+!SESSION 2009-11-22 12:48:31.165 -----------------------------------------------
+eclipse.buildId=I20090611-1540
+java.version=1.6.0_15
+java.vendor=Apple Inc.
+BootLoader constants: OS=macosx, ARCH=x86, WS=cocoa, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product -keyring /Users/blake/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86 -product org.eclipse.epp.package.java.product -keyring /Users/blake/.eclipse_keyring -showlocation
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2009-11-22 12:48:58.515
+!MESSAGE Registering: com.google.appengine.eclipse.sdkbundle_1.2.6.v200910131704
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2009-11-22 12:48:58.646
+!MESSAGE Registering: com.google.gwt.eclipse.sdkbundle.macosx_1.7.1.v200909221731
+
+!ENTRY org.eclipse.core.net 1 0 2009-11-22 12:49:00.060
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
