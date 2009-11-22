@@ -2,8 +2,8 @@ package org.celluloidlang.devices;
 
 import java.util.Observable;
 
-import com.celluloidlang.constraints.Audio;
-import com.celluloidlang.constraints.Input;
+import org.celluloidlang.constraints.Audio;
+import org.celluloidlang.constraints.Input;
 
 public class AudioFile extends Observable implements Input, Audio{
 

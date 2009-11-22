@@ -2,8 +2,8 @@ package org.celluloidlang.devices;
 
 import java.util.Observable;
 
-import com.celluloidlang.constraints.Input;
-import com.celluloidlang.constraints.Video;
+import org.celluloidlang.constraints.Input;
+import org.celluloidlang.constraints.Video;
 
 public class VideoFile extends Observable implements Video, Input{
 
