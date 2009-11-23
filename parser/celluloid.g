@@ -1,5 +1,15 @@
 grammar celluloid;
 
+// Start boolean literal
+BOOL        : 'true' | 'false';
+// End boolean literal
+
+// Start language blocks
+language_block_decl : 'in' LANGUAGE START language_block END;
+LANGUAGE            : 'JAVA';
+language_block      : '*';
+// End language blocks
+
 // Start core literals
 ID    :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*;
 START : ('do' | '{') NEWLINE;
@@ -44,88 +54,77 @@ CHAR      :  ('0'..'9'|'a'..'f'|'A'..'F');
 ESC_SEQ	  :  '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\'|'"');
 // End string literal
 
-// Start boolean literal
-BOOL        : 'true' | 'false';
-// End bool literal
 
 // Start operators
 // TODO: LOCAL OPERATORS
-compare_op       : '>' | '>=' | '<' | '<=' | bool_op;
-bool_op          : '==' | '!=';
-math_op          : '+' | '-' | '/' | '*' | '%';
-math_assign_op   : (math_op)* '=';
-string_assign_op : '+=' | '=';
-string_op        : '+' | bool_op;
+assignmentOperator      : '=' | '*=' | '/=' | '%=' | '+=' | '-=' ;
+equalityOperator        : '==' | '!=';
+relationalOperator      : '>' | '<' | '<=' | '>=';
+additiveOperator        : '+' | '-';
+multiplicativeOperator  : '*' | '/' | '%';
 // End operators 
 
-// Start time expressions and declarations
-time_exp        : (ID | TIME) (math_op time_exp)*;
-time_short_decl : 'time' ID NEWLINE;	 
-time_decl       : 'time' ID ('=' time_exp)? NEWLINE;
-time_assign     : ID math_op time_exp NEWLINE;
-// End time expressions and declarations
+// Start generic literals and declarations
+literal             : STRING | TIME | NUMBER | BOOL; 
+timelineDeclaration : 'timeline' ID NEWLINE;
+variableDeclaration : timelineDeclaration
+                    | (('time' | 'number' | 'string' | 'boolean') ID) initializer? NEWLINE?;
+                    
+initializer         : '=' assignmentExpression;	 
 
-// Start number expressions and declarations
-number_exp        : (ID | NUMBER) (math_op number_exp)*;
-number_short_decl : 'number' ID NEWLINE;
-number_decl       : 'number' ID ('=' number_exp)? NEWLINE;	
-number_assign     : ID math_assign_op number_exp NEWLINE;
-math_line         : (time_assign | time_exp | number_assign | 
-number_exp) NEWLINE;
-// End number expressions and declarations
+// This may allow derivations of literal = variable
+assignmentExpression     
+	: logicalORExpression
+	| primaryExpression assignmentOperator assignmentExpression;
+	                 
+logicalORExpression      : logicalANDExpression     ('or' logicalANDExpression)*;	
 
-// Start string expressions and declarations
-string_exp        : (ID | STRING) (string_op string_exp)*;
-string_short_decl : 'string' ID NEWLINE;	
-string_decl       : 'string' ID ('=' string_exp)? NEWLINE;
-string_assign     : ID string_assign_op string_exp;
-string_line       : (string_assign | string_exp) NEWLINE;
-// End string expressions and declarations
+logicalANDExpression     : equalityExpression       ('and' equalityExpression)*;
+
+equalityExpression       : relationalExpression     (equalityOperator  relationalExpression)*;
+
+relationalExpression     : additiveExpression       (relationalOperator  additiveExpression)*;
+
+additiveExpression       : multiplicativeExpression (additiveOperator  multiplicativeExpression)*;
+
+multiplicativeExpression : primaryExpression        (multiplicativeOperator  primaryExpression)*
+	;	
+
+primaryExpression
+	: ID
+	| literal
+	//| 'new' ID '(' arguments ')'
+	//| function_call
+	//| predicate_call
+	//| objectLiteral
+	;
+// End generic literals and declarations
 
 // Start boolean expressions and declarations
-short_bool_exp  : ID bool_op (literal | ID | short_bool_exp)*;
-bool_exp        : (ID | BOOL | time_exp compare_op time_exp | 
-number_exp compare_op number_exp) ('and' bool_exp | 'or' bool_exp | 
-bool_op bool_exp)*;
-bool_short_decl : 'boolean' ID NEWLINE;	
-bool_decl       : 'boolean' ID ('=' bool_exp)? NEWLINE;
-bool_assign     : ID '=' bool_exp NEWLINE;
-bool_line       : (bool_exp | bool_assign) NEWLINE;
+//short_bool_exp  : ID bool_op (literal | ID | short_bool_exp)*;
 // End boolean expressions and declarations
 
 // Start timelines and input / output declarations
-timeline_short_decl : 'timeline' ID NEWLINE;
 // TODO: input / output declarations
 // End timelines and input / output declartions
 
 // Start lists and generic declartions
-literal         : STRING | TIME | NUMBER | BOOL; 
-variable_decl   : bool_decl | string_decl | time_decl | number_decl | timeline_short_decl;
+variableList : variableDeclaration (',' variableDeclaration)+ 
+             | '(' variableDeclaration (',' variableDeclaration)+ ')';
 
-short_decl      : bool_short_decl | string_short_decl | 
-time_short_decl | number_short_decl | timeline_short_decl;
-short_decl_list : short_decl (',' short_decl)+ | '(' short_decl (',' short_decl)+ ')';
+expression_list : assignmentExpression (',' assignmentExpression)+ 
+                | '(' assignmentExpression (',' assignmentExpression)+ ')';
 
-assignment      : bool_assign | string_assign | time_assign | number_assign; 
-
-expression      : bool_exp | string_exp | time_exp | number_exp;
-expression_list : expression (',' expression)+ | '(' expression (',' expression)+ ')';
-
-id_list : ID (',' ID)+ | '(' ID (',' ID)+ ')';
+idList : ID (',' ID)+ | '(' ID (',' ID)+ ')';
 // End lists and generic declarations
 
-// Start language blocks
-language_block_decl : 'in' LANGUAGE START language_block END;
-LANGUAGE            : 'JAVA';
-language_block      : '*';
-// End language blocks
 
 // Start function blocks
 function_header    :'function' functionname function_arguments;	
-function_decl      : function_header START function_block END;
+function_def      : function_header START function_block END;
 functionname       : ID;
-function_arguments : '(' short_decl_list ')';
-function_block     : (language_block | function_call | predicate_call | variable_decl) (function_block)*;
+function_arguments : '(' variableList ')';
+function_block     : (language_block | function_call | /*predicate_call |*/ variableDeclaration)*;
                  //| in_timeline_stmt
                  //| if_stmt
 function_call      : functionname '(' expression_list ')' NEWLINE;	
@@ -134,10 +133,10 @@ function_call      : functionname '(' expression_list ')' NEWLINE;
 // Start predicate blocks
 predicate_header    : 'predicate' predicatename 
 predicate_arguments;	
-predicate_decl      : predicate_header START predicate_block END;
+predicate_def      : predicate_header START predicate_block END;
 predicatename       : ID;
-predicate_arguments : '(' short_decl_list ')';
-predicate_block     : function_block 'returns' bool_exp ; // VERY  WEAK IMPLEMENTATION
+predicate_arguments : '(' variableList ')';
+predicate_block     : function_block 'returns' assignmentExpression ; // VERY  WEAK IMPLEMENTATION
 predicate_call      : predicatename '(' expression_list ')' NEWLINE;	
 // End predicate blocks
 
@@ -147,14 +146,22 @@ eventname : ID;
 // End event definitions
 
 // Start constraint declarations
-constraint_def      : 'constraint' constraintname 'requires' constraint_list 'announces' event_list START constraint_body END;
-constraint_list     : id_list;
-event_list          : id_list;
-constraint_body     : (variable_decl NEWLINE)* constraint_headers announcements;
-constraint_headers  : ((function_header | predicate_header)*);	
-announcements       : (announcement)*;
-announcement        : 'announce' ID 'when' ID argument_conditions;
-argument_conditions : short_bool_exp;
-constraintname      : ID;
+constraint_def       : 'constraint' constraintname 'requires' constraint_list 'announces' event_list START 
+constraint_block END;
+constraint_list      : idList;
+event_list           : idList;
+constraint_block     : (variableDeclaration)* constraint_headers announcements;
+constraint_headers   : ((function_header | predicate_header)*);	
+announcements        : (announcement)*;
+announcement         : 'announce' ID 'when' ID argument_conditions;
+argument_conditions  : assignmentExpression; //TODO: Replace this with short_bool_exp
+constraintname       : ID;
 // End constraint declarations
+
+// Start device definitions
+device_def   : 'device' devicename 'accepts' constraint_list START device_block END;	 	 
+device_block : (variableDeclaration)* (function_def | predicate_def)*;	
+devicename : ID;	
+// End device definitions
+
 
