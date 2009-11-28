@@ -1,7 +1,7 @@
 package org.celluloidlang.constraints;
 
-public interface Input {
-	public void play();
-	
-	public void stop();
+import javax.media.Processor;
+
+public interface Input extends Processor{
+
 }
