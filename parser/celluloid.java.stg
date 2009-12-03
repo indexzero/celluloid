@@ -1,0 +1,2 @@
+group jcelluloid;
+deviceDefinition(name, accepts) ::= "public class <name> extends device <accepts> { TODO: Members }"
