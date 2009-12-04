@@ -14,7 +14,9 @@ import javax.media.control.TrackControl;
 import javax.media.protocol.ContentDescriptor;
 import javax.media.protocol.DataSource;
 
+import org.celluloid.lang.announcment.Announcement;
 import org.celluloidlang.constraints.*;
+import org.celluloidlang.constraints.defined.Input;
 
 public class InputFile extends MediaPlayer implements Input, ControllerListener {
 
@@ -68,37 +70,23 @@ public class InputFile extends MediaPlayer implements Input, ControllerListener 
 
 	}
 
+
 	@Override
-	public ContentDescriptor getContentDescriptor() throws NotConfiguredError {
+	public void play(double offSet) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override
-	public DataSource getDataOutput() throws NotRealizedError {
+	public void stop(double offSet) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override
-	public ContentDescriptor[] getSupportedContentDescriptors()
-			throws NotConfiguredError {
+	public void update(Announcement a) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public TrackControl[] getTrackControls() throws NotConfiguredError {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ContentDescriptor setContentDescriptor(
-			ContentDescriptor outputContentDescriptor)
-			throws NotConfiguredError {
-		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 }

@@ -5,21 +5,20 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 import javax.media.CannotRealizeException;
-import javax.media.ClockStoppedException;
 import javax.media.ControllerEvent;
 import javax.media.ControllerListener;
 import javax.media.EndOfMediaEvent;
-import javax.media.IncompatibleTimeBaseException;
 import javax.media.Manager;
 import javax.media.NoPlayerException;
 import javax.media.Player;
 import javax.media.PrefetchCompleteEvent;
-import javax.media.RealizeCompleteEvent;
 import javax.media.Time;
-import javax.media.TimeBase;
-import javax.media.TransitionEvent;
 
-
+/**
+ * sample file showing how to play audio file in JMF
+ * @author blake
+ *
+ */
 public class PlayAudio {
 	public static void main(String[] args) {
 		File file = new File("playme.wav");
@@ -103,7 +102,7 @@ class PlayMe implements ControllerListener {
 		
 		if (event instanceof EndOfMediaEvent) {
 			
-				//destroy();
+				destroy();
 				
 		}
 		if(event instanceof PrefetchCompleteEvent){

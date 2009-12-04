@@ -11,7 +11,7 @@ public class HelloWorld {
 		
 
 
-		timeline1.addConstraintFunction(audio1cf);
+		//timeline1.addConstraintFunction(audio1cf);
 		
 		//timeline1.play(output1, output1);
 
