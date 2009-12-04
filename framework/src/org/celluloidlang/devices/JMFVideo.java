@@ -1,27 +1,11 @@
 package org.celluloidlang.devices;
 
+import javax.media.bean.playerbean.MediaPlayer;
+
 import org.celluloidlang.announcment.Announcement;
-import org.celluloidlang.constraints.defined.Audio;
-import org.celluloidlang.constraints.defined.Input;
-import org.celluloidlang.constraints.defined.StaticInput;
+import org.celluloidlang.constraints.defined.*;
 
-public class AudioFile implements StaticInput, Audio{
-
-	public AudioFile(String pathtofile) {
-		
-	}
-
-	@Override
-	public void channel(double channel) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void volume(float volume) {
-		// TODO Auto-generated method stub
-		
-	}
+public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output{
 
 	@Override
 	public void play(double offSet) {
@@ -64,6 +48,11 @@ public class AudioFile implements StaticInput, Audio{
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+	@Override
+	public void size(double x1, double y1, double x2, double y2) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

@@ -1,4 +1,4 @@
-package org.celluloid.lang.announcment;
+package org.celluloidlang.announcment;
 
 
 import java.util.ArrayList;

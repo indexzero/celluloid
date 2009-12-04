@@ -1,4 +1,4 @@
-package org.celluloid.lang.announcment;
+package org.celluloidlang.announcment;
 /**
  * Listens for announcements
  * @author blake

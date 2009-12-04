@@ -1,7 +1,7 @@
 package org.celluloidlang.constraints.defined;
 
-import org.celluloid.lang.announcment.Announcer;
-import org.celluloid.lang.announcment.AnnouncementListener;
+import org.celluloidlang.announcment.AnnouncementListener;
+import org.celluloidlang.announcment.Announcer;
 import org.celluloidlang.constraints.buildtin.*;
 import org.celluloidlang.reactive.Reactive;
 

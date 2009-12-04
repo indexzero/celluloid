@@ -1,99 +1,82 @@
 package org.celluloidlang.reactive;
 
+import java.util.ArrayList;
+
 /**
  * Interface for reactive objects
+ * 
+ * 
  * @author blake
- *
+ * 
  */
-public interface ReactiveObject{
+public interface ReactiveObject<T> {
 	/**
-	public ReactiveString(ReactiveString rString){
-		rString.addObserver(this);
-		args = new ArrayList<ReactiveString>();
-		args.add(rString);
-		currentString = rString.getLocal();
-		local = "";
-	}
-	
-	
+	 * holds Reactive instances this is reacting too
+	 */
+	public ArrayList<Reactive> observing = new ArrayList<Reactive>();
+	/**
+	 * Helper class for sending other ReactiveObjects notifications to react
+	 */
+	Reactive reactive = new Reactive();
 
-	public ReactiveString(String string) {
-		this.local = currentString = string;
-		this.args = new ArrayList<ReactiveString>();
-	}
+	/**
+	 * Changes data started in object to the new ReactiveObjects data To
+	 * Implement: 1. call this.stopObserving 2. rObj.reactive.attatch(this); 3.
+	 * a. if using copy eval- set currentView to rObj.getView b. if using lazy,
+	 * set viewObjects to rObj 4. make local data empty 5.
+	 * this.reactive.setChange();
+	 */
+	public void set(ReactiveObject<T> rObj);
 
-	public void setString(ReactiveString rString){
-		rString.addObserver(this);
-		args = new ArrayList<ReactiveString>();
-		args.add(rString);
-		currentString = rString.getLocal();
-		local = "";
-		this.setChanged();
-		this.sendNotify();
-	}
-	
-	public void setString(String newLocal){
-		this.currentString = this.local = newLocal;
-		args = new ArrayList<ReactiveString>();
-		this.setChanged();
-		this.sendNotify();
-	}
-	
-	@Override
-	public void update(Observable o, Object arg) {
-		Set<ReactiveString> observers = (Set<ReactiveString>)arg;
-		if(!observers.contains(this)) //cyclic dependency detected
-		{
-			System.out.println("updating:" + this.getLocal());
-			updateObject();
-			observers.add(this);
-			System.out.println("updated:" + this.getLocal());
-			this.notifyObservers(observers);
-		} else {
-			throw new RuntimeException("Cyclic Dependency detected: "+this.getLocal());
-		}
-			
-		
-		
-	}
-	
-	private void updateObject(){
-		this.setChanged();
-		this.currentString = this.local;
-		for(ReactiveString neighbor : args){
-			this.currentString += neighbor.getLocal();
-		}
-	}
-	
-	public void append(ReactiveString appendy){
-		args.add(appendy);
-		appendy.addObserver(this);
-		updateObject();
-		sendNotify();
-	}
-	public void append(String appendy){
-		args.add(new ReactiveString(appendy));
-		updateObject();
-		sendNotify();
-	}
-	
-	private void sendNotify(){
-		HashSet<ReactiveString> observers = new HashSet<ReactiveString>();
-		observers.add(this);
-		this.notifyObservers(observers);
-	}
-	
-	public String getLocal(){
-		return this.currentString;
-	}
-	
-	@Override
-	public String toString(){
-		return this.currentString;
-	}
+	/**
+	 * Changes data started in object to the new ReactiveObjects data To
+	 * Implement: 1. call this.stopObserving
+	 * 
+	 * 2. a. if using lazy, set viewObjects to rObj
+	 * 
+	 * 3. make newLocal 4. this.reactive.setChange();
+	 */
+	public void set(T newLocal);
 
-**/
+	/**
+	 * observing = new ArrayList<Reactive>();
+	 * 
+	 * @param r
+	 */
+	public void stopReactingAll();
 
+	/**
+	 * 1. add appendy to end of dependencies, possibly with linked list 2.
+	 * updateView() 3. this.reactive.setChange();
+	 * 
+	 * @param appendy
+	 */
+	public void action(Object action, ReactiveObject<T> appendy);
+
+	/**
+	 * 1. append(new ReactiveObject<T>(appendy));
+	 * 
+	 * @param appendy
+	 */
+	public void action(Object action, T appendy);
+
+	/**
+	 * joings dependencies into currentView
+	 */
+	public void updateView();
+
+	/**
+	 * updates and returns current view
+	 * 
+	 * @return
+	 */
+	public String getView();
+
+	/**
+	 * Receive ReactiveUpdate and updates object view
+	 * 
+	 * @param e
+	 */
 	public void update(ReactiveUpdate e);
-	
+
 }

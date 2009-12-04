@@ -1,4 +1,4 @@
-package org.celluloid.lang.announcment;
+package org.celluloidlang.announcment;
 /**
  * Class used for sending announcments to listeners
  * @author blake

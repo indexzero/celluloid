@@ -1,7 +1,7 @@
 package org.celluloidlang.devices;
 
 
-import org.celluloid.lang.announcment.Announcement;
+import org.celluloidlang.announcment.Announcement;
 import org.celluloidlang.constraints.defined.Input;
 
 public class VideoFile implements Input{

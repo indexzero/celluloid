@@ -14,7 +14,7 @@ import javax.media.control.TrackControl;
 import javax.media.protocol.ContentDescriptor;
 import javax.media.protocol.DataSource;
 
-import org.celluloid.lang.announcment.Announcement;
+import org.celluloidlang.announcment.Announcement;
 import org.celluloidlang.constraints.*;
 import org.celluloidlang.constraints.defined.Input;
 
