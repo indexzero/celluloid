@@ -247,11 +247,9 @@ constraintList
 deviceDefinition     
     :    'device' ID (constraintList)? 
          START 
-             members = (variableDeclaration | functionDefinition | predicateDefinition)* 
+             members = (variableDeclaration | functionDefinition | predicateDefinition | COMMENT)* 
          END 
-         -> template(name = { $ID.text },
-                     accepts = { $constraintList.st }) 
-            "public class <name> extends device <accepts> { TODO: Members }"
+         -> deviceDefinition(name = { $ID.text }, accepts = { $constraintList.st })
             // variableDeclaration* functionDefinition* predicateDefinition*)
     ;
 // End device definitions
