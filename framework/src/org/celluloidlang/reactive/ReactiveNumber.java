@@ -7,11 +7,13 @@ public class ReactiveNumber implements ReactiveObject<Float>{
 	ArrayList<FloatAction> dependencies = new ArrayList<FloatAction>();
 	private Float local;
 	private Float currentView;
-	enum Action{
-		ADD, DIV, GE, GT, LE, LT, MOD, MULT, SUB;
-	}
+
 	public ReactiveNumber(Float local){
 		this.local = local;
+	}
+	
+	public ReactiveNumber(Double local){
+		this.local = new Float(local);
 	}
 	
 	public ReactiveNumber(ReactiveObject<Float> reacting){
@@ -20,7 +22,7 @@ public class ReactiveNumber implements ReactiveObject<Float>{
 	}
 	
 	@Override
-	public void action(Object action, ReactiveObject<Float> appendy) {
+	public void action(Action action, ReactiveObject<Float> appendy) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -32,9 +34,9 @@ public class ReactiveNumber implements ReactiveObject<Float>{
 	}
 
 	@Override
-	public String getView() {
+	public Float getView() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.currentView;
 	}
 
 	@Override
@@ -51,6 +53,11 @@ public class ReactiveNumber implements ReactiveObject<Float>{
 	@Override
 	public void set(Float newLocal) {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	public void set(Double newLocal) {
+		set(new Float(newLocal));
 		
 	}
 

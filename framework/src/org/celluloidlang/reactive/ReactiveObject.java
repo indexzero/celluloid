@@ -10,6 +10,9 @@ import java.util.ArrayList;
  * 
  */
 public interface ReactiveObject<T> {
+	enum Action{
+		ADD, DIV, GE, GT, LE, LT, MOD, MULT, SUB;
+	}
 	/**
 	 * holds Reactive instances this is reacting too
 	 */
@@ -51,7 +54,7 @@ public interface ReactiveObject<T> {
 	 * 
 	 * @param appendy
 	 */
-	public void action(Object action, ReactiveObject<T> appendy);
+	public void action(Action action, ReactiveObject<T> appendy);
 
 	/**
 	 * 1. append(new ReactiveObject<T>(appendy));
@@ -70,7 +73,7 @@ public interface ReactiveObject<T> {
 	 * 
 	 * @return
 	 */
-	public String getView();
+	public T getView();
 
 	/**
 	 * Receive ReactiveUpdate and updates object view

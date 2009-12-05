@@ -40,6 +40,7 @@ public class ReactiveStringJunit extends TestCase {
 	}
 
 	public void testSetString() {
+		System.out.println(" \n testSetString()");
 		ReactiveString a = new ReactiveString("hello");
 
 		ReactiveString c = new ReactiveString(a);
@@ -51,6 +52,7 @@ public class ReactiveStringJunit extends TestCase {
 	}
 
 	public void testAppend() {
+		System.out.println(" \n testAppend()");
 		ReactiveString a = new ReactiveString("hello");
 		ReactiveString b1 = new ReactiveString(" world!");
 		//b is now reacting off b1
@@ -66,14 +68,14 @@ public class ReactiveStringJunit extends TestCase {
 		
 		//change a
 		a.setString("goodbye");
-		System.out.println(c);
+
 		
 		//verify c reacted
 		assertTrue(c.getLocal().equals("goodbye world!"));
 		
 		//change b1
 		b1.setString(" mom!");
-		System.out.println(c);
+
 		
 		//verify b and c reacted
 		assertTrue(c.getLocal().equals("goodbye mom!"));
@@ -81,18 +83,18 @@ public class ReactiveStringJunit extends TestCase {
 		//set a to react on b1
 		ReactiveString a1 = new ReactiveString(b1);
 		c.append(a1);
-		System.out.println(c);
+
 		assertTrue(c.getLocal().equals("goodbye mom! mom!"));
 		
 		//change b1
 		b1.setString(" double");
 		
 		//verify c reacted 
-		System.out.println(c);
 		assertTrue(c.getLocal().equals(" double double"));
 	}
 
 	public void testAppendString() {
+		System.out.println(" \n testAppendString()");
 		ReactiveString a = new ReactiveString("hello");
 		ReactiveString c = new ReactiveString(a);
 		c.append(" world!");
@@ -107,6 +109,7 @@ public class ReactiveStringJunit extends TestCase {
 	}
 
 	public void testCyclicDependency() {
+		System.out.println(" \n testCyclicDependency()");
 		ReactiveString a = new ReactiveString("hello");
 		ReactiveString b1 = new ReactiveString(" world!");
 		ReactiveString b = new ReactiveString(b1);

@@ -17,8 +17,9 @@ public class ReactiveString extends Observable implements Observer {
 	private ArrayList<ReactiveString> args;
 	private String currentString;
 	private String local;
+	private ArrayList<ReactiveString> dependent = new  ArrayList<ReactiveString>();
 	public ReactiveString(ReactiveString rString){
-		rString.addObserver(this);
+		subscribe(rString);
 		args = new ArrayList<ReactiveString>();
 		args.add(rString);
 		currentString = rString.getLocal();
@@ -33,7 +34,7 @@ public class ReactiveString extends Observable implements Observer {
 	}
 
 	public void setString(ReactiveString rString){
-		rString.addObserver(this);
+		subscribe(rString);
 		args = new ArrayList<ReactiveString>();
 		args.add(rString);
 		currentString = rString.getLocal();
@@ -77,7 +78,7 @@ public class ReactiveString extends Observable implements Observer {
 	
 	public void append(ReactiveString appendy){
 		args.add(appendy);
-		appendy.addObserver(this);
+		subscribe(appendy);
 		updateObject();
 		sendNotify();
 	}
@@ -95,6 +96,18 @@ public class ReactiveString extends Observable implements Observer {
 	
 	public String getLocal(){
 		return this.currentString;
+	}
+	
+	private void subscribe(ReactiveString dep){
+		dep.addObserver(this);
+		dependent.add(dep);
+	}
+	
+	public void unsubscribeAll(){
+		for(ReactiveString dep : dependent)
+		{
+			dep.deleteObserver(this);
+		}
 	}
 	
 	@Override
