@@ -7,6 +7,10 @@ import org.celluloidlang.constraints.defined.*;
 
 public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output{
 
+	public JMFVideo() {
+		// TODO createRealizedPlayer();
+	}
+	
 	@Override
 	public void play(double offSet) {
 		// TODO Auto-generated method stub

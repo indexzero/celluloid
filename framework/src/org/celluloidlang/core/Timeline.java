@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.Stack;
 import javax.swing.Timer;
 
+import org.celluloidlang.constraints.defined.*;
+
 /*
  * synchronized?
  */
@@ -18,10 +20,12 @@ public class Timeline {
 	private long initialTime = -1;
 	private Stack<ConstraintFunction> didExecute;
 	private LinkedList<ConstraintFunction> willExecute;
+	private LinkedList<Input> inputs;
 	
 	public Timeline() {
 		didExecute = new Stack<ConstraintFunction>();
 		willExecute = new LinkedList<ConstraintFunction>();
+		inputs = new LinkedList<Input>();
 		ActionListener taskPerformer = new ActionListener() {
 			public void actionPerformed(ActionEvent action) {
 				timeStep(System.currentTimeMillis());
@@ -48,6 +52,9 @@ public class Timeline {
 	}
 	
 	public void addConstraintFunction(ConstraintFunction cf) {
+		if (!inputs.contains(cf.getInput())) {
+			inputs.add(cf.getInput());
+		}
 		int index = 0;
 		while ((index < willExecute.size()) && (cf.getTime() > willExecute.get(index).getTime())) {
 			index++;
