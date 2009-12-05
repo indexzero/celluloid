@@ -6,17 +6,18 @@ public class Test {
   public static void main(String[] args) throws Exception {
     // load in T.stg template group, put in templates variable
     FileReader groupFileR = new FileReader("celluloid.java.stg");
+    FileInputStream inputFileS = new FileInputStream("device_test.cld");
     StringTemplateGroup templates = new StringTemplateGroup(groupFileR);
     groupFileR.close();
     
     // PARSE INPUT AND COMPUTE TEMPLATE
-    ANTLRInputStream input = new ANTLRInputStream(System.in);
+    ANTLRInputStream input = new ANTLRInputStream(inputFileS);
     celluloidLexer lexer = new celluloidLexer(input); // create lexer
     CommonTokenStream tokens = new CommonTokenStream(lexer);
     celluloidParser parser = new celluloidParser(tokens); // create parser
     parser.setTemplateLib(templates); // give parser templates
     celluloidParser.deviceDefinition_return r = parser.deviceDefinition(); // parse rule
-    //StringTemplate output = r.getTemplate(); 
-    //System.out.println(output.toString());// emit translation
+    StringTemplate output = (StringTemplate)r.getTemplate();
+    System.out.println(output.toString());// emit translation
   }
 }

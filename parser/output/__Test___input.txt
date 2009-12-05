@@ -1,3 +1,0 @@
-device foo_device accepts foo_constraint do
-  #ANYTHING!
-end
