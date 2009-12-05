@@ -1,19 +1,16 @@
 package org.celluloidlang.devices;
 
-import javax.media.ControllerEvent;
-import javax.media.ControllerListener;
-import javax.media.EndOfMediaEvent;
 import javax.media.Player;
-import javax.media.PrefetchCompleteEvent;
 import javax.media.Time;
 import javax.media.bean.playerbean.MediaPlayer;
 
 import org.celluloidlang.announcment.Announcement;
-import org.celluloidlang.constraints.defined.*;
+import org.celluloidlang.constraints.defined.Output;
+import org.celluloidlang.constraints.defined.StaticInput;
+import org.celluloidlang.constraints.defined.Video;
 
-public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output, ControllerListener {
+public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output {
 
-	private boolean hasPrefetched = false;
 	public JMFVideo(String pathname) {
 		this.setMediaLocation("file:////Users/david/Documents/cell/framework/playme.wav");
 		this.setPlaybackLoop(false);
@@ -83,7 +80,7 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 	}
 	
 	public void waitForPrefetch(){
-		while(!hasPrefetched){
+		while(!(this.getState() == MediaPlayer.Prefetched)){
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -93,19 +90,5 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 		}
 	}
 
-	@Override
-	public void controllerUpdate(ControllerEvent event) {
-
-		
-		if (event instanceof EndOfMediaEvent) {
-
-				
-		}
-		
-		if(event instanceof PrefetchCompleteEvent){
-			hasPrefetched=true;
-		}
-		
-	}
 
 }
