@@ -2,17 +2,20 @@ package org.celluloidlang.core;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Stack;
 import javax.swing.Timer;
 
+import org.celluloidlang.announcment.Announcement;
+import org.celluloidlang.announcment.AnnouncementListener;
 import org.celluloidlang.constraints.defined.*;
 
 /*
  * synchronized?
  */
 
-public class Timeline {
+public class Timeline implements AnnouncementListener {
 	
 	static final int TIME_GRANULARITY = 100;
 	
@@ -21,11 +24,13 @@ public class Timeline {
 	private Stack<ConstraintFunction> didExecute;
 	private LinkedList<ConstraintFunction> willExecute;
 	private LinkedList<Input> inputs;
+	private HashMap<String, ConstraintFunction> announceEvents;
 	
 	public Timeline() {
 		didExecute = new Stack<ConstraintFunction>();
 		willExecute = new LinkedList<ConstraintFunction>();
 		inputs = new LinkedList<Input>();
+		announceEvents  = new HashMap<String, ConstraintFunction>();
 		ActionListener taskPerformer = new ActionListener() {
 			public void actionPerformed(ActionEvent action) {
 				timeStep(System.currentTimeMillis());
@@ -75,5 +80,17 @@ public class Timeline {
 		while (!didExecute.isEmpty()) {
 			willExecute.push(didExecute.pop());
 		}
+	}
+
+	public void addEventConstraint(String type, ConstraintFunction constraint){
+		announceEvents.put(type, constraint);
+	}
+	@Override
+	public void update(Announcement a) {
+		if(a.getType().equals(a.getOwner().toString()+"volume=6")){
+			announceEvents.get(a.getType());
+		}
+			
+		
 	}
 }

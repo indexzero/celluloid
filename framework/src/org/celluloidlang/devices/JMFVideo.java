@@ -9,8 +9,9 @@ import org.celluloidlang.constraints.defined.Output;
 import org.celluloidlang.constraints.defined.StaticInput;
 import org.celluloidlang.constraints.defined.Video;
 
-public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output {
+public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output, Runnable{
 
+	
 	public JMFVideo(String pathname) {
 		this.setMediaLocation("file:////Users/david/Documents/cell/framework/playme.wav");
 		this.setPlaybackLoop(false);
@@ -22,6 +23,7 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output 
 	@Override
 	public void play(double offSet) {
 		this.start();
+		new Thread(this).start();
 	}
 
 	@Override
@@ -88,6 +90,22 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output 
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public void run() {
+		while(true){
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			announcer.notifyObservers(new Announcement(this.curVolumeLevel, this));
+		}
+		
+		
+		
 	}
 
 

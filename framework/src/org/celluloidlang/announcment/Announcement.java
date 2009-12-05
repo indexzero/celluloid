@@ -1,4 +1,7 @@
 package org.celluloidlang.announcment;
+
+import org.celluloidlang.constraints.defined.Input;
+
 /**
  * Class used for sending announcments to listeners
  * @author blake
@@ -6,9 +9,9 @@ package org.celluloidlang.announcment;
  */
 public class Announcement {
 	String type;
-	Class owner;
+	Input owner;
 
-	public Announcement(String type, Class owner) {
+	public Announcement(String type, Input owner) {
 		this.type = type;
 		this.owner = owner;
 	}
@@ -21,11 +24,11 @@ public class Announcement {
 		this.type = type;
 	}
 
-	public Class getOwner() {
+	public Input getOwner() {
 		return owner;
 	}
 
-	public void setOwner(Class owner) {
+	public void setOwner(Input owner) {
 		this.owner = owner;
 	}
 
