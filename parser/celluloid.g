@@ -6,6 +6,7 @@ options {
 
 // Start boolean literal
 fragment BOOL   	: 'true' | 'false';
+TYPE       : 'time' | 'number' | 'string' | 'boolean' | 'input' | 'output';
 // End boolean literal
 
 // Start language blocks
@@ -58,14 +59,14 @@ MULTIPLICATIVE_OPERATOR  : '*' | '/' | '%';
 // End operators 
 
 // Start generic literals and declarations
-LITERAL             : STRING | TIME | NUMBER | BOOL; 
+LITERAL             : STRING | TIME | NUMBER | BOOL;
 
 variableDeclaration 
     :    'timeline' ID NEWLINE
          -> timelineDeclaration(name = { $ID.text })
          // TODO: What should we do about the conditional NEWLINE? Include the ';' in the NEWLINE st?
-    |    type = ('time' | 'number' | 'string' | 'boolean' | 'input' | 'output') ID initializer? NEWLINE?
-         -> variableDeclaration(type = { $type.text }, name = { $ID.text }, init = { $initializer.st })
+    |    TYPE ID initializer? NEWLINE?
+         -> variableDeclaration(type = { $TYPE.text }, name = { $ID.text }, init = { $initializer.st })
     ;
                     
 initializer      
@@ -156,7 +157,6 @@ functionCall
 // Start predicate blocks
 predicateHeader     
     :    'predicate' ID '(' args = variableList ')'
-         // TODO: Move this template into another file
          -> predicateHeader(name = { $ID.text }, args = { $variableList.st }) 
     ;	
 predicateDefinition 
@@ -164,10 +164,10 @@ predicateDefinition
          -> predicateDefinition(header = { $predicateHeader.st}, block = { $predicateBlock.st})
     ;
 predicateBlock      
-    :    functionBlock 'returns' assignmentExpression 
-         // TODO: Define this template
+    :    // VERY  WEAK IMPLEMENTATION
+         functionBlock 'returns' assignmentExpression 
          -> predicateBlock()
-    ; // VERY  WEAK IMPLEMENTATION
+    ; 
 predicateCall       
     :    ID '(' expressionList ')' NEWLINE
          -> predicateCall(name = { $ID.text }, args = { $expressionList.st })
@@ -184,7 +184,8 @@ eventDefinition
 // Start constraint declarations
 
 announcement
-    :    'announce' ID 'when' ID assignmentExpression //TODO: Replace this with short_bool_exp
+    :    //TODO: Replace this with short_bool_exp
+         'announce' ID 'when' ID assignmentExpression 
     ; 
 // End constraint declarations
 
@@ -195,7 +196,6 @@ constraintDefinition
          START 
              members = (variableDeclaration | functionHeader | predicateHeader | announcement)*
          END  
-         // Remark: Does Java allow for multiple inheritence of Interfaces?
          // TODO: Need to write code to compile announcements into decorators for functions
          -> constraintDefinition(name = { $ID.text }, requires = { $constraintList.st }) 
             // variableDeclaration* functionHeader* predicateHeader*)
