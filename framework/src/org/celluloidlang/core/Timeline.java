@@ -86,8 +86,8 @@ public class Timeline implements AnnouncementListener {
 		announceEvents.put(type, constraint);
 	}
 	@Override
-	public void update(Announcement a) {
-		if(a.getType().equals(a.getOwner().toString()+"volume=6")){
+	public synchronized void update(Announcement a) {
+		if(a.getType().equals(a.getOwner()+"volume=6")){
 			announceEvents.get(a.getType());
 		}
 			

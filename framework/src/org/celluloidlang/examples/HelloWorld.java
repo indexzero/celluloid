@@ -16,7 +16,7 @@ public class HelloWorld {
 			}
 		};
 		timeline1.addConstraintFunction(cf);
-		timeline1.addEventConstraint("Audio1:volume=6", cf);
+		timeline1.addEventConstraint(jmf+":volume=6", cf);
 		/*
 		//play the file at time 0
 		cf = new ConstraintFunction(jmf, 4) {
