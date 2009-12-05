@@ -4,7 +4,7 @@ import org.celluloidlang.constraints.defined.Input;
 
 public class ConstraintFunction {
 	
-	private Input input;
+	protected Input input;
 	private double time;
 	
 	public ConstraintFunction(Input input, double executeTime) {
