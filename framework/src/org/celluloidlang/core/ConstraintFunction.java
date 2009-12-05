@@ -1,6 +1,6 @@
 package org.celluloidlang.core;
 
-import org.celluloidlang.constraints.defined.Input;
+import org.celluloidlang.constraints.defined.*;
 
 public class ConstraintFunction {
 	

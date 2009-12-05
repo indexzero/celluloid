@@ -64,7 +64,7 @@ public class Timeline {
 	
 	private synchronized void timeStep(long currentTime) {
 		long elapsed = currentTime - initialTime;
-		while (willExecute.peek().getTime() <= elapsed) {
+		while ((willExecute.peek() != null) && (willExecute.peek().getTime() <= elapsed)) {
 			ConstraintFunction cf = willExecute.pop();
 			didExecute.push(cf);
 			cf.execute();
@@ -76,5 +76,4 @@ public class Timeline {
 			willExecute.push(didExecute.pop());
 		}
 	}
-
 }
