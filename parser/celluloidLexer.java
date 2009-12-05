@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 celluloid.g 2009-12-02 18:27:02
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g 2009-12-05 15:50:41
 
 import org.antlr.runtime.*;
 import java.util.Stack;
@@ -70,15 +70,15 @@ public class celluloidLexer extends Lexer {
         super(input,state);
 
     }
-    public String getGrammarFileName() { return "celluloid.g"; }
+    public String getGrammarFileName() { return "C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g"; }
 
     // $ANTLR start "T__28"
     public final void mT__28() throws RecognitionException {
         try {
             int _type = T__28;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:3:7: ( 'in' )
-            // celluloid.g:3:9: 'in'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:3:7: ( 'in' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:3:9: 'in'
             {
             match("in"); 
 
@@ -98,8 +98,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__29;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:4:7: ( '*' )
-            // celluloid.g:4:9: '*'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:4:7: ( '*' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:4:9: '*'
             {
             match('*'); 
 
@@ -118,8 +118,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__30;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:5:7: ( 'timeline' )
-            // celluloid.g:5:9: 'timeline'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:5:7: ( 'timeline' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:5:9: 'timeline'
             {
             match("timeline"); 
 
@@ -139,8 +139,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__31;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:6:7: ( 'time' )
-            // celluloid.g:6:9: 'time'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:6:7: ( 'time' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:6:9: 'time'
             {
             match("time"); 
 
@@ -160,8 +160,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__32;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:7:7: ( 'number' )
-            // celluloid.g:7:9: 'number'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:7:7: ( 'number' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:7:9: 'number'
             {
             match("number"); 
 
@@ -181,8 +181,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__33;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:8:7: ( 'string' )
-            // celluloid.g:8:9: 'string'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:8:7: ( 'string' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:8:9: 'string'
             {
             match("string"); 
 
@@ -202,8 +202,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__34;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:9:7: ( 'boolean' )
-            // celluloid.g:9:9: 'boolean'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:9:7: ( 'boolean' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:9:9: 'boolean'
             {
             match("boolean"); 
 
@@ -223,8 +223,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__35;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:10:7: ( 'input' )
-            // celluloid.g:10:9: 'input'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:10:7: ( 'input' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:10:9: 'input'
             {
             match("input"); 
 
@@ -244,8 +244,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__36;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:11:7: ( 'output' )
-            // celluloid.g:11:9: 'output'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:11:7: ( 'output' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:11:9: 'output'
             {
             match("output"); 
 
@@ -265,8 +265,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__37;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:12:7: ( '=' )
-            // celluloid.g:12:9: '='
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:12:7: ( '=' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:12:9: '='
             {
             match('='); 
 
@@ -285,8 +285,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__38;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:13:7: ( 'or' )
-            // celluloid.g:13:9: 'or'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:13:7: ( 'or' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:13:9: 'or'
             {
             match("or"); 
 
@@ -306,8 +306,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__39;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:14:7: ( 'and' )
-            // celluloid.g:14:9: 'and'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:14:7: ( 'and' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:14:9: 'and'
             {
             match("and"); 
 
@@ -327,8 +327,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__40;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:15:7: ( 'new' )
-            // celluloid.g:15:9: 'new'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:15:7: ( 'new' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:15:9: 'new'
             {
             match("new"); 
 
@@ -348,8 +348,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__41;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:16:7: ( '(' )
-            // celluloid.g:16:9: '('
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:16:7: ( '(' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:16:9: '('
             {
             match('('); 
 
@@ -368,8 +368,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__42;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:17:7: ( ')' )
-            // celluloid.g:17:9: ')'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:17:7: ( ')' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:17:9: ')'
             {
             match(')'); 
 
@@ -388,8 +388,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__43;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:18:7: ( ',' )
-            // celluloid.g:18:9: ','
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:18:7: ( ',' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:18:9: ','
             {
             match(','); 
 
@@ -408,8 +408,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__44;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:19:7: ( 'function' )
-            // celluloid.g:19:9: 'function'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:19:7: ( 'function' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:19:9: 'function'
             {
             match("function"); 
 
@@ -429,8 +429,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__45;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:20:7: ( 'predicate' )
-            // celluloid.g:20:9: 'predicate'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:20:7: ( 'predicate' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:20:9: 'predicate'
             {
             match("predicate"); 
 
@@ -450,8 +450,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__46;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:21:7: ( 'returns' )
-            // celluloid.g:21:9: 'returns'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:21:7: ( 'returns' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:21:9: 'returns'
             {
             match("returns"); 
 
@@ -471,8 +471,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__47;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:22:7: ( 'event' )
-            // celluloid.g:22:9: 'event'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:22:7: ( 'event' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:22:9: 'event'
             {
             match("event"); 
 
@@ -492,8 +492,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__48;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:23:7: ( 'announce' )
-            // celluloid.g:23:9: 'announce'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:23:7: ( 'announce' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:23:9: 'announce'
             {
             match("announce"); 
 
@@ -513,8 +513,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__49;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:24:7: ( 'when' )
-            // celluloid.g:24:9: 'when'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:24:7: ( 'when' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:24:9: 'when'
             {
             match("when"); 
 
@@ -534,8 +534,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__50;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:25:7: ( 'constraint' )
-            // celluloid.g:25:9: 'constraint'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:25:7: ( 'constraint' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:25:9: 'constraint'
             {
             match("constraint"); 
 
@@ -555,8 +555,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__51;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:26:7: ( 'announces' )
-            // celluloid.g:26:9: 'announces'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:26:7: ( 'announces' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:26:9: 'announces'
             {
             match("announces"); 
 
@@ -576,8 +576,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__52;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:27:7: ( 'requires' )
-            // celluloid.g:27:9: 'requires'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:27:7: ( 'requires' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:27:9: 'requires'
             {
             match("requires"); 
 
@@ -597,8 +597,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__53;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:28:7: ( 'accepts' )
-            // celluloid.g:28:9: 'accepts'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:28:7: ( 'accepts' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:28:9: 'accepts'
             {
             match("accepts"); 
 
@@ -618,8 +618,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = T__54;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:29:7: ( 'device' )
-            // celluloid.g:29:9: 'device'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:29:7: ( 'device' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:29:9: 'device'
             {
             match("device"); 
 
@@ -637,7 +637,7 @@ public class celluloidLexer extends Lexer {
     // $ANTLR start "BOOL"
     public final void mBOOL() throws RecognitionException {
         try {
-            // celluloid.g:8:18: ( 'true' | 'false' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:8:18: ( 'true' | 'false' )
             int alt1=2;
             int LA1_0 = input.LA(1);
 
@@ -655,7 +655,7 @@ public class celluloidLexer extends Lexer {
             }
             switch (alt1) {
                 case 1 :
-                    // celluloid.g:8:20: 'true'
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:8:20: 'true'
                     {
                     match("true"); 
 
@@ -663,7 +663,7 @@ public class celluloidLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // celluloid.g:8:29: 'false'
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:8:29: 'false'
                     {
                     match("false"); 
 
@@ -683,8 +683,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = LANGUAGE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:13:21: ( 'JAVA' )
-            // celluloid.g:13:23: 'JAVA'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:13:21: ( 'JAVA' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:13:23: 'JAVA'
             {
             match("JAVA"); 
 
@@ -704,8 +704,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = ID;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:18:7: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
-            // celluloid.g:18:9: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:18:7: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )* )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:18:9: ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             {
             if ( (input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
                 input.consume();
@@ -716,7 +716,7 @@ public class celluloidLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // celluloid.g:18:33: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:18:33: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )*
             loop2:
             do {
                 int alt2=2;
@@ -729,7 +729,7 @@ public class celluloidLexer extends Lexer {
 
                 switch (alt2) {
             	case 1 :
-            	    // celluloid.g:
+            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:
             	    {
             	    if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='Z')||input.LA(1)=='_'||(input.LA(1)>='a' && input.LA(1)<='z') ) {
             	        input.consume();
@@ -765,10 +765,10 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = START;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:19:7: ( ( 'do' | '{' ) NEWLINE )
-            // celluloid.g:19:9: ( 'do' | '{' ) NEWLINE
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:19:7: ( ( 'do' | '{' ) NEWLINE )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:19:9: ( 'do' | '{' ) NEWLINE
             {
-            // celluloid.g:19:9: ( 'do' | '{' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:19:9: ( 'do' | '{' )
             int alt3=2;
             int LA3_0 = input.LA(1);
 
@@ -786,7 +786,7 @@ public class celluloidLexer extends Lexer {
             }
             switch (alt3) {
                 case 1 :
-                    // celluloid.g:19:10: 'do'
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:19:10: 'do'
                     {
                     match("do"); 
 
@@ -794,7 +794,7 @@ public class celluloidLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // celluloid.g:19:17: '{'
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:19:17: '{'
                     {
                     match('{'); 
 
@@ -820,10 +820,10 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = END;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:20:7: ( ( 'end' | '}' ) NEWLINE )
-            // celluloid.g:20:9: ( 'end' | '}' ) NEWLINE
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:20:7: ( ( 'end' | '}' ) NEWLINE )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:20:9: ( 'end' | '}' ) NEWLINE
             {
-            // celluloid.g:20:9: ( 'end' | '}' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:20:9: ( 'end' | '}' )
             int alt4=2;
             int LA4_0 = input.LA(1);
 
@@ -841,7 +841,7 @@ public class celluloidLexer extends Lexer {
             }
             switch (alt4) {
                 case 1 :
-                    // celluloid.g:20:10: 'end'
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:20:10: 'end'
                     {
                     match("end"); 
 
@@ -849,7 +849,7 @@ public class celluloidLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // celluloid.g:20:18: '}'
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:20:18: '}'
                     {
                     match('}'); 
 
@@ -875,8 +875,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = NEWLINE;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:24:9: ( '\\n' | '\\r' )
-            // celluloid.g:
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:24:9: ( '\\n' | '\\r' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:
             {
             if ( input.LA(1)=='\n'||input.LA(1)=='\r' ) {
                 input.consume();
@@ -903,8 +903,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:25:9: ( ( ' ' | '\\t' | '\\r' | '\\n' ) )
-            // celluloid.g:25:11: ( ' ' | '\\t' | '\\r' | '\\n' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:25:9: ( ( ' ' | '\\t' | '\\r' | '\\n' ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:25:11: ( ' ' | '\\t' | '\\r' | '\\n' )
             {
             if ( (input.LA(1)>='\t' && input.LA(1)<='\n')||input.LA(1)=='\r'||input.LA(1)==' ' ) {
                 input.consume();
@@ -932,11 +932,11 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:26:9: ( '#' (~ ( NEWLINE ) )* )
-            // celluloid.g:26:11: '#' (~ ( NEWLINE ) )*
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:26:9: ( '#' (~ ( NEWLINE ) )* )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:26:11: '#' (~ ( NEWLINE ) )*
             {
             match('#'); 
-            // celluloid.g:26:15: (~ ( NEWLINE ) )*
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:26:15: (~ ( NEWLINE ) )*
             loop5:
             do {
                 int alt5=2;
@@ -949,7 +949,7 @@ public class celluloidLexer extends Lexer {
 
                 switch (alt5) {
             	case 1 :
-            	    // celluloid.g:26:15: ~ ( NEWLINE )
+            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:26:15: ~ ( NEWLINE )
             	    {
             	    if ( (input.LA(1)>='\u0000' && input.LA(1)<='\t')||(input.LA(1)>='\u000B' && input.LA(1)<='\f')||(input.LA(1)>='\u000E' && input.LA(1)<='\uFFFF') ) {
             	        input.consume();
@@ -984,14 +984,14 @@ public class celluloidLexer extends Lexer {
     // $ANTLR start "NUMBER"
     public final void mNUMBER() throws RecognitionException {
         try {
-            // celluloid.g:30:17: ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( EXPONENT )? | '.' ( '0' .. '9' )+ ( EXPONENT )? | ( '0' .. '9' )+ EXPONENT )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:30:17: ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( EXPONENT )? | '.' ( '0' .. '9' )+ ( EXPONENT )? | ( '0' .. '9' )+ EXPONENT )
             int alt12=3;
             alt12 = dfa12.predict(input);
             switch (alt12) {
                 case 1 :
-                    // celluloid.g:30:21: ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( EXPONENT )?
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:30:21: ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( EXPONENT )?
                     {
-                    // celluloid.g:30:21: ( '0' .. '9' )+
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:30:21: ( '0' .. '9' )+
                     int cnt6=0;
                     loop6:
                     do {
@@ -1005,7 +1005,7 @@ public class celluloidLexer extends Lexer {
 
                         switch (alt6) {
                     	case 1 :
-                    	    // celluloid.g:30:22: '0' .. '9'
+                    	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:30:22: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -1022,7 +1022,7 @@ public class celluloidLexer extends Lexer {
                     } while (true);
 
                     match('.'); 
-                    // celluloid.g:30:37: ( '0' .. '9' )*
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:30:37: ( '0' .. '9' )*
                     loop7:
                     do {
                         int alt7=2;
@@ -1035,7 +1035,7 @@ public class celluloidLexer extends Lexer {
 
                         switch (alt7) {
                     	case 1 :
-                    	    // celluloid.g:30:38: '0' .. '9'
+                    	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:30:38: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -1047,7 +1047,7 @@ public class celluloidLexer extends Lexer {
                         }
                     } while (true);
 
-                    // celluloid.g:30:49: ( EXPONENT )?
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:30:49: ( EXPONENT )?
                     int alt8=2;
                     int LA8_0 = input.LA(1);
 
@@ -1056,7 +1056,7 @@ public class celluloidLexer extends Lexer {
                     }
                     switch (alt8) {
                         case 1 :
-                            // celluloid.g:30:49: EXPONENT
+                            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:30:49: EXPONENT
                             {
                             mEXPONENT(); 
 
@@ -1069,10 +1069,10 @@ public class celluloidLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // celluloid.g:31:12: '.' ( '0' .. '9' )+ ( EXPONENT )?
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:31:12: '.' ( '0' .. '9' )+ ( EXPONENT )?
                     {
                     match('.'); 
-                    // celluloid.g:31:16: ( '0' .. '9' )+
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:31:16: ( '0' .. '9' )+
                     int cnt9=0;
                     loop9:
                     do {
@@ -1086,7 +1086,7 @@ public class celluloidLexer extends Lexer {
 
                         switch (alt9) {
                     	case 1 :
-                    	    // celluloid.g:31:17: '0' .. '9'
+                    	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:31:17: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -1102,7 +1102,7 @@ public class celluloidLexer extends Lexer {
                         cnt9++;
                     } while (true);
 
-                    // celluloid.g:31:28: ( EXPONENT )?
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:31:28: ( EXPONENT )?
                     int alt10=2;
                     int LA10_0 = input.LA(1);
 
@@ -1111,7 +1111,7 @@ public class celluloidLexer extends Lexer {
                     }
                     switch (alt10) {
                         case 1 :
-                            // celluloid.g:31:28: EXPONENT
+                            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:31:28: EXPONENT
                             {
                             mEXPONENT(); 
 
@@ -1124,9 +1124,9 @@ public class celluloidLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // celluloid.g:32:12: ( '0' .. '9' )+ EXPONENT
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:32:12: ( '0' .. '9' )+ EXPONENT
                     {
-                    // celluloid.g:32:12: ( '0' .. '9' )+
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:32:12: ( '0' .. '9' )+
                     int cnt11=0;
                     loop11:
                     do {
@@ -1140,7 +1140,7 @@ public class celluloidLexer extends Lexer {
 
                         switch (alt11) {
                     	case 1 :
-                    	    // celluloid.g:32:13: '0' .. '9'
+                    	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:32:13: '0' .. '9'
                     	    {
                     	    matchRange('0','9'); 
 
@@ -1171,8 +1171,8 @@ public class celluloidLexer extends Lexer {
     // $ANTLR start "EXPONENT"
     public final void mEXPONENT() throws RecognitionException {
         try {
-            // celluloid.g:33:19: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
-            // celluloid.g:33:21: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:33:19: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:33:21: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
             {
             if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
                 input.consume();
@@ -1183,7 +1183,7 @@ public class celluloidLexer extends Lexer {
                 recover(mse);
                 throw mse;}
 
-            // celluloid.g:33:31: ( '+' | '-' )?
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:33:31: ( '+' | '-' )?
             int alt13=2;
             int LA13_0 = input.LA(1);
 
@@ -1192,7 +1192,7 @@ public class celluloidLexer extends Lexer {
             }
             switch (alt13) {
                 case 1 :
-                    // celluloid.g:
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:
                     {
                     if ( input.LA(1)=='+'||input.LA(1)=='-' ) {
                         input.consume();
@@ -1209,7 +1209,7 @@ public class celluloidLexer extends Lexer {
 
             }
 
-            // celluloid.g:33:42: ( '0' .. '9' )+
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:33:42: ( '0' .. '9' )+
             int cnt14=0;
             loop14:
             do {
@@ -1223,7 +1223,7 @@ public class celluloidLexer extends Lexer {
 
                 switch (alt14) {
             	case 1 :
-            	    // celluloid.g:33:43: '0' .. '9'
+            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:33:43: '0' .. '9'
             	    {
             	    matchRange('0','9'); 
 
@@ -1251,8 +1251,8 @@ public class celluloidLexer extends Lexer {
     // $ANTLR start "SECOND"
     public final void mSECOND() throws RecognitionException {
         try {
-            // celluloid.g:38:17: ( NUMBER 's' )
-            // celluloid.g:38:19: NUMBER 's'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:38:17: ( NUMBER 's' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:38:19: NUMBER 's'
             {
             mNUMBER(); 
             match('s'); 
@@ -1268,12 +1268,12 @@ public class celluloidLexer extends Lexer {
     // $ANTLR start "MINUTE"
     public final void mMINUTE() throws RecognitionException {
         try {
-            // celluloid.g:39:17: ( NUMBER 'm' SECOND | SECOND )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:39:17: ( NUMBER 'm' SECOND | SECOND )
             int alt15=2;
             alt15 = dfa15.predict(input);
             switch (alt15) {
                 case 1 :
-                    // celluloid.g:39:19: NUMBER 'm' SECOND
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:39:19: NUMBER 'm' SECOND
                     {
                     mNUMBER(); 
                     match('m'); 
@@ -1282,7 +1282,7 @@ public class celluloidLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // celluloid.g:39:39: SECOND
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:39:39: SECOND
                     {
                     mSECOND(); 
 
@@ -1299,12 +1299,12 @@ public class celluloidLexer extends Lexer {
     // $ANTLR start "HOUR"
     public final void mHOUR() throws RecognitionException {
         try {
-            // celluloid.g:40:16: ( NUMBER 'h' MINUTE | MINUTE )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:40:16: ( NUMBER 'h' MINUTE | MINUTE )
             int alt16=2;
             alt16 = dfa16.predict(input);
             switch (alt16) {
                 case 1 :
-                    // celluloid.g:40:18: NUMBER 'h' MINUTE
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:40:18: NUMBER 'h' MINUTE
                     {
                     mNUMBER(); 
                     match('h'); 
@@ -1313,7 +1313,7 @@ public class celluloidLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // celluloid.g:40:38: MINUTE
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:40:38: MINUTE
                     {
                     mMINUTE(); 
 
@@ -1330,12 +1330,12 @@ public class celluloidLexer extends Lexer {
     // $ANTLR start "DAY"
     public final void mDAY() throws RecognitionException {
         try {
-            // celluloid.g:41:15: ( NUMBER 'd' HOUR | HOUR )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:41:15: ( NUMBER 'd' HOUR | HOUR )
             int alt17=2;
             alt17 = dfa17.predict(input);
             switch (alt17) {
                 case 1 :
-                    // celluloid.g:41:17: NUMBER 'd' HOUR
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:41:17: NUMBER 'd' HOUR
                     {
                     mNUMBER(); 
                     match('d'); 
@@ -1344,7 +1344,7 @@ public class celluloidLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // celluloid.g:41:35: HOUR
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:41:35: HOUR
                     {
                     mHOUR(); 
 
@@ -1361,8 +1361,8 @@ public class celluloidLexer extends Lexer {
     // $ANTLR start "TIME"
     public final void mTIME() throws RecognitionException {
         try {
-            // celluloid.g:42:15: ( '@' DAY )
-            // celluloid.g:42:17: '@' DAY
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:42:15: ( '@' DAY )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:42:17: '@' DAY
             {
             match('@'); 
             mDAY(); 
@@ -1378,11 +1378,11 @@ public class celluloidLexer extends Lexer {
     // $ANTLR start "STRING"
     public final void mSTRING() throws RecognitionException {
         try {
-            // celluloid.g:46:19: ( '\"' ( ESC_SEQ | CHAR )* '\"' )
-            // celluloid.g:46:22: '\"' ( ESC_SEQ | CHAR )* '\"'
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:46:19: ( '\"' ( ESC_SEQ | CHAR )* '\"' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:46:22: '\"' ( ESC_SEQ | CHAR )* '\"'
             {
             match('\"'); 
-            // celluloid.g:46:26: ( ESC_SEQ | CHAR )*
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:46:26: ( ESC_SEQ | CHAR )*
             loop18:
             do {
                 int alt18=3;
@@ -1398,14 +1398,14 @@ public class celluloidLexer extends Lexer {
 
                 switch (alt18) {
             	case 1 :
-            	    // celluloid.g:46:28: ESC_SEQ
+            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:46:28: ESC_SEQ
             	    {
             	    mESC_SEQ(); 
 
             	    }
             	    break;
             	case 2 :
-            	    // celluloid.g:46:38: CHAR
+            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:46:38: CHAR
             	    {
             	    mCHAR(); 
 
@@ -1430,8 +1430,8 @@ public class celluloidLexer extends Lexer {
     // $ANTLR start "CHAR"
     public final void mCHAR() throws RecognitionException {
         try {
-            // celluloid.g:47:19: ( ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' ) )
-            // celluloid.g:47:22: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:47:19: ( ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:47:22: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )
             {
             if ( (input.LA(1)>='0' && input.LA(1)<='9')||(input.LA(1)>='A' && input.LA(1)<='F')||(input.LA(1)>='a' && input.LA(1)<='f') ) {
                 input.consume();
@@ -1454,8 +1454,8 @@ public class celluloidLexer extends Lexer {
     // $ANTLR start "ESC_SEQ"
     public final void mESC_SEQ() throws RecognitionException {
         try {
-            // celluloid.g:48:19: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
-            // celluloid.g:48:22: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:48:19: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:48:22: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
             {
             match('\\'); 
             if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||input.LA(1)=='t' ) {
@@ -1481,7 +1481,7 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = ASSIGNMENT_OPERATOR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:53:26: ( '=' | '*=' | '/=' | '%=' | '+=' | '-=' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:53:26: ( '=' | '*=' | '/=' | '%=' | '+=' | '-=' )
             int alt19=6;
             switch ( input.LA(1) ) {
             case '=':
@@ -1523,14 +1523,14 @@ public class celluloidLexer extends Lexer {
 
             switch (alt19) {
                 case 1 :
-                    // celluloid.g:53:28: '='
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:53:28: '='
                     {
                     match('='); 
 
                     }
                     break;
                 case 2 :
-                    // celluloid.g:53:34: '*='
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:53:34: '*='
                     {
                     match("*="); 
 
@@ -1538,7 +1538,7 @@ public class celluloidLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // celluloid.g:53:41: '/='
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:53:41: '/='
                     {
                     match("/="); 
 
@@ -1546,7 +1546,7 @@ public class celluloidLexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // celluloid.g:53:48: '%='
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:53:48: '%='
                     {
                     match("%="); 
 
@@ -1554,7 +1554,7 @@ public class celluloidLexer extends Lexer {
                     }
                     break;
                 case 5 :
-                    // celluloid.g:53:55: '+='
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:53:55: '+='
                     {
                     match("+="); 
 
@@ -1562,7 +1562,7 @@ public class celluloidLexer extends Lexer {
                     }
                     break;
                 case 6 :
-                    // celluloid.g:53:62: '-='
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:53:62: '-='
                     {
                     match("-="); 
 
@@ -1584,7 +1584,7 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = EQUALITY_OPERATOR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:54:26: ( '==' | '!=' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:54:26: ( '==' | '!=' )
             int alt20=2;
             int LA20_0 = input.LA(1);
 
@@ -1602,7 +1602,7 @@ public class celluloidLexer extends Lexer {
             }
             switch (alt20) {
                 case 1 :
-                    // celluloid.g:54:28: '=='
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:54:28: '=='
                     {
                     match("=="); 
 
@@ -1610,7 +1610,7 @@ public class celluloidLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // celluloid.g:54:35: '!='
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:54:35: '!='
                     {
                     match("!="); 
 
@@ -1632,7 +1632,7 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = RELATIONAL_OPERATOR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:55:26: ( '>' | '<' | '<=' | '>=' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:55:26: ( '>' | '<' | '<=' | '>=' )
             int alt21=4;
             int LA21_0 = input.LA(1);
 
@@ -1662,21 +1662,21 @@ public class celluloidLexer extends Lexer {
             }
             switch (alt21) {
                 case 1 :
-                    // celluloid.g:55:28: '>'
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:55:28: '>'
                     {
                     match('>'); 
 
                     }
                     break;
                 case 2 :
-                    // celluloid.g:55:34: '<'
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:55:34: '<'
                     {
                     match('<'); 
 
                     }
                     break;
                 case 3 :
-                    // celluloid.g:55:40: '<='
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:55:40: '<='
                     {
                     match("<="); 
 
@@ -1684,7 +1684,7 @@ public class celluloidLexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // celluloid.g:55:47: '>='
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:55:47: '>='
                     {
                     match(">="); 
 
@@ -1706,8 +1706,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = ADDITIVE_OPERATOR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:56:26: ( '+' | '-' )
-            // celluloid.g:
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:56:26: ( '+' | '-' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:
             {
             if ( input.LA(1)=='+'||input.LA(1)=='-' ) {
                 input.consume();
@@ -1734,8 +1734,8 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = MULTIPLICATIVE_OPERATOR;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:57:26: ( '*' | '/' | '%' )
-            // celluloid.g:
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:57:26: ( '*' | '/' | '%' )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:
             {
             if ( input.LA(1)=='%'||input.LA(1)=='*'||input.LA(1)=='/' ) {
                 input.consume();
@@ -1762,7 +1762,7 @@ public class celluloidLexer extends Lexer {
         try {
             int _type = LITERAL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // celluloid.g:61:21: ( STRING | TIME | NUMBER | BOOL )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:61:21: ( STRING | TIME | NUMBER | BOOL )
             int alt22=4;
             switch ( input.LA(1) ) {
             case '\"':
@@ -1805,28 +1805,28 @@ public class celluloidLexer extends Lexer {
 
             switch (alt22) {
                 case 1 :
-                    // celluloid.g:61:23: STRING
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:61:23: STRING
                     {
                     mSTRING(); 
 
                     }
                     break;
                 case 2 :
-                    // celluloid.g:61:32: TIME
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:61:32: TIME
                     {
                     mTIME(); 
 
                     }
                     break;
                 case 3 :
-                    // celluloid.g:61:39: NUMBER
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:61:39: NUMBER
                     {
                     mNUMBER(); 
 
                     }
                     break;
                 case 4 :
-                    // celluloid.g:61:48: BOOL
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:61:48: BOOL
                     {
                     mBOOL(); 
 
@@ -1843,285 +1843,285 @@ public class celluloidLexer extends Lexer {
     // $ANTLR end "LITERAL"
 
     public void mTokens() throws RecognitionException {
-        // celluloid.g:1:8: ( T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | LANGUAGE | ID | START | END | NEWLINE | WS | COMMENT | ASSIGNMENT_OPERATOR | EQUALITY_OPERATOR | RELATIONAL_OPERATOR | ADDITIVE_OPERATOR | MULTIPLICATIVE_OPERATOR | LITERAL )
+        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:8: ( T__28 | T__29 | T__30 | T__31 | T__32 | T__33 | T__34 | T__35 | T__36 | T__37 | T__38 | T__39 | T__40 | T__41 | T__42 | T__43 | T__44 | T__45 | T__46 | T__47 | T__48 | T__49 | T__50 | T__51 | T__52 | T__53 | T__54 | LANGUAGE | ID | START | END | NEWLINE | WS | COMMENT | ASSIGNMENT_OPERATOR | EQUALITY_OPERATOR | RELATIONAL_OPERATOR | ADDITIVE_OPERATOR | MULTIPLICATIVE_OPERATOR | LITERAL )
         int alt23=40;
         alt23 = dfa23.predict(input);
         switch (alt23) {
             case 1 :
-                // celluloid.g:1:10: T__28
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:10: T__28
                 {
                 mT__28(); 
 
                 }
                 break;
             case 2 :
-                // celluloid.g:1:16: T__29
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:16: T__29
                 {
                 mT__29(); 
 
                 }
                 break;
             case 3 :
-                // celluloid.g:1:22: T__30
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:22: T__30
                 {
                 mT__30(); 
 
                 }
                 break;
             case 4 :
-                // celluloid.g:1:28: T__31
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:28: T__31
                 {
                 mT__31(); 
 
                 }
                 break;
             case 5 :
-                // celluloid.g:1:34: T__32
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:34: T__32
                 {
                 mT__32(); 
 
                 }
                 break;
             case 6 :
-                // celluloid.g:1:40: T__33
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:40: T__33
                 {
                 mT__33(); 
 
                 }
                 break;
             case 7 :
-                // celluloid.g:1:46: T__34
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:46: T__34
                 {
                 mT__34(); 
 
                 }
                 break;
             case 8 :
-                // celluloid.g:1:52: T__35
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:52: T__35
                 {
                 mT__35(); 
 
                 }
                 break;
             case 9 :
-                // celluloid.g:1:58: T__36
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:58: T__36
                 {
                 mT__36(); 
 
                 }
                 break;
             case 10 :
-                // celluloid.g:1:64: T__37
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:64: T__37
                 {
                 mT__37(); 
 
                 }
                 break;
             case 11 :
-                // celluloid.g:1:70: T__38
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:70: T__38
                 {
                 mT__38(); 
 
                 }
                 break;
             case 12 :
-                // celluloid.g:1:76: T__39
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:76: T__39
                 {
                 mT__39(); 
 
                 }
                 break;
             case 13 :
-                // celluloid.g:1:82: T__40
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:82: T__40
                 {
                 mT__40(); 
 
                 }
                 break;
             case 14 :
-                // celluloid.g:1:88: T__41
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:88: T__41
                 {
                 mT__41(); 
 
                 }
                 break;
             case 15 :
-                // celluloid.g:1:94: T__42
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:94: T__42
                 {
                 mT__42(); 
 
                 }
                 break;
             case 16 :
-                // celluloid.g:1:100: T__43
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:100: T__43
                 {
                 mT__43(); 
 
                 }
                 break;
             case 17 :
-                // celluloid.g:1:106: T__44
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:106: T__44
                 {
                 mT__44(); 
 
                 }
                 break;
             case 18 :
-                // celluloid.g:1:112: T__45
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:112: T__45
                 {
                 mT__45(); 
 
                 }
                 break;
             case 19 :
-                // celluloid.g:1:118: T__46
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:118: T__46
                 {
                 mT__46(); 
 
                 }
                 break;
             case 20 :
-                // celluloid.g:1:124: T__47
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:124: T__47
                 {
                 mT__47(); 
 
                 }
                 break;
             case 21 :
-                // celluloid.g:1:130: T__48
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:130: T__48
                 {
                 mT__48(); 
 
                 }
                 break;
             case 22 :
-                // celluloid.g:1:136: T__49
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:136: T__49
                 {
                 mT__49(); 
 
                 }
                 break;
             case 23 :
-                // celluloid.g:1:142: T__50
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:142: T__50
                 {
                 mT__50(); 
 
                 }
                 break;
             case 24 :
-                // celluloid.g:1:148: T__51
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:148: T__51
                 {
                 mT__51(); 
 
                 }
                 break;
             case 25 :
-                // celluloid.g:1:154: T__52
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:154: T__52
                 {
                 mT__52(); 
 
                 }
                 break;
             case 26 :
-                // celluloid.g:1:160: T__53
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:160: T__53
                 {
                 mT__53(); 
 
                 }
                 break;
             case 27 :
-                // celluloid.g:1:166: T__54
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:166: T__54
                 {
                 mT__54(); 
 
                 }
                 break;
             case 28 :
-                // celluloid.g:1:172: LANGUAGE
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:172: LANGUAGE
                 {
                 mLANGUAGE(); 
 
                 }
                 break;
             case 29 :
-                // celluloid.g:1:181: ID
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:181: ID
                 {
                 mID(); 
 
                 }
                 break;
             case 30 :
-                // celluloid.g:1:184: START
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:184: START
                 {
                 mSTART(); 
 
                 }
                 break;
             case 31 :
-                // celluloid.g:1:190: END
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:190: END
                 {
                 mEND(); 
 
                 }
                 break;
             case 32 :
-                // celluloid.g:1:194: NEWLINE
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:194: NEWLINE
                 {
                 mNEWLINE(); 
 
                 }
                 break;
             case 33 :
-                // celluloid.g:1:202: WS
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:202: WS
                 {
                 mWS(); 
 
                 }
                 break;
             case 34 :
-                // celluloid.g:1:205: COMMENT
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:205: COMMENT
                 {
                 mCOMMENT(); 
 
                 }
                 break;
             case 35 :
-                // celluloid.g:1:213: ASSIGNMENT_OPERATOR
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:213: ASSIGNMENT_OPERATOR
                 {
                 mASSIGNMENT_OPERATOR(); 
 
                 }
                 break;
             case 36 :
-                // celluloid.g:1:233: EQUALITY_OPERATOR
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:233: EQUALITY_OPERATOR
                 {
                 mEQUALITY_OPERATOR(); 
 
                 }
                 break;
             case 37 :
-                // celluloid.g:1:251: RELATIONAL_OPERATOR
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:251: RELATIONAL_OPERATOR
                 {
                 mRELATIONAL_OPERATOR(); 
 
                 }
                 break;
             case 38 :
-                // celluloid.g:1:271: ADDITIVE_OPERATOR
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:271: ADDITIVE_OPERATOR
                 {
                 mADDITIVE_OPERATOR(); 
 
                 }
                 break;
             case 39 :
-                // celluloid.g:1:289: MULTIPLICATIVE_OPERATOR
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:289: MULTIPLICATIVE_OPERATOR
                 {
                 mMULTIPLICATIVE_OPERATOR(); 
 
                 }
                 break;
             case 40 :
-                // celluloid.g:1:313: LITERAL
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:1:313: LITERAL
                 {
                 mLITERAL(); 
 

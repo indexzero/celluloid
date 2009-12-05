@@ -2,54 +2,13 @@
 <project relativePaths="false" version="4">
   <component name="ChangeListManager">
     <list default="true" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\Test.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$functionHeader_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\celluloidLexer.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$idList_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$assignmentExpression_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$functionCall_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$timelineDeclaration_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$predicateBlock_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$predicateCall_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$functionBlock_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$additiveExpression_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$predicateDefinition_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$deviceDefinition_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidLexer$DFA23.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$language_block_decl_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$expressionList_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$multiplicativeExpression_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$logicalORExpression_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$logicalANDExpression_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\celluloid.parser.ipr" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$language_block_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$announcement_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$equalityExpression_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$initializer_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidLexer$DFA12.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$constraintDefinition_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$constraintList_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidLexer$DFA17.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$eventDefinition_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\celluloidParser.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidLexer.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidLexer$DFA16.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\__Test___template.st" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$primaryExpression_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$DFA22.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$predicateHeader_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\celluloid.parser.iws" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$functionDefinition_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\__Test___input.txt" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidLexer$DFA15.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$relationalExpression_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$variableDeclaration_return.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\celluloid.parser.iml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$STAttrMap.class" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\__Test__.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\celluloid.tokens" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Charlie\Self\GitHub\celluloid\parser\output\classes\celluloidParser$variableList_return.class" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/parser.iws" afterPath="$PROJECT_DIR$/parser.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/celluloidParser.java" afterPath="$PROJECT_DIR$/celluloidParser.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/celluloid.java.stg" afterPath="$PROJECT_DIR$/celluloid.java.stg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test.java" afterPath="$PROJECT_DIR$/Test.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/celluloid.tokens" afterPath="$PROJECT_DIR$/celluloid.tokens" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/celluloid.g" afterPath="$PROJECT_DIR$/celluloid.g" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/celluloidLexer.java" afterPath="$PROJECT_DIR$/celluloidLexer.java" />
     </list>
     <ignored path=".idea/workspace.xml" />
     <ignored path="parser.iws" />
@@ -69,7 +28,7 @@
   </component>
   <component name="DebuggerManager">
     <line_breakpoints>
-      <breakpoint url="file://$PROJECT_DIR$/Test.java" line="7" class="Test" package="">
+      <breakpoint url="file://$PROJECT_DIR$/GrammarTestCase.java" line="49" class="GrammarTestCase" package="">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -126,22 +85,33 @@
       <file leaf-file-name="Test.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Test.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="22" selection-start="722" selection-end="722" vertical-scroll-proportion="0.0">
+            <state line="22" column="0" selection-start="1229" selection-end="1229" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GrammarTestCase.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/GrammarTestCase.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="25" column="21" selection-start="622" selection-end="622" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="celluloid.java.stg" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="celluloid.java.stg" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/celluloid.java.stg">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="80" selection-start="98" selection-end="98" vertical-scroll-proportion="0.0">
+            <state line="8" column="31" selection-start="533" selection-end="533" vertical-scroll-proportion="0.19596542">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="celluloid.g" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="celluloid.g" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/celluloid.g">
           <provider selected="true" editor-type-id="grammar">
             <state />
@@ -197,6 +167,24 @@
           <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
         </PATH_ELEMENT>
       </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="parser" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="parser" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="parser" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="tests" />
+          <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+        </PATH_ELEMENT>
+      </PATH>
     </subPane>
   </component>
   <component name="ProjectReloadState">
@@ -223,7 +211,7 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="RunManagerConfig.showSettingsBeforeRunnig" value="true" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="options.lastSelected" value="project.propCompiler" />
+    <property name="options.lastSelected" value="preferences.pluginManager" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
@@ -247,13 +235,11 @@
       <module name="parser" />
       <envs />
       <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="1388" />
+        <option name="DEBUG_PORT" value="2475" />
         <option name="TRANSPORT" value="0" />
         <option name="LOCAL" value="true" />
       </RunnerSettings>
-      <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Debug" />
-      <ConfigurationWrapper RunnerId="Run" />
       <method>
         <option name="Make" value="true" />
       </method>
@@ -264,6 +250,32 @@
       <option name="SHMEM_ADDRESS" value="javadebug" />
       <option name="HOST" value="localhost" />
       <option name="PORT" value="5005" />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG" enabled="false" merge="false">
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="ADDITIONAL_CLASS_PATH" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
     </configuration>
     <configuration default="true" type="Applet" factoryName="Applet">
       <module name="" />
@@ -375,15 +387,15 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="10" y="10" width="1420" height="860" extended-state="0" />
+    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39914772" sideWeight="0.5" order="3" side_tool="false" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="1" side_tool="false" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19602273" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
@@ -393,11 +405,11 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25808823" sideWeight="0.7698864" order="0" side_tool="false" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25143266" sideWeight="0.79403406" order="0" side_tool="false" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="Web Preview" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22017045" sideWeight="0.5" order="2" side_tool="false" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.48011363" sideWeight="0.5" order="2" side_tool="false" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" />
@@ -470,13 +482,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/celluloidLexer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Languages/antlrworks-1.3.1-src/src/plugin/org/antlr/works/plugin/intellij/PIStructureViewBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="2" column="38" selection-start="80" selection-end="80" vertical-scroll-proportion="0.07744875">
@@ -488,10 +493,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/celluloidLexer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="69" selection-start="67" selection-end="67" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/GrammarTestCase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="21" selection-start="622" selection-end="622" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Test.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="22" selection-start="722" selection-end="722" vertical-scroll-proportion="0.0">
-          <folding />
+        <state line="22" column="0" selection-start="1229" selection-end="1229" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -502,7 +523,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/celluloid.java.stg">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="80" selection-start="98" selection-end="98" vertical-scroll-proportion="0.0">
+        <state line="8" column="31" selection-start="533" selection-end="533" vertical-scroll-proportion="0.19596542">
           <folding />
         </state>
       </provider>

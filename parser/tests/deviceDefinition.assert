@@ -1,0 +1,3 @@
+public class foo extends device implements bar {
+  // Comment
+}

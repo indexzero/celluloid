@@ -1,2 +1,19 @@
 group jcelluloid;
-deviceDefinition(name, accepts) ::= "public class <name> extends device <accepts> { TODO: Members }"
+timelineDeclaration(name)                 ::= "timeline <name> = new timeline();"
+variableDeclaration(type, name, init) ::= "<type> <name> <init>"
+initializer()                                         ::=""
+idList(ids)  		              ::= "<ids; separator=\", \">"
+variableList(vars) 	              ::= "<vars; separator=\", \">"
+expressionList(exps)                          ::= "<exps; separator=\", \">"
+functionHeader(name,args)                 ::= "public void <name> (<args>)"
+functionDefintion(header, block)        ::= << <header> "{" <block> "}" >>
+functionBlock()                                   ::= ""
+functionCall(name, args)                     ::=  "<name>(<args>);"
+predicateHeader(name, args)               ::= "public bool <name> (<args>)"
+predicateDefinition (header, block)      ::= << <header> "{" <block> "}" >>
+predicateBlock()                                  ::= ""
+predicateCall(name,args)                     ::= "<name>(<args>);"
+eventDefinition(name)                        ::= "public class name extends event { }"
+constraintDefinition(name, requires)   ::= "public interface <name> <requires> { TODO: Members }"
+constraintList( ids )                             ::= "implements <ids>"
+deviceDefinition(name, accepts)          ::= "public class <name> extends device <accepts> { TODO: Members }"

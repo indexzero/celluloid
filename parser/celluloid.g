@@ -60,25 +60,18 @@ MULTIPLICATIVE_OPERATOR  : '*' | '/' | '%';
 // Start generic literals and declarations
 LITERAL             : STRING | TIME | NUMBER | BOOL; 
 
-timelineDeclaration 
-    :    'timeline' ID NEWLINE
-         -> template(name = { $ID.text }) "timeline <name> = new timeline();"
-    ;
 variableDeclaration 
-	:	 timelineDeclaration
-	     -> template(decl = { $timelineDeclaration.st }) "<decl>"
-	     // TODO: What should we do about the conditional NEWLINE? Include the ';' in the NEWLINE st?
+    :    'timeline' ID NEWLINE
+         -> timelineDeclaration(name = { $ID.text })
+         // TODO: What should we do about the conditional NEWLINE? Include the ';' in the NEWLINE st?
     |    type = ('time' | 'number' | 'string' | 'boolean' | 'input' | 'output') ID initializer? NEWLINE?
-         -> template(type = { $type.text },
-                     name = { $ID.text },
-                     init = { $initializer.st })
-            "<type> <name> <init>"
+         -> variableDeclaration(type = { $type.text }, name = { $ID.text }, init = { $initializer.st })
     ;
                     
 initializer      
-	:    '=' assignmentExpression
-         -> template() ""
-	;
+    :    '=' assignmentExpression
+         ->initializer()
+    ;
 
 // This may allow derivations of literal = variable
 assignmentExpression     
@@ -119,58 +112,44 @@ primaryExpression
 // Start lists and generic declartions
 idList 
     :    ids += ID (',' ids += ID)* 
-         -> template(ids = { $ids }) "<ids; separator=\", \">"
+         -> idList(ids = { $ids })
     |    '(' ids += ID (',' ids += ID)* ')'
-         -> template(ids = { $ids }) "(<ids; separator=\", \">)"
+         -> idList(ids = { $ids })
     ;
 
 variableList  
     :    vars += variableDeclaration (',' vars += variableDeclaration)* 
-         -> template(vars = { $vars }) "<vars; separator=\", \">"
+         -> variableList(vars = { $vars })
     |    '(' vars += variableDeclaration (',' vars += variableDeclaration)* ')'
-         -> template(vars = { $vars }) "(<vars; separator=\", \">)"
+         -> variableList(vars = { $vars })
     ;
 
 expressionList 
     :    exps += assignmentExpression (',' exps += assignmentExpression)*
-         -> template(exps = { $exps }) "<exps; separator=\", \">"
+         -> expressionList(exps = { $exps })
     |    '(' exps += assignmentExpression (',' exps += assignmentExpression)* ')'
-         -> template(exps = { $exps }) "(<exps; separator=\", \">)"
+         -> expressionList(exps = { $exps })
     ;
-
 // End lists and generic declarations
 
 
 // Start function blocks
 functionHeader     
     :    'function' ID '(' variableList ')'
-         // TODO: Move this template into another file
-         -> template(name = { $ID.text },
-                     args = { $variableList.st }) 
-            "public void <name> (<args>)"
+         -> functionHeader(name = { $ID.text }, args = { $variableList.st }) 
     ;	
 functionDefinition : functionHeader START functionBlock END
-         // TODO: Move this template into another file
-         -> template(header = { $functionHeader.st},
-                     block = { $functionBlock.st})
-         <<
-           <header> "{"
-             <block>
-           "}"
-         >>
-    ;
+         -> functionDefinition(header = { $functionHeader.st}, block = { $functionBlock.st})
+        ;
 functionBlock      
     :    (language_block | functionCall | predicateCall | variableDeclaration)*
          //| in_timeline_stmt | if_stmt
          // TODO: Define this template
-         -> template() "" 
+         ->functionBlock()
     ;
 functionCall       
     :    ID '(' expressionList ')' NEWLINE
-         // TODO: Move this template into another file
-         -> template(name = { $ID.text },
-                     args = { $expressionList.st }) 
-            "<name>(<args>);"
+         -> functionCall(name = { $ID.text }, args = { $expressionList.st })
     ;	
 // End function blocks
 
@@ -178,40 +157,27 @@ functionCall
 predicateHeader     
     :    'predicate' ID '(' args = variableList ')'
          // TODO: Move this template into another file
-         -> template(name = { $ID.text },
-                     args = { $variableList.st }) 
-            "public bool <name> (<args>)"
+         -> predicateHeader(name = { $ID.text }, args = { $variableList.st }) 
     ;	
 predicateDefinition 
     :    predicateHeader START predicateBlock END
-         // TODO: Move this template into another file
-         -> template(header = { $predicateHeader.st},
-                     block = { $predicateBlock.st})
-         <<
-           <header> "{"
-             <block>
-           "}"
-         >>
+         -> predicateDefinition(header = { $predicateHeader.st}, block = { $predicateBlock.st})
     ;
 predicateBlock      
     :    functionBlock 'returns' assignmentExpression 
          // TODO: Define this template
-         -> template() ""
+         -> predicateBlock()
     ; // VERY  WEAK IMPLEMENTATION
 predicateCall       
-	:	 ID '(' expressionList ')' NEWLINE
-	     // TODO: Move this template into another file
-         -> template(name = { $ID.text },
-                     args = { $expressionList.st }) 
-            "<name>(<args>);"
-	;	
+    :    ID '(' expressionList ')' NEWLINE
+         -> predicateCall(name = { $ID.text }, args = { $expressionList.st })
+    ;	
 // End predicate blocks
 
 // Start event definition
 eventDefinition 
     :    'event' ID NEWLINE
-         // TODO: Move this template into a separate file
-         -> template(name = { $ID.text }) "public class name extends event { }"
+         -> eventDefinition(name = { $ID.text })
     ;
 // End event definitions
 
@@ -230,18 +196,15 @@ constraintDefinition
              members = (variableDeclaration | functionHeader | predicateHeader | announcement)*
          END  
          // Remark: Does Java allow for multiple inheritence of Interfaces?
-         // TODO: Move this template into a separate file
          // TODO: Need to write code to compile announcements into decorators for functions
-         -> template(name = { $ID.text },
-                     requires = { $constraintList.st }) 
-            "public interface <name> <requires> { TODO: Members }"
+         -> constraintDefinition(name = { $ID.text }, requires = { $constraintList.st }) 
             // variableDeclaration* functionHeader* predicateHeader*)
     ;
 constraintList
 	:    'requires' idList
-	     -> template(ids = { $idList.st }) "implements <ids>"
+	     -> constraintList(ids = { $idList.st })
 	|    'accepts' idList
-	     -> template(ids = { $idList.st }) "implements <ids>"
+	     -> constraintList(ids = { $idList.st })
 	;
 
 deviceDefinition     
