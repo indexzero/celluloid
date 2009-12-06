@@ -24,13 +24,13 @@ public class Timeline implements AnnouncementListener {
 	private Stack<ConstraintFunction> didExecute;
 	private LinkedList<ConstraintFunction> willExecute;
 	private LinkedList<Input> inputs;
-	private HashMap<String, ConstraintFunction> announceEvents;
+	private HashMap<String, LinkedList<ConstraintFunction>> announceEvents;
 	
 	public Timeline() {
 		didExecute = new Stack<ConstraintFunction>();
 		willExecute = new LinkedList<ConstraintFunction>();
 		inputs = new LinkedList<Input>();
-		announceEvents  = new HashMap<String, ConstraintFunction>();
+		announceEvents  = new HashMap<String, LinkedList<ConstraintFunction>>();
 		ActionListener taskPerformer = new ActionListener() {
 			public void actionPerformed(ActionEvent action) {
 				timeStep(System.currentTimeMillis());
@@ -83,14 +83,13 @@ public class Timeline implements AnnouncementListener {
 	}
 
 	public void addEventConstraint(String type, ConstraintFunction constraint){
-		announceEvents.put(type, constraint);
+		announceEvents.get(type).push(constraint);
 	}
+	
 	@Override
-	public synchronized void update(Announcement a) {
-		if(a.getType().equals(a.getOwner()+"volume=6")){
-			announceEvents.get(a.getType());
+	public synchronized void receiveAnnouncement(Announcement a) {
+		for(ConstraintFunction c : announceEvents.get(a.getType())){
+			c.execute();
 		}
-			
-		
 	}
 }

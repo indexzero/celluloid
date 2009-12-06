@@ -5,5 +5,5 @@ package org.celluloidlang.announcment;
  *
  */
 public interface AnnouncementListener{
-	public void update(Announcement a);
+	public void receiveAnnouncement(Announcement a);
 }

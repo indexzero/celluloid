@@ -29,7 +29,7 @@ public class Announcer{
 	
 	public void notifyObservers(Announcement e){
 		for (AnnouncementListener item: observerList) {
-			item.update(e);
+			item.receiveAnnouncement(e);
 		}
 
 
@@ -37,3 +37,4 @@ public class Announcer{
 	
 	
 }
+

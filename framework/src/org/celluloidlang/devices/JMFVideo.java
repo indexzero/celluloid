@@ -10,7 +10,10 @@ import org.celluloidlang.constraints.defined.StaticInput;
 import org.celluloidlang.constraints.defined.Video;
 
 public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output, Runnable{
-
+	
+	public enum Event{
+		AUDIO_GAIN
+	}
 	
 	public JMFVideo(String pathname) {
 		this.setMediaLocation("file:////Users/david/Documents/cell/framework/playme.wav");
@@ -32,12 +35,6 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 			this.stop();
 			this.setMediaTime(new Time(0));
 		}
-	}
-
-	@Override
-	public void update(Announcement a) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -101,7 +98,7 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			announcer.notifyObservers(new Announcement(this.curVolumeLevel, this));
+			announcer.notifyObservers(new Announcement(Event.AUDIO_GAIN + this.curVolumeLevel, this));
 		}
 		
 		
