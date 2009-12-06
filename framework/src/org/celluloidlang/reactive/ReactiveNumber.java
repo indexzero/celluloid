@@ -9,11 +9,11 @@ public class ReactiveNumber implements ReactiveObject<Float>{
 	private Float currentView;
 
 	public ReactiveNumber(Float local){
-		this.local = local;
+		this.set(local);
 	}
 	
 	public ReactiveNumber(Double local){
-		this.local = new Float(local);
+		this(new Float(local));
 	}
 	
 	public ReactiveNumber(ReactiveObject<Float> reacting){
@@ -23,19 +23,18 @@ public class ReactiveNumber implements ReactiveObject<Float>{
 	
 	@Override
 	public void action(Action action, ReactiveObject<Float> appendy) {
-		// TODO Auto-generated method stub
+		dependencies.add(new FloatAction(action, appendy));
 		
 	}
 
 	@Override
-	public void action(Object action, Float appendy) {
-		// TODO Auto-generated method stub
-		
+	public void action(Action action, Float appendy) {
+		dependencies.add(new FloatAction(action, new ReactiveNumber(appendy)));
+		updateView();
 	}
 
 	@Override
 	public Float getView() {
-		// TODO Auto-generated method stub
 		return this.currentView;
 	}
 
@@ -43,16 +42,19 @@ public class ReactiveNumber implements ReactiveObject<Float>{
 	public void set(ReactiveObject<Float> rObj) {
 		this.stopReactingAll();
 		this.local = new Float(0.0);
-		rObj.reactive.attach(this);
+		this.reactive.attach(this);
 		dependencies.add(new FloatAction(Action.ADD, rObj));
-		//TODO: reactive update message
+		this.updateView();
 		this.reactive.setChanged(new ReactiveUpdate());
 		
 	}
 
 	@Override
 	public void set(Float newLocal) {
-		// TODO Auto-generated method stub
+		this.stopReactingAll();
+		this.local = newLocal;
+		this.updateView();
+		this.reactive.setChanged(new ReactiveUpdate());
 		
 	}
 	
@@ -69,13 +71,28 @@ public class ReactiveNumber implements ReactiveObject<Float>{
 
 	@Override
 	public void update(ReactiveUpdate e) {
-		// TODO Auto-generated method stub
+		updateView();
 		
 	}
 
 	@Override
 	public void updateView() {
-		// TODO Auto-generated method stub
+		Float tmp = local;
+		for(FloatAction fa: dependencies){
+			switch(fa.action){
+			case ADD: tmp += fa.item.getView();
+			break;
+			case SUB: tmp -= fa.item.getView();
+			break;
+			case DIV: tmp /= fa.item.getView();
+			break;
+			case MULT:  tmp *= fa.item.getView();
+			break;
+			case MOD: tmp %= fa.item.getView();
+			break;
+			}
+		}
+		this.currentView = tmp;
 		
 	}
 	
