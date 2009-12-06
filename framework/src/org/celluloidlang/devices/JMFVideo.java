@@ -98,7 +98,7 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			announcer.notifyObservers(new Announcement(Event.AUDIO_GAIN + this.curVolumeLevel, this));
+			announcer.notifyObservers(new Announcement(Event.AUDIO_GAIN + "=" + this.curVolumeLevel, this));
 		}
 		
 		
