@@ -9,7 +9,12 @@ variableList(vars)                    ::= "<vars:{ var | <var.st> }; separator=\
 expressionList(exps)                  ::= "<exps:{ exp | <exp.st> }; separator=\", \">"
 
 functionHeader(name,args)             ::= "public void <name> (<args>)"
-functionDefintion(header, block)      ::= << <header> "{" <block> "}" >>
+functionDefintion(header, block)      ::=
+<<
+<header> "{"
+  <block>
+"}"
+>>
 functionBlock()                       ::= ""
 functionCall(name, args)              ::=  "<name>(<args>);"
 

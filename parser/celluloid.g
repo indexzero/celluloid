@@ -71,10 +71,12 @@ variableDeclaration
                     
 initializer      
     :    '=' assignmentExpression
-         ->initializer()
+         -> initializer()
     ;
 
 // This may allow derivations of literal = variable
+// TODO: Templates for all expressions
+// TODO: Grammar rules for Local operations
 assignmentExpression     
         : logicalORExpression
         | primaryExpression ASSIGNMENT_OPERATOR assignmentExpression;
@@ -146,7 +148,7 @@ functionBlock
     :    (language_block | functionCall | predicateCall | variableDeclaration)*
          //| in_timeline_stmt | if_stmt
          // TODO: Define this template
-         ->functionBlock()
+         -> functionBlock()
     ;
 functionCall       
     :    ID '(' expressionList ')' NEWLINE
@@ -173,6 +175,44 @@ predicateCall
          -> predicateCall(name = { $ID.text }, args = { $expressionList.st })
     ;	
 // End predicate blocks
+
+// Begin timline and procedural blocks
+// Need templates for prodcedural code
+inStatement
+    :  'in' ID
+        START
+            (assignmentExpression NEWLINE)*
+        END
+        //-> inStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
+    ;
+   
+ifStatement
+    :  'if' (ifTest = assignmentExpression)
+        START
+            (ifBlock = assignmentExpression)*
+            ('else if' (elseifTest = assignmentExpression) (elseifBlock = assignmentExpression))*
+            ('else' (elseTest = assignmentExpression) (elseBlock = assignmentExpression))?
+        END
+        //-> ifStatement()
+    ;
+
+whenStatement
+    :  ('when' | 'unless') ID
+        START
+            (assignmentExpression NEWLINE)*
+        END
+        //-> whenStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
+    ;
+
+everyStatement
+    :  'every' ID
+        START
+            (assignmentExpression NEWLINE)*
+            (whenStatement)?
+        END
+        //-> everyStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
+    ;
+// End timeline and procedural blocks
 
 // Start event definition
 eventDefinition 
