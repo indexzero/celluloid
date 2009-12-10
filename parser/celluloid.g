@@ -26,13 +26,20 @@ tokens {
   LISTENBLOCK;
   IFBLOCK;
   FUNBLOCK;
+  CONBLOCK;
+  DEVBLOCK;
   
   FUNHEAD;
   PREDHEAD;
     
   EVENT;
   CONSTRAINT;
+  REQUIRES;
+  ANNOUNCES;
+  ANNOUNCEMENT;
+  ANNOUNCEMENTS;
   DEVICE;
+  ACCEPTS;
 }
 
 // Start boolean literal
@@ -285,6 +292,7 @@ predicateCall
 // Start event definition
 eventDefinition 
     :    'event' ID NEWLINE
+         -> ^(EVENT ID)
          //-> eventDefinition(name = { $ID.text })
     ;
 // End event definitions
@@ -293,33 +301,30 @@ eventDefinition
 
 announcement
     :    //TODO: Replace this with short_bool_exp
-         'announce' ID 'when' ID assignmentExpression 
+         'announce' eventName = ID 'when' functionName = ID (predicateExpr = assignmentExpression)? 
+         -> ^(ANNOUNCEMENT $eventName $functionName $predicateExpr?)
     ; 
 // End constraint declarations
 
 // Start device definitions
 constraintDefinition
-    :    'constraint' ID (constraintList)?
+    :    'constraint' ID ('requires' requires = idList)?
          ('announces' announces = idList)? 
          START 
-             members = (variableDeclaration | predicateHeader | announcement)*
-             //| functionHeader 
+             (members += variableDeclaration | predicateHeader | functionHeader)*
+             (announcements += announcement)*
          END  
+         // TODO: Need to add annoucements and members to this rewrite rule
+         -> ^(CONSTRAINT ID ^(REQUIRES $requires?) ^(ANNOUNCES $announces?))
          // TODO: Need to write code to compile announcements into decorators for functions
          //-> constraintDefinition(name = { $ID.text }, requires = { $constraintList.st }) 
             // variableDeclaration* functionHeader* predicateHeader*)
     ;
-constraintList
-	:    'requires' idList
-	     //-> constraintList(ids = { $idList.st })
-	|    'accepts' idList
-	     //-> constraintList(ids = { $idList.st })
-	;
 
 deviceDefinition     
-    :    'device' ID (constraintList)? 
+    :    'device' ID ('accepts'! accepts = idList)? 
          START 
-             members = (variableDeclaration | functionDefinition | predicateDefinition | COMMENT)* 
+             members = (variableDeclaration | functionDefinition | predicateDefinition)* 
          END 
          //-> deviceDefinition(name = { $ID.text }, accepts = { $constraintList.st })
             // variableDeclaration* functionDefinition* predicateDefinition*)

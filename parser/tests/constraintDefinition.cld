@@ -1,0 +1,3 @@
+constraint foo requires bar, omega announces alpha, beta, gamma do
+   timeline x
+end
