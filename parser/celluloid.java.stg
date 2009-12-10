@@ -7,10 +7,9 @@ idList(ids)                           ::= "<ids:{ id | <id.text> }; separator=\"
 variableList(vars)                    ::= "<vars:{ var | <var.st> }; separator=\", \">"
 expressionList(exps)                  ::= "<exps:{ exp | <exp.st> }; separator=\", \">"
 
-functionHeader(name,args)             ::= "public void <name> (<args>)"
-functionDefintion(header, block)      ::=
+functionDefintion(name, args, block)      ::=
 <<
-<header> "{"
+public void <name> (<args>) "{"
   <block>
 "}"
 >>
@@ -19,7 +18,7 @@ functionCall(name, args)              ::=  "<name>(<args>);"
 
 predicateHeader(name, args)           ::= "public bool <name> (<args>)"
 predicateDefinition (header, block)   ::= << <header> "{" <block> "}" >>
-predicateBlock(block, exp)            ::= "<block> returns <exp>"
+predicateBlock(block, exp)            ::= "<block> \\n returns <exp>;"
 predicateCall(name,args)              ::= "<name>(<args>);"
 
 eventDefinition(name)                 ::= "public class name extends event { }"

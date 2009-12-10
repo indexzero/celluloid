@@ -1,18 +1,31 @@
 grammar celluloid;
+
 options {
-  output = template;
+  output = AST;
   backtrack = true;
+  memoize = true;
+}
+
+tokens {
+  VARDEF;
+  FUNC;
+  PRED;
+  ARG;
+  
+  EVENT;
+  CONSTRAINT;
+  DEVICE;
 }
 
 // Start boolean literal
-fragment BOOL   	: 'true' | 'false';
-TYPE       : 'time' | 'number' | 'string' | 'boolean' | 'input' | 'output';
+fragment BOOL : 'true' | 'false';
+TYPE          : 'time' | 'number' | 'string' | 'boolean' | 'input' | 'output';
 // End boolean literal
 
 // Start language blocks
 language_block_decl : 'in' LANGUAGE START language_block END;
 LANGUAGE            : 'JAVA';
-language_block      : '*';
+language_block      : '*'; // TODO: Make this match anything
 // End language blocks
 
 // Start core literals
@@ -61,22 +74,25 @@ MULTIPLICATIVE_OPERATOR  : '*' | '/' | '%';
 // Start generic literals and declarations
 LITERAL             : STRING | TIME | NUMBER | BOOL;
 
-variableDeclaration 
-    :    'timeline' ID NEWLINE
-         -> timelineDeclaration(name = { $ID.text })
-         // TODO: What should we do about the conditional NEWLINE? Include the ';' in the NEWLINE st?
-    |    TYPE ID initializer? NEWLINE?
-         -> variableDeclaration(type = { $TYPE.text }, name = { $ID.text }, init = { $initializer.st })
-    ;
-                    
+
 initializer      
     :    '=' assignmentExpression
-         -> initializer(exp = { $assignmentExpression.st })
+         //-> initializer(exp = { $assignmentExpression.st })
     ;
 
 // This may allow derivations of literal = variable
 // TODO: Templates for all expressions
 // TODO: Grammar rules for Local operations
+variableDeclaration 
+    :    'timeline' ID NEWLINE
+         -> ^(VARDEF 'timeline' ID)
+         //-> timelineDeclaration(name = { $ID.text })
+         // TODO: What should we do about the conditional NEWLINE? Include the ';' in the NEWLINE st?
+    |    TYPE ID initializer? NEWLINE?
+         -> ^(VARDEF TYPE ID initializer?)
+         //-> variableDeclaration(type = { $TYPE.text }, name = { $ID.text }, init = { $initializer.st })
+    ;
+                    
 assignmentExpression     
         : logicalORExpression
         | primaryExpression ASSIGNMENT_OPERATOR assignmentExpression;
@@ -115,64 +131,62 @@ primaryExpression
 // Start lists and generic declartions
 idList 
     :    ids += ID (',' ids += ID)* 
-         -> idList(ids = { $ids })
+         //-> idList(ids = { $ids })
     |    '(' ids += ID (',' ids += ID)* ')'
-         -> idList(ids = { $ids })
+         //-> idList(ids = { $ids })
     ;
 
 variableList  
     :    vars += variableDeclaration (',' vars += variableDeclaration)* 
-         -> variableList(vars = { $vars })
+         //-> variableList(vars = { $vars })
     |    '(' vars += variableDeclaration (',' vars += variableDeclaration)* ')'
-         -> variableList(vars = { $vars })
+         //-> variableList(vars = { $vars })
     ;
 
 expressionList 
     :    exps += assignmentExpression (',' exps += assignmentExpression)*
-         -> expressionList(exps = { $exps })
+         //-> expressionList(exps = { $exps })
     |    '(' exps += assignmentExpression (',' exps += assignmentExpression)* ')'
-         -> expressionList(exps = { $exps })
+         //-> expressionList(exps = { $exps })
     ;
 // End lists and generic declarations
 
 
 // Start function blocks
-functionHeader     
-    :    'function' ID '(' variableList ')'
-         -> functionHeader(name = { $ID.text }, args = { $variableList.st }) 
-    ;	
-functionDefinition : functionHeader START functionBlock END
-         -> functionDefinition(header = { $functionHeader.st}, block = { $functionBlock.st})
+functionDefinition 
+	:    'function' ID '(' variableList ')' START functionBlock END
+	     -> ^(FUNC ID variableList functionBlock)
+         //-> functionDefinition(name = { $ID.text}, args = { variableList.st }, block = { $functionBlock.st })
         ;
 functionBlock      
     :    statements = (language_block | functionCall | predicateCall | variableDeclaration)*
          //| in_timeline_stmt | if_stmt
          // TODO: Define this template
-         -> functionBlock(statements = { $statements })
+         //-> functionBlock(statements = { $statements })
     ;
 functionCall       
     :    ID '(' expressionList ')' NEWLINE
-         -> functionCall(name = { $ID.text }, args = { $expressionList.st })
+         //-> functionCall(name = { $ID.text }, args = { $expressionList.st })
     ;	
 // End function blocks
 
 // Start predicate blocks
 predicateHeader     
     :    'predicate' ID '(' args = variableList ')'
-         -> predicateHeader(name = { $ID.text }, args = { $variableList.st }) 
+         //-> predicateHeader(name = { $ID.text }, args = { $variableList.st }) 
     ;	
 predicateDefinition 
     :    predicateHeader START predicateBlock END
-         -> predicateDefinition(header = { $predicateHeader.st}, block = { $predicateBlock.st})
+         //-> predicateDefinition(header = { $predicateHeader.st}, block = { $predicateBlock.st})
     ;
 predicateBlock      
     :    // VERY  WEAK IMPLEMENTATION
          functionBlock 'returns' assignmentExpression 
-         -> predicateBlock(block = { $functionBlock.st }, exp = { $assignmentExpression.st })
+         //-> predicateBlock(block = { $functionBlock.st }, exp = { $assignmentExpression.st })
     ; 
 predicateCall       
     :    ID '(' expressionList ')' NEWLINE
-         -> predicateCall(name = { $ID.text }, args = { $expressionList.st })
+         //-> predicateCall(name = { $ID.text }, args = { $expressionList.st })
     ;	
 // End predicate blocks
 
@@ -225,7 +239,7 @@ constraintStatement
 // Start event definition
 eventDefinition 
     :    'event' ID NEWLINE
-         -> eventDefinition(name = { $ID.text })
+         //-> eventDefinition(name = { $ID.text })
     ;
 // End event definitions
 
@@ -245,14 +259,14 @@ constraintDefinition
              members = (variableDeclaration | functionHeader | predicateHeader | announcement)*
          END  
          // TODO: Need to write code to compile announcements into decorators for functions
-         -> constraintDefinition(name = { $ID.text }, requires = { $constraintList.st }) 
+         //-> constraintDefinition(name = { $ID.text }, requires = { $constraintList.st }) 
             // variableDeclaration* functionHeader* predicateHeader*)
     ;
 constraintList
 	:    'requires' idList
-	     -> constraintList(ids = { $idList.st })
+	     //-> constraintList(ids = { $idList.st })
 	|    'accepts' idList
-	     -> constraintList(ids = { $idList.st })
+	     //-> constraintList(ids = { $idList.st })
 	;
 
 deviceDefinition     
@@ -260,7 +274,7 @@ deviceDefinition
          START 
              members = (variableDeclaration | functionDefinition | predicateDefinition | COMMENT)* 
          END 
-         -> deviceDefinition(name = { $ID.text }, accepts = { $constraintList.st })
+         //-> deviceDefinition(name = { $ID.text }, accepts = { $constraintList.st })
             // variableDeclaration* functionDefinition* predicateDefinition*)
     ;
 // End device definitions
