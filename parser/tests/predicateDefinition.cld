@@ -1,0 +1,3 @@
+predicate myPred (number arg1) do
+   # Comment
+end

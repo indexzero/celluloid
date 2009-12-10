@@ -1,0 +1,4 @@
+function myFunc (number arg1) do
+  timeline myTimeline
+  timeline mytimeline2
+end
