@@ -8,19 +8,31 @@ options {
 
 tokens {
   VARDEF;
-  FUNC;
-  FUNBLOCK;
-  PRED;
   ARG;
+  ARGS;
+  FUNC;
+  PRED;
+  
+  FUNCALL;
+  PREDCALL;
   IF;
-  EVERY;
+  ELSEIF;
+  ELSE;
   LISTENER;
+  EVERY;
   COND;
+  RETURN;
+  
+  LISTENBLOCK;
+  IFBLOCK;
+  FUNBLOCK;
+  
+  FUNHEAD;
+  PREDHEAD;
+    
   EVENT;
   CONSTRAINT;
   DEVICE;
-  LISTENBLOCK;
-  IFBLOCK;
 }
 
 // Start boolean literal
@@ -80,24 +92,24 @@ MULTIPLICATIVE_OPERATOR  : '*' | '/' | '%';
 // Start generic literals and declarations
 LITERAL             : STRING | TIME | NUMBER | BOOL;
 
-
-initializer      
-    :    '=' assignmentExpression
-         //-> initializer(exp = { $assignmentExpression.st })
-    ;
-
 // This may allow derivations of literal = variable
 // TODO: Templates for all expressions
 // TODO: Grammar rules for Local operations
 variableDeclaration 
-    :    'timeline' ID NEWLINE -> ^(VARDEF 'timeline' ID)
+    :    'timeline' ID 
+         (NEWLINE -> ^(VARDEF 'timeline' ID)
+         |        -> ^(ARG 'timeline' ID))
          //-> timelineDeclaration(name = { $ID.text })
          // TODO: What should we do about the conditional NEWLINE? Include the ';' in the NEWLINE st?
-    |    TYPE ID 
-         (initializer NEWLINE -> ^(VARDEF TYPE ID initializer?)
-          |                   -> ^(ARG TYPE ID))
-         
+    |    TYPE ID initializer? 
+         (NEWLINE -> ^(VARDEF TYPE ID initializer?)
+         |        -> ^(ARG TYPE ID))
          //-> variableDeclaration(type = { $TYPE.text }, name = { $ID.text }, init = { $initializer.st })
+    ;
+    
+initializer      
+    :    '='! assignmentExpression
+         //-> initializer(exp = { $assignmentExpression.st })
     ;
                     
 assignmentExpression     
@@ -137,11 +149,9 @@ primaryExpression
 
 // Start lists and generic declartions
 idList 
-    :    ids += ID (',' ids += ID)* 
-         -> ID+
+    :    ids += ID (',' ids += ID)* -> ID+
          //-> idList(ids = { $ids })
-    |    '(' ids += ID (',' ids += ID)* ')'
-         -> ID+
+    |    '(' ids += ID (',' ids += ID)* ')' -> ID+
          //-> idList(ids = { $ids })
     ;
 
@@ -162,46 +172,6 @@ expressionList
     ;
 // End lists and generic declarations
 
-
-// Start function blocks
-functionDefinition 
-	:    'function' ID '(' variableList ')'  functionBlock 
-	     -> ^(FUNC ID variableList functionBlock?)
-         //-> functionDefinition(name = { $ID.text}, args = { variableList.st }, block = { $functionBlock.st })
-        ;
-functionBlock      
-    :    START ( statements += variableDeclaration | ((assignmentExpression | functionCall | predicateCall) NEWLINE) )* END 
-         -> ^(FUNBLOCK[$START, "FUNCBLOCK"] ($statements)*) 
-         //| in_timeline_stmt | if_stmt
-         // TODO: Define this template
-         //-> functionBlock(statements = { $statements })
-    ;
-functionCall       
-    :    ID '(' expressionList ')' NEWLINE
-         //-> functionCall(name = { $ID.text }, args = { $expressionList.st })
-    ;	
-// End function blocks
-
-// Start predicate blocks
-predicateHeader     
-    :    'predicate' ID '(' args = variableList ')'
-         //-> predicateHeader(name = { $ID.text }, args = { $variableList.st }) 
-    ;	
-predicateDefinition 
-    :    predicateHeader START predicateBlock END
-         //-> predicateDefinition(header = { $predicateHeader.st}, block = { $predicateBlock.st})
-    ;
-predicateBlock      
-    :    // VERY  WEAK IMPLEMENTATION
-         functionBlock 'returns' assignmentExpression 
-         //-> predicateBlock(block = { $functionBlock.st }, exp = { $assignmentExpression.st })
-    ; 
-predicateCall       
-    :    ID '(' expressionList ')' NEWLINE
-         //-> predicateCall(name = { $ID.text }, args = { $expressionList.st })
-    ;	
-// End predicate blocks
-
 // Begin timline and procedural blocks
 // Need templates for prodcedural code
 inStatement
@@ -220,7 +190,7 @@ ifStatement
             (elseifBlock += elseIfStatement)*
             elseStatement?
         END
-        -> ^(IF $ifTest ^(IFBLOCK $ifBlock) ^('elseif' $elseifBlock?) ^('else' elseStatement?))
+        -> ^(IF $ifTest ^(IFBLOCK $ifBlock) ^(ELSEIF $elseifBlock?) ^(ELSE elseStatement?))
         
     ;
 elseIfStatement 
@@ -239,7 +209,7 @@ whenStatement
         START
 	    ((assignmentExpression | constraintStatement | ifStatement) NEWLINE )+
         END
-        -> ^(LISTENER EVERY ^(COND cond logicalORExpression) 
+        -> ^(LISTENER EVERY ^(COND $cond logicalORExpression) 
              ^(LISTENBLOCK assignmentExpression* constraintStatement* ifStatement*))
         //-> whenStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
@@ -249,17 +219,68 @@ everyStatement
         START
             (statements += ((assignmentExpression | constraintStatement | ifStatement) NEWLINE )*)
         END
-        -> ^(LISTENER ^(EVERY TIME) ^(COND cond? logicalORExpression?)
+        -> ^(LISTENER ^(EVERY TIME) ^(COND $cond? logicalORExpression?)
              ^(LISTENBLOCK assignmentExpression* constraintStatement* ifStatement*))
         //-> everyStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
+    
+constraintStatement 
+    :    ID ID expressionList 
+    ;
 // End timeline and procedural blocks
 
-// Start constraint statement
-constraintStatement 
-	:	ID ID expressionList 
-	;
-// End constraint statement
+// Start function blocks
+functionHeader
+    :    'function' ID '(' variableList ')'
+         -> ^(FUNHEAD ID variableList)
+    ;
+functionBlock      
+    :    START ( statements += variableDeclaration | ((assignmentExpression | functionCall | predicateCall) NEWLINE) )* END 
+         -> ^(FUNBLOCK[$START, "FUNCBLOCK"] RETURN ($statements)* ) 
+         //| in_timeline_stmt | if_stmt
+         // TODO: Define this template
+         //-> functionBlock(statements = { $statements })
+    ;
+functionDefinition 
+    :    'function' ID '(' variableList ')' functionBlock 
+         -> ^(FUNC ID variableList functionBlock?)
+         //-> functionDefinition(name = { $ID.text}, args = { variableList.st }, block = { $functionBlock.st })
+    ;
+functionCall       
+    :    ID '(' expressionList ')' NEWLINE
+         -> ^(FUNCALL ID ^(ARGS expressionList))
+         //-> functionCall(name = { $ID.text }, args = { $expressionList.st })
+    ;	
+// End function blocks
+
+// Start predicate blocks
+predicateHeader     
+    :    'predicate' ID '(' variableList ')'
+         -> ^(PREDHEAD ID variableList)
+         //-> predicateHeader(name = { $ID.text }, args = { $variableList.st }) 
+    ;	
+predicateBlock      
+    :    // VERY  WEAK IMPLEMENTATION
+         START
+           ( statements += variableDeclaration | ((assignmentExpression | functionCall | predicateCall) NEWLINE) )* 
+           'return' retexp = assignmentExpression NEWLINE 
+         END
+         -> ^(FUNBLOCK[$START, "FUNBLOCK"] ^(RETURN $retexp) ($statements)* ) 
+         //'return' returns = assignmentExpression 
+         //-> predicateBlock(block = { $functionBlock.st }, exp = { $assignmentExpression.st })
+    ; 
+predicateDefinition 
+    :    'predicate' ID '(' variableList ')' predicateBlock 
+    	 -> ^(PRED ID variableList predicateBlock)
+         //-> predicateDefinition(header = { $predicateHeader.st}, block = { $predicateBlock.st})
+    ;
+
+predicateCall       
+    :    ID '(' expressionList ')' NEWLINE
+         -> ^(PREDCALL ID ^(ARGS expressionList))
+         //-> predicateCall(name = { $ID.text }, args = { $expressionList.st })
+    ;	
+// End predicate blocks
 
 // Start event definition
 eventDefinition 

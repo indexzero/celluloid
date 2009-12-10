@@ -1,0 +1,4 @@
+do
+  number x
+  return x
+end

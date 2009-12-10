@@ -1,0 +1,1 @@
+predicate foo (number a, timeline b, string c, time d, boolean e)

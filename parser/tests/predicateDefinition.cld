@@ -1,3 +1,4 @@
 predicate myPred (number arg1) do
-   # Comment
+   number x
+   return x
 end
