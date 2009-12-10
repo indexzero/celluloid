@@ -11,10 +11,15 @@ tokens {
   FUNC;
   PRED;
   ARG;
-  
+  IF;
+  EVERY;
+  LISTENER;
+  COND;
   EVENT;
   CONSTRAINT;
   DEVICE;
+  LISTENBLOCK;
+  IFBLOCK;
 }
 
 // Start boolean literal
@@ -35,7 +40,7 @@ END   : ('end' | '}') NEWLINE;
 // End core literals
 
 // Start line and whitespace delimiters
-NEWLINE : '\n' | '\r';
+NEWLINE : '\n' | '\r\n';
 WS      : ( ' ' | '\t' | '\r' | '\n') {$channel=HIDDEN;};   
 COMMENT : '#' ~(NEWLINE)* {$channel=HIDDEN;};
 // End line and whitespace delimiters
@@ -96,24 +101,24 @@ variableDeclaration
 assignmentExpression     
         : logicalORExpression
         | primaryExpression ASSIGNMENT_OPERATOR assignmentExpression;
-	                 
+	          	                 
 logicalORExpression      
-        : logicalANDExpression ('or' logicalANDExpression)*;	
-
-logicalANDExpression     
-        : equalityExpression ('and' equalityExpression)*;
+        : 'not'? logicalANDExpression ('or'^ logicalORExpression)?;	
+	 
+logicalANDExpression
+        : equalityExpression ('and'^ logicalANDExpression)?;
 
 equalityExpression       
-        :  relationalExpression (EQUALITY_OPERATOR  relationalExpression)*;
+        :  relationalExpression (EQUALITY_OPERATOR^ equalityExpression)?;
 
 relationalExpression     
-        : additiveExpression (RELATIONAL_OPERATOR  additiveExpression)*;
+        : additiveExpression (RELATIONAL_OPERATOR^ relationalExpression)?;
 
 additiveExpression      
-        : multiplicativeExpression (ADDITIVE_OPERATOR  multiplicativeExpression)*;
+        : multiplicativeExpression (ADDITIVE_OPERATOR^ additiveExpression)?;
 
 multiplicativeExpression 
-	: primaryExpression (MULTIPLICATIVE_OPERATOR  primaryExpression)*;	
+	: primaryExpression (MULTIPLICATIVE_OPERATOR^ multiplicativeExpression)?;	
 
 primaryExpression
 	: ID
@@ -202,30 +207,43 @@ inStatement
     ;
    
 ifStatement
-    :  'if' (ifTest = logicalORExpression)
+    :  'if' ifTest = logicalORExpression
         START
-            (ifBlock += ((assignmentExpression | inStatement | ifStatement) NEWLINE )+)
-            ('else if' (elseifTest = logicalORExpression NEWLINE) (elseifBlock += (assignmentExpression | inStatement | ifStatement) NEWLINE )*)*
-            ('else' (elseTest = assignmentExpression NEWLINE) (elseBlock += (assignmentExpression | inStatement | ifStatement) NEWLINE )*)?
+            (ifBlock += (assignmentExpression | inStatement | ifStatement) NEWLINE )+
+            (elseifBlock += elseIfStatement)*
+            elseStatement?
         END
-    	   //-> ifStatement()
+        -> ^(IF $ifTest ^(IFBLOCK $ifBlock) ^('elseif' $elseifBlock?) ^('else' elseStatement?))
+        
     ;
+elseIfStatement 
+	:   'else if' (elseIfTest = logicalORExpression NEWLINE) 
+             (statements += (assignmentExpression | inStatement | ifStatement) NEWLINE )*
+             -> ^($elseIfTest ^(IFBLOCK $statements))
+	;
+
+elseStatement 
+	:   'else' (statements += (assignmentExpression | inStatement | ifStatement) NEWLINE)*
+             -> ^(IFBLOCK $statements)
+	;
 
 whenStatement
-    : (keyword = ('when' | 'unless')) logicalORExpression
+    :   cond = ('when' | 'unless') logicalORExpression
         START
-            (
-            (statements += ((assignmentExpression | constraintStatement | ifStatement) NEWLINE )*)
-            )+
+	    ((assignmentExpression | constraintStatement | ifStatement) NEWLINE )+
         END
+        -> ^(LISTENER EVERY ^(COND cond logicalORExpression) 
+             ^(LISTENBLOCK assignmentExpression* constraintStatement* ifStatement*))
         //-> whenStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
     
 everyStatement
-    :  'every' TIME (keyword = ('when' | 'unless') logicalORExpression)?
+    :  'every' TIME (cond = ('when' | 'unless') logicalORExpression)?
         START
             (statements += ((assignmentExpression | constraintStatement | ifStatement) NEWLINE )*)
         END
+        -> ^(LISTENER ^(EVERY TIME) ^(COND cond? logicalORExpression?)
+             ^(LISTENBLOCK assignmentExpression* constraintStatement* ifStatement*))
         //-> everyStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
 // End timeline and procedural blocks
@@ -256,7 +274,7 @@ constraintDefinition
     :    'constraint' ID (constraintList)?
          ('announces' announces = idList)? 
          START 
-             members = (variableDeclaration | functionHeader | predicateHeader | announcement)*
+             members = (variableDeclaration | predicateHeader | announcement)*
          END  
          // TODO: Need to write code to compile announcements into decorators for functions
          //-> constraintDefinition(name = { $ID.text }, requires = { $constraintList.st }) 
