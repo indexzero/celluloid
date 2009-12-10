@@ -71,7 +71,7 @@ variableDeclaration
                     
 initializer      
     :    '=' assignmentExpression
-         -> initializer()
+         -> initializer(exp = { $assignmentExpression.st })
     ;
 
 // This may allow derivations of literal = variable
@@ -145,10 +145,10 @@ functionDefinition : functionHeader START functionBlock END
          -> functionDefinition(header = { $functionHeader.st}, block = { $functionBlock.st})
         ;
 functionBlock      
-    :    (language_block | functionCall | predicateCall | variableDeclaration)*
+    :    statements = (language_block | functionCall | predicateCall | variableDeclaration)*
          //| in_timeline_stmt | if_stmt
          // TODO: Define this template
-         -> functionBlock()
+         -> functionBlock(statements = { $statements })
     ;
 functionCall       
     :    ID '(' expressionList ')' NEWLINE
@@ -168,7 +168,7 @@ predicateDefinition
 predicateBlock      
     :    // VERY  WEAK IMPLEMENTATION
          functionBlock 'returns' assignmentExpression 
-         -> predicateBlock()
+         -> predicateBlock(block = { $functionBlock.st }, exp = { $assignmentExpression.st })
     ; 
 predicateCall       
     :    ID '(' expressionList ')' NEWLINE
@@ -181,38 +181,46 @@ predicateCall
 inStatement
     :  'in' ID
         START
-            (assignmentExpression NEWLINE)*
+            (statements += ((assignmentExpression | ifStatement | whenStatement | everyStatement | constraintStatement) NEWLINE)+)*
+            //members = (variableDeclaration | functionHeader | predicateHeader | announcement)*
         END
         //-> inStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
    
 ifStatement
-    :  'if' (ifTest = assignmentExpression)
+    :  'if' (ifTest = logicalORExpression)
         START
-            (ifBlock = assignmentExpression)*
-            ('else if' (elseifTest = assignmentExpression) (elseifBlock = assignmentExpression))*
-            ('else' (elseTest = assignmentExpression) (elseBlock = assignmentExpression))?
+            (ifBlock += ((assignmentExpression | inStatement | ifStatement) NEWLINE )+)
+            ('else if' (elseifTest = logicalORExpression NEWLINE) (elseifBlock += (assignmentExpression | inStatement | ifStatement) NEWLINE )*)*
+            ('else' (elseTest = assignmentExpression NEWLINE) (elseBlock += (assignmentExpression | inStatement | ifStatement) NEWLINE )*)?
         END
-        //-> ifStatement()
+    	   //-> ifStatement()
     ;
 
 whenStatement
-    :  ('when' | 'unless') ID
+    : (keyword = ('when' | 'unless')) logicalORExpression
         START
-            (assignmentExpression NEWLINE)*
+            (
+            (statements += ((assignmentExpression | constraintStatement | ifStatement) NEWLINE )*)
+            )+
         END
         //-> whenStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
-
+    
 everyStatement
-    :  'every' ID
+    :  'every' TIME (keyword = ('when' | 'unless') logicalORExpression)?
         START
-            (assignmentExpression NEWLINE)*
-            (whenStatement)?
+            (statements += ((assignmentExpression | constraintStatement | ifStatement) NEWLINE )*)
         END
         //-> everyStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
 // End timeline and procedural blocks
+
+// Start constraint statement
+constraintStatement 
+	:	ID ID expressionList 
+	;
+// End constraint statement
 
 // Start event definition
 eventDefinition 

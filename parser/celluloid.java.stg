@@ -1,8 +1,7 @@
 group jcelluloid;
 
-timelineDeclaration(name)             ::= "timeline <name> = new timeline();"
 variableDeclaration(type, name, init) ::= "<type> <name> <init>"
-initializer()                         ::= ""
+initializer(exp)                      ::= " = <exp>"
 
 idList(ids)                           ::= "<ids:{ id | <id.text> }; separator=\", \">"
 variableList(vars)                    ::= "<vars:{ var | <var.st> }; separator=\", \">"
@@ -15,12 +14,12 @@ functionDefintion(header, block)      ::=
   <block>
 "}"
 >>
-functionBlock()                       ::= ""
+functionBlock(statements)             ::= "<statements:{ statement | <statement.st> }; separator\"\\n\">"
 functionCall(name, args)              ::=  "<name>(<args>);"
 
 predicateHeader(name, args)           ::= "public bool <name> (<args>)"
 predicateDefinition (header, block)   ::= << <header> "{" <block> "}" >>
-predicateBlock()                      ::= ""
+predicateBlock(block, exp)            ::= "<block> returns <exp>"
 predicateCall(name,args)              ::= "<name>(<args>);"
 
 eventDefinition(name)                 ::= "public class name extends event { }"
@@ -29,3 +28,5 @@ constraintDefinition(name, requires)  ::= "public interface <name> <requires> { 
 constraintList( ids )                 ::= "implements <ids>"
 
 deviceDefinition(name, accepts)       ::= "public class <name> extends device <accepts> { TODO: Members }"
+
+timelineDeclaration(name)             ::= "timeline <name> = new timeline();"
