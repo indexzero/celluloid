@@ -9,6 +9,7 @@ options {
 tokens {
   VARDEF;
   FUNC;
+  FUNBLOCK;
   PRED;
   ARG;
   
@@ -30,12 +31,12 @@ language_block      : '*'; // TODO: Make this match anything
 
 // Start core literals
 ID    :	('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'0'..'9'|'_')*;
-START : ('do' | '{') NEWLINE;
-END   : ('end' | '}') NEWLINE;
+START : ('do' | '{') NEWLINE?;
+END   : ('end' | '}') NEWLINE?;
 // End core literals
 
 // Start line and whitespace delimiters
-NEWLINE : '\n' | '\r';
+NEWLINE : '\n' | '\r\n' | '\r';
 WS      : ( ' ' | '\t' | '\r' | '\n') {$channel=HIDDEN;};   
 COMMENT : '#' ~(NEWLINE)* {$channel=HIDDEN;};
 // End line and whitespace delimiters
@@ -84,12 +85,13 @@ initializer
 // TODO: Templates for all expressions
 // TODO: Grammar rules for Local operations
 variableDeclaration 
-    :    'timeline' ID NEWLINE
-         -> ^(VARDEF 'timeline' ID)
+    :    'timeline' ID NEWLINE -> ^(VARDEF 'timeline' ID)
          //-> timelineDeclaration(name = { $ID.text })
          // TODO: What should we do about the conditional NEWLINE? Include the ';' in the NEWLINE st?
-    |    TYPE ID initializer? NEWLINE?
-         -> ^(VARDEF TYPE ID initializer?)
+    |    TYPE ID 
+         (initializer NEWLINE -> ^(VARDEF TYPE ID initializer?)
+          |                   -> ^(ARG TYPE ID))
+         
          //-> variableDeclaration(type = { $TYPE.text }, name = { $ID.text }, init = { $initializer.st })
     ;
                     
@@ -131,15 +133,19 @@ primaryExpression
 // Start lists and generic declartions
 idList 
     :    ids += ID (',' ids += ID)* 
+         -> ID+
          //-> idList(ids = { $ids })
     |    '(' ids += ID (',' ids += ID)* ')'
+         -> ID+
          //-> idList(ids = { $ids })
     ;
 
 variableList  
     :    vars += variableDeclaration (',' vars += variableDeclaration)* 
+         -> variableDeclaration+
          //-> variableList(vars = { $vars })
     |    '(' vars += variableDeclaration (',' vars += variableDeclaration)* ')'
+         -> variableDeclaration+
          //-> variableList(vars = { $vars })
     ;
 
@@ -154,12 +160,13 @@ expressionList
 
 // Start function blocks
 functionDefinition 
-	:    'function' ID '(' variableList ')' START functionBlock END
-	     -> ^(FUNC ID variableList functionBlock)
+	:    'function' ID '(' variableList ')'  functionBlock 
+	     -> ^(FUNC ID variableList functionBlock?)
          //-> functionDefinition(name = { $ID.text}, args = { variableList.st }, block = { $functionBlock.st })
         ;
 functionBlock      
-    :    statements = (language_block | functionCall | predicateCall | variableDeclaration)*
+    :    START ( statements += variableDeclaration | ((assignmentExpression | functionCall | predicateCall) NEWLINE) )* END 
+         -> ^(FUNBLOCK[$START, "FUNCBLOCK"] ($statements)*) 
          //| in_timeline_stmt | if_stmt
          // TODO: Define this template
          //-> functionBlock(statements = { $statements })
@@ -256,7 +263,8 @@ constraintDefinition
     :    'constraint' ID (constraintList)?
          ('announces' announces = idList)? 
          START 
-             members = (variableDeclaration | functionHeader | predicateHeader | announcement)*
+             members = (variableDeclaration | predicateHeader | announcement)*
+             //| functionHeader 
          END  
          // TODO: Need to write code to compile announcements into decorators for functions
          //-> constraintDefinition(name = { $ID.text }, requires = { $constraintList.st }) 
