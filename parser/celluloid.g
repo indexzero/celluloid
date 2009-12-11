@@ -13,8 +13,7 @@ tokens {
   FUNC;
   PRED;
   
-  FUNCALL;
-  PREDCALL;
+  CALL;
   IF;
   ELSEIF;
   ELSE;
@@ -23,6 +22,7 @@ tokens {
   COND;
   RETURN;
   
+  INBLOCK;
   LISTENBLOCK;
   IFBLOCK;
   FUNBLOCK;
@@ -145,8 +145,7 @@ primaryExpression
 	: ID
 	| 'new' ID '(' expressionList ')'
 	| LITERAL
-	| functionCall
-	| predicateCall
+	| functionPredicateCall
 	;
 // End generic literals and declarations
 
@@ -184,7 +183,7 @@ expressionList
 inStatement
     :  'in' ID
         START
-            (statements += ((assignmentExpression | ifStatement | whenStatement | everyStatement | constraintStatement) NEWLINE)+)*
+            (statements += ((assignmentExpression | ifStatement | whenStatement | everyStatement | constraintFunctionCall) NEWLINE)+)*
             //members = (variableDeclaration | functionHeader | predicateHeader | announcement)*
         END
         //-> inStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
@@ -214,36 +213,45 @@ elseStatement
 whenStatement
     :   cond = ('when' | 'unless') logicalORExpression
         START
-	    ((assignmentExpression | constraintStatement | ifStatement) NEWLINE )+
+	    ((assignmentExpression | constraintFunctionCall | ifStatement) NEWLINE )+
         END
         -> ^(LISTENER EVERY ^(COND $cond logicalORExpression) 
-             ^(LISTENBLOCK assignmentExpression* constraintStatement* ifStatement*))
+             ^(LISTENBLOCK assignmentExpression* constraintFunctionCall* ifStatement*))
         //-> whenStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
     
 everyStatement
     :  'every' TIME (cond = ('when' | 'unless') logicalORExpression)?
         START
-            (statements += ((assignmentExpression | constraintStatement | ifStatement) NEWLINE )*)
+            (statements += ((assignmentExpression | constraintFunctionCall | ifStatement) NEWLINE )*)
         END
         -> ^(LISTENER ^(EVERY TIME) ^(COND $cond? logicalORExpression?)
-             ^(LISTENBLOCK assignmentExpression* constraintStatement* ifStatement*))
+             ^(LISTENBLOCK assignmentExpression* constraintFunctionCall* ifStatement*))
         //-> everyStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
     
-constraintStatement 
+constraintFunctionCall 
     :    ID ID expressionList 
     ;
+    
+
+functionPredicateCall       
+    :    ID '(' expressionList ')' NEWLINE?
+         -> ^(CALL ID ^(ARGS expressionList))
+         //-> functionCall(name = { $ID.text }, args = { $expressionList.st })
+    ;	
 // End timeline and procedural blocks
 
 // Start function blocks
 functionHeader
-    :    'function' ID '(' variableList ')'
+    :    'function' ID '(' variableList ')' NEWLINE
          -> ^(FUNHEAD ID variableList)
     ;
 functionBlock      
-    :    START ( statements += variableDeclaration | ((assignmentExpression | functionCall | predicateCall) NEWLINE) )* END 
-         -> ^(FUNBLOCK[$START, "FUNCBLOCK"] RETURN ($statements)* ) 
+    :    START 
+           ( vars += variableDeclaration | calls += functionPredicateCall | exps += (assignmentExpression NEWLINE) )* 
+         END 
+         -> ^(FUNBLOCK[$START, "FUNCBLOCK"] RETURN $vars* $calls* $exps*) 
          //| in_timeline_stmt | if_stmt
          // TODO: Define this template
          //-> functionBlock(statements = { $statements })
@@ -253,43 +261,35 @@ functionDefinition
          -> ^(FUNC ID variableList functionBlock?)
          //-> functionDefinition(name = { $ID.text}, args = { variableList.st }, block = { $functionBlock.st })
     ;
-functionCall       
-    :    ID '(' expressionList ')' NEWLINE
-         -> ^(FUNCALL ID ^(ARGS expressionList))
-         //-> functionCall(name = { $ID.text }, args = { $expressionList.st })
-    ;	
 // End function blocks
 
 // Start predicate blocks
 predicateHeader     
-    :    'predicate' ID '(' variableList ')'
+    :    'predicate' ID '(' variableList ')' NEWLINE
          -> ^(PREDHEAD ID variableList)
          //-> predicateHeader(name = { $ID.text }, args = { $variableList.st }) 
     ;	
-predicateBlock      
-    :    // VERY  WEAK IMPLEMENTATION
-         START
-           ( statements += variableDeclaration | ((assignmentExpression | functionCall | predicateCall) NEWLINE) )* 
-           'return' retexp = assignmentExpression NEWLINE 
-         END
-         -> ^(FUNBLOCK[$START, "FUNBLOCK"] ^(RETURN $retexp) ($statements)* ) 
-         //'return' returns = assignmentExpression 
-         //-> predicateBlock(block = { $functionBlock.st }, exp = { $assignmentExpression.st })
-    ; 
+
 predicateDefinition 
     :    'predicate' ID '(' variableList ')' predicateBlock 
     	 -> ^(PRED ID variableList predicateBlock)
          //-> predicateDefinition(header = { $predicateHeader.st}, block = { $predicateBlock.st})
     ;
-
-predicateCall       
-    :    ID '(' expressionList ')' NEWLINE
-         -> ^(PREDCALL ID ^(ARGS expressionList))
-         //-> predicateCall(name = { $ID.text }, args = { $expressionList.st })
-    ;	
+predicateBlock      
+    :    // VERY  WEAK IMPLEMENTATION
+         START
+           ( vars += variableDeclaration | calls += functionPredicateCall | exps += (assignmentExpression NEWLINE))* 
+           'return' retexp = assignmentExpression NEWLINE 
+         END
+         -> ^(FUNBLOCK[$START, "FUNBLOCK"] ^(RETURN $retexp) $vars* $calls* $exps*) 
+         //'return' returns = assignmentExpression 
+         //-> predicateBlock(block = { $functionBlock.st }, exp = { $assignmentExpression.st })
+    ;
 // End predicate blocks
 
 // Start event definition
+ 
+
 eventDefinition 
     :    'event' ID NEWLINE
          -> ^(EVENT ID)
@@ -299,35 +299,41 @@ eventDefinition
 
 // Start constraint declarations
 
-announcement
+announcementDeclaration
     :    //TODO: Replace this with short_bool_exp
-         'announce' eventName = ID 'when' functionName = ID (predicateExpr = assignmentExpression)? 
+         'announce' eventName = ID 'when' functionName = ID (predicateExpr = variableDeclaration)? NEWLINE
          -> ^(ANNOUNCEMENT $eventName $functionName $predicateExpr?)
     ; 
 // End constraint declarations
 
 // Start device definitions
+constraintBlock 
+    :    START 
+             (vars += variableDeclaration | preds += predicateHeader | funcs += functionHeader | announcements += announcementDeclaration)*
+         END  
+         -> ^(CONBLOCK $vars* $preds* $funcs* ^(ANNOUNCEMENTS $announcements*))
+    ;    	
+
 constraintDefinition
     :    'constraint' ID ('requires' requires = idList)?
          ('announces' announces = idList)? 
-         START 
-             (members += variableDeclaration | predicateHeader | functionHeader)*
-             (announcements += announcement)*
-         END  
-         // TODO: Need to add annoucements and members to this rewrite rule
-         -> ^(CONSTRAINT ID ^(REQUIRES $requires?) ^(ANNOUNCES $announces?))
+         constraintBlock
+         -> ^(CONSTRAINT ID ^(REQUIRES $requires?) ^(ANNOUNCES $announces?) constraintBlock)
          // TODO: Need to write code to compile announcements into decorators for functions
          //-> constraintDefinition(name = { $ID.text }, requires = { $constraintList.st }) 
             // variableDeclaration* functionHeader* predicateHeader*)
     ;
 
+deviceBlock 
+    :    START 
+             (vars += variableDeclaration | preds += predicateDefinition | funcs += functionDefinition)* 
+         END	
+         -> ^(DEVBLOCK $vars* $preds* $funcs*)
+    ;
 deviceDefinition     
-    :    'device' ID ('accepts'! accepts = idList)? 
-         START 
-             members = (variableDeclaration | functionDefinition | predicateDefinition)* 
-         END 
+    :    'device' ID ('accepts' accepts = idList)? deviceBlock
+         -> ^(DEVICE ID ^(ACCEPTS $accepts?) deviceBlock)
          //-> deviceDefinition(name = { $ID.text }, accepts = { $constraintList.st })
-            // variableDeclaration* functionDefinition* predicateDefinition*)
     ;
 // End device definitions
 

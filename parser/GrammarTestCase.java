@@ -58,21 +58,21 @@ public class GrammarTestCase extends TestCase {
     }
 
     private boolean RunGrammarRuleTest(File codeFile) throws Exception {
-        FileReader groupFileR = new FileReader(rulePath);
-        FileInputStream inputFileS = new FileInputStream(codeFile);
-        StringTemplateGroup templates = new StringTemplateGroup(groupFileR);
-        groupFileR.close();
+        //FileReader groupFileR = new FileReader(rulePath);
+        //FileInputStream inputFileS = new FileInputStream(codeFile);
+        //StringTemplateGroup templates = new StringTemplateGroup(groupFileR);
+        //groupFileR.close();
 
         // PARSE INPUT AND COMPUTE TEMPLATE
-        ANTLRInputStream input = new ANTLRInputStream(inputFileS);
-        celluloidLexer lexer = new celluloidLexer(input); // create lexer
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        celluloidParser parser = new celluloidParser(tokens); // create parser
-        parser.setTemplateLib(templates); // give parser templates
+        //ANTLRInputStream input = new ANTLRInputStream(inputFileS);
+        //celluloidLexer lexer = new celluloidLexer(input); // create lexer
+        //CommonTokenStream tokens = new CommonTokenStream(lexer);
+        //celluloidParser parser = new celluloidParser(tokens); // create parser
+        //parser.setTemplateLib(templates); // give parser templates
 
-        celluloidParser.deviceDefinition_return r = parser.deviceDefinition(); // parse rule
-        StringTemplate output = (StringTemplate)r.getTemplate();
-        System.out.println(output.toString());// emit translation
+        //celluloidParser.deviceDefinition_return r = parser.deviceDefinition(); // parse rule
+        //StringTemplate output = (StringTemplate)r.getTemplate();
+        //System.out.println(output.toString());// emit translation
 
         return false;
     }

@@ -1,6 +1,5 @@
-constraint foo requires bar, omega announces alpha, beta, gamma do
+do
    time first
    function play (time x)
    announce played when play
 end
-

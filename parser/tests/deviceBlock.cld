@@ -1,4 +1,4 @@
-device foo accepts bar do
+do
   number x
   function play (time at) do
      number y

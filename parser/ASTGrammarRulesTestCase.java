@@ -33,19 +33,25 @@ public class ASTGrammarRulesTestCase extends TestCase {
     public void runAllTests() throws IOException, RecognitionException {
         this.printTestResults(this.shouldParseNumberDeclaration());
         this.printTestResults(this.shouldParseNumberDeclarationWithInitializer());
+        this.printTestResults(this.shouldParseFunctionPredicateCall());
+
         this.printTestResults(this.shouldParseIdList());
         this.printTestResults(this.shouldParseVariableList());
         this.printTestResults(this.shouldParseExpressionList());
+
         this.printTestResults(this.shouldParseFunctionHeader());
         this.printTestResults(this.shouldParseFunctionBlock());
         this.printTestResults(this.shouldParseFunctionDefinition());
-        this.printTestResults(this.shouldParseFunctionCall());
         this.printTestResults(this.shouldParsePredicateHeader());
         this.printTestResults(this.shouldParsePredicateBlock());
         this.printTestResults(this.shouldParsePredicateDefinition());
-        this.printTestResults(this.shouldParsePredicateCall());
+
         this.printTestResults(this.shouldParseEventDefinition());
+        this.printTestResults(this.shouldParseAnnouncementDeclaration());
+        this.printTestResults(this.shouldParseConstraintBlock());
         this.printTestResults(this.shouldParseConstraintDefinition());
+        this.printTestResults(this.shouldParseDeviceBlock());
+        this.printTestResults(this.shouldParseDeviceDefinition());
     }
 
     /**
@@ -141,10 +147,10 @@ public class ASTGrammarRulesTestCase extends TestCase {
      * @throws IOException
      * @throws RecognitionException
      */
-    public CommonTree shouldParseFunctionCall() throws IOException, RecognitionException {
-        System.out.println("Testing functionCall: functionCall.cld");
-        celluloidParser parser = this.createParserFromFile("functionCall.cld");
-        return (CommonTree)parser.functionCall().getTree();
+    public CommonTree shouldParseFunctionPredicateCall() throws IOException, RecognitionException {
+        System.out.println("Testing functionPredicateCall: functionPredicateCall.cld");
+        celluloidParser parser = this.createParserFromFile("functionPredicateCall.cld");
+        return (CommonTree)parser.functionPredicateCall().getTree();
     }
 
     /**
@@ -185,17 +191,6 @@ public class ASTGrammarRulesTestCase extends TestCase {
      * @throws IOException
      * @throws RecognitionException
      */
-    public CommonTree shouldParsePredicateCall() throws IOException, RecognitionException {
-        System.out.println("Testing predicateCall: predicateCall.cld");
-        celluloidParser parser = this.createParserFromFile("predicateCall.cld");
-        return (CommonTree)parser.predicateCall().getTree();
-    }
-
-    /**
-     * Tests the functionDefinition rule in celluloid.g
-     * @throws IOException
-     * @throws RecognitionException
-     */
     public CommonTree shouldParseEventDefinition() throws IOException, RecognitionException {
         System.out.println("Testing eventDefinition: eventDefinition.cld");
         celluloidParser parser = this.createParserFromFile("eventDefinition.cld");
@@ -207,10 +202,54 @@ public class ASTGrammarRulesTestCase extends TestCase {
      * @throws IOException
      * @throws RecognitionException
      */
+    public CommonTree shouldParseAnnouncementDeclaration() throws IOException, RecognitionException {
+        System.out.println("Testing announcementDeclaration: announcementDeclaration.cld");
+        celluloidParser parser = this.createParserFromFile("announcementDeclaration.cld");
+        return (CommonTree)parser.announcementDeclaration().getTree();
+    }
+
+    /**
+     * Tests the constraintBlock rule in celluloid.g
+     * @throws IOException
+     * @throws RecognitionException
+     */
+    public CommonTree shouldParseConstraintBlock() throws IOException, RecognitionException {
+        System.out.println("Testing constraintBlock: constraintBlock.cld");
+        celluloidParser parser = this.createParserFromFile("constraintBlock.cld");
+        return (CommonTree)parser.constraintBlock().getTree();
+    }
+
+    /**
+     * Tests the constraintDefinition rule in celluloid.g
+     * @throws IOException
+     * @throws RecognitionException
+     */
     public CommonTree shouldParseConstraintDefinition() throws IOException, RecognitionException {
         System.out.println("Testing constraintDefinition: constraintDefinition.cld");
         celluloidParser parser = this.createParserFromFile("constraintDefinition.cld");
         return (CommonTree)parser.constraintDefinition().getTree();
+    }
+
+    /**
+     * Tests the constraintBlock rule in celluloid.g
+     * @throws IOException
+     * @throws RecognitionException
+     */
+    public CommonTree shouldParseDeviceBlock() throws IOException, RecognitionException {
+        System.out.println("Testing deviceBlock: deviceBlock.cld");
+        celluloidParser parser = this.createParserFromFile("deviceBlock.cld");
+        return (CommonTree)parser.deviceBlock().getTree();
+    }
+
+    /**
+     * Tests the constraintDefinition rule in celluloid.g
+     * @throws IOException
+     * @throws RecognitionException
+     */
+    public CommonTree shouldParseDeviceDefinition() throws IOException, RecognitionException {
+        System.out.println("Testing deviceDefinition: deviceDefinition.cld");
+        celluloidParser parser = this.createParserFromFile("deviceDefinition.cld");
+        return (CommonTree)parser.deviceDefinition().getTree();
     }
 
     /**
