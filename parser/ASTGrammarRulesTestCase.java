@@ -31,7 +31,10 @@ public class ASTGrammarRulesTestCase extends TestCase {
      * @throws RecognitionException
      */
     public void runAllTests() throws IOException, RecognitionException {
+        this.printTestResults(this.shouldParseStringLiteral());
+
         this.printTestResults(this.shouldParseNumberDeclaration());
+        this.printTestResults(this.shouldParseInitializer());
         this.printTestResults(this.shouldParseNumberDeclarationWithInitializer());
         this.printTestResults(this.shouldParseFunctionPredicateCall());
 
@@ -55,6 +58,17 @@ public class ASTGrammarRulesTestCase extends TestCase {
     }
 
     /**
+     * Tests the primaryExpression rule in celluloid.g with string literals
+     * @throws IOException
+     * @throws RecognitionException
+     */
+    public CommonTree shouldParseStringLiteral() throws IOException, RecognitionException {
+        System.out.println("Testing string literals: string.cld");
+        celluloidParser parser = this.createParserFromFile("literals\\string.cld");
+        return (CommonTree)parser.primaryExpression().getTree();
+    }
+
+    /**
      * Tests the variableDeclaration rule in celluloid.g with no newline (i.e. ARG)
      * @throws IOException
      * @throws RecognitionException
@@ -63,6 +77,17 @@ public class ASTGrammarRulesTestCase extends TestCase {
         System.out.println("Testing variableDeclaration: numberDeclaration.cld");
         celluloidParser parser = this.createParserFromFile("numberDeclaration.cld");
         return (CommonTree)parser.variableDeclaration().getTree();
+    }
+
+    /**
+     * Tests the initializer rule in celluloid.g 
+     * @throws IOException
+     * @throws RecognitionException
+     */
+    public CommonTree shouldParseInitializer() throws IOException, RecognitionException {
+        System.out.println("Testing initializer: initializer.cld");
+        celluloidParser parser = this.createParserFromFile("initializer.cld");
+        return (CommonTree)parser.initializer().getTree();
     }
 
     /**

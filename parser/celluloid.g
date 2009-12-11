@@ -8,12 +8,13 @@ options {
 
 tokens {
   VARDEF;
-  ARG;
-  ARGS;
+  
   FUNC;
   PRED;
-  
+  ARG;
+  ARGS;
   CALL;
+  
   IF;
   ELSEIF;
   ELSE;
@@ -33,18 +34,21 @@ tokens {
   PREDHEAD;
     
   EVENT;
+  
   CONSTRAINT;
   REQUIRES;
+  
   ANNOUNCES;
   ANNOUNCEMENT;
   ANNOUNCEMENTS;
+  
   DEVICE;
   ACCEPTS;
 }
 
 // Start boolean literal
-fragment BOOL : 'true' | 'false';
-TYPE          : 'time' | 'number' | 'string' | 'boolean' | 'input' | 'output';
+BOOL    : 'true' | 'false';
+TYPE    : 'time' | 'number' | 'string' | 'boolean' | 'input' | 'output';
 // End boolean literal
 
 // Start language blocks
@@ -66,9 +70,9 @@ COMMENT : '#' ~(NEWLINE)* {$channel=HIDDEN;};
 // End line and whitespace delimiters
 
 // Start number literals
-fragment NUMBER :   ('0'..'9')+ '.' ('0'..'9')* EXPONENT?
+NUMBER :   ('0'..'9')+ '.' ('0'..'9')* EXPONENT?
        |   '.' ('0'..'9')+ EXPONENT?
-       |   ('0'..'9')+ EXPONENT;
+       |   ('0'..'9')+ EXPONENT?;
 fragment EXPONENT : ('e'|'E') ('+'|'-')? ('0'..'9')+ ;
 // End number literals
 
@@ -78,13 +82,14 @@ fragment SECOND : NUMBER 's';
 fragment MINUTE : NUMBER 'm' SECOND | SECOND;
 fragment HOUR 	: NUMBER 'h' MINUTE | MINUTE;
 fragment DAY 	: NUMBER 'd' HOUR | HOUR;
-fragment TIME	: '@'DAY;
+TIME	        : '@'(DAY | 'start' | 'now');
 // End time literals
 
 // Start string literal	
-fragment STRING	  :  '"' ( ESC_SEQ | CHAR )* '"';
-fragment CHAR     :  ('0'..'9'|'a'..'f'|'A'..'F');
-fragment ESC_SEQ  :  '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\');
+//STRING	  :  '"' ( ESC_SEQ | CHAR )* '"';
+fragment STRING  : '"' ( ESCAPE | ~('"'|'\\') )* '"' ;
+fragment CHAR    : ('0'..'9'|'a'..'f'|'A'..'F');
+fragment ESCAPE  : '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\');
 // End string literal
 
 // Start operators
@@ -97,7 +102,7 @@ MULTIPLICATIVE_OPERATOR  : '*' | '/' | '%';
 // End operators 
 
 // Start generic literals and declarations
-LITERAL             : STRING | TIME | NUMBER | BOOL;
+LITERAL : BOOL | NUMBER | STRING | TIME;
 
 // This may allow derivations of literal = variable
 // TODO: Templates for all expressions
@@ -115,13 +120,13 @@ variableDeclaration
     ;
     
 initializer      
-    :    '='! assignmentExpression
+    :    '=' LITERAL
          //-> initializer(exp = { $assignmentExpression.st })
     ;
                     
 assignmentExpression     
         : logicalORExpression
-        | primaryExpression ASSIGNMENT_OPERATOR assignmentExpression;
+        | primaryExpression ASSIGNMENT_OPERATOR^ assignmentExpression;
 	          	                 
 logicalORExpression      
         : 'not'? logicalANDExpression ('or'^ logicalORExpression)?;	
@@ -288,8 +293,6 @@ predicateBlock
 // End predicate blocks
 
 // Start event definition
- 
-
 eventDefinition 
     :    'event' ID NEWLINE
          -> ^(EVENT ID)
@@ -298,7 +301,6 @@ eventDefinition
 // End event definitions
 
 // Start constraint declarations
-
 announcementDeclaration
     :    //TODO: Replace this with short_bool_exp
          'announce' eventName = ID 'when' functionName = ID (predicateExpr = variableDeclaration)? NEWLINE
