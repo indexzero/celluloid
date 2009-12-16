@@ -22,6 +22,9 @@ tokens {
   EVERY;
   COND;
   RETURN;
+  IN;
+  WHEN;
+  EVERY;
   
   INBLOCK;
   LISTENBLOCK;
@@ -185,12 +188,22 @@ expressionList
 
 // Begin timline and procedural blocks
 // Need templates for prodcedural code
-inStatement
-    :  'in' ID
-        START
-            (statements += ((assignmentExpression | ifStatement | whenStatement | everyStatement | constraintFunctionCall) NEWLINE)+)*
-            //members = (variableDeclaration | functionHeader | predicateHeader | announcement)*
+inBlockDeclaration
+    :	assignmentExpression NEWLINE
+    |   ifStatement NEWLINE
+    |   whenStatement NEWLINE
+    |   everyStatement NEWLINE
+    |   constraintFunctionCall NEWLINE
+    ;
+inBlock 
+    :	START
+            (block += inBlockDeclaration)*
         END
+        -> ^(INBLOCK $block*)
+    ;
+inStatement
+    :  'in' ID inBlock
+        -> ^(IN ID inBlock)
         //-> inStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
    
@@ -252,11 +265,17 @@ functionHeader
     :    'function' ID '(' variableList ')' NEWLINE
          -> ^(FUNHEAD ID variableList)
     ;
+
+functionPredicateBlockDeclaration 
+    :    variableDeclaration
+    |    functionPredicateCall
+    |    assignmentExpression NEWLINE
+    ;
 functionBlock      
     :    START 
-           ( vars += variableDeclaration | calls += functionPredicateCall | exps += (assignmentExpression NEWLINE) )* 
+           ( block += functionPredicateBlockDeclaration )* 
          END 
-         -> ^(FUNBLOCK[$START, "FUNCBLOCK"] RETURN $vars* $calls* $exps*) 
+         -> ^(FUNBLOCK[$START, "FUNCBLOCK"] RETURN $block*) 
          //| in_timeline_stmt | if_stmt
          // TODO: Define this template
          //-> functionBlock(statements = { $statements })
@@ -283,10 +302,10 @@ predicateDefinition
 predicateBlock      
     :    // VERY  WEAK IMPLEMENTATION
          START
-           ( vars += variableDeclaration | calls += functionPredicateCall | exps += (assignmentExpression NEWLINE))* 
+           ( block += functionPredicateBlockDeclaration )* 
            'return' retexp = assignmentExpression NEWLINE 
          END
-         -> ^(FUNBLOCK[$START, "FUNBLOCK"] ^(RETURN $retexp) $vars* $calls* $exps*) 
+         -> ^(FUNBLOCK[$START, "FUNBLOCK"] ^(RETURN $retexp) $block*) 
          //'return' returns = assignmentExpression 
          //-> predicateBlock(block = { $functionBlock.st }, exp = { $assignmentExpression.st })
     ;
