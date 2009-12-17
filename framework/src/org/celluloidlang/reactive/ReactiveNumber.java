@@ -2,7 +2,7 @@ package org.celluloidlang.reactive;
 
 import java.util.ArrayList;
 
-public class ReactiveNumber implements ReactiveObject<Float>{
+public class ReactiveNumber implements ReactiveObject<Float> {
 
 	ArrayList<FloatAction> dependencies = new ArrayList<FloatAction>();
 	private Float local;
@@ -42,7 +42,7 @@ public class ReactiveNumber implements ReactiveObject<Float>{
 	public void set(ReactiveObject<Float> rObj) {
 		this.stopReactingAll();
 		this.local = new Float(0.0);
-		this.reactive.attach(this);
+		rObj.reactive.attach(this);
 		dependencies.add(new FloatAction(Action.ADD, rObj));
 		this.updateView();
 		this.reactive.setChanged(new ReactiveUpdate());

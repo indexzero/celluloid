@@ -1,13 +1,14 @@
 package org.celluloidlang.core;
 
 import org.celluloidlang.constraints.defined.*;
+import org.celluloidlang.reactive.ReactiveNumber;
 
 public class ConstraintFunction {
 	
 	protected Input input;
-	private double time;
+	private ReactiveNumber time;
 	
-	public ConstraintFunction(Input input, double executeTime) {
+	public ConstraintFunction(Input input, ReactiveNumber executeTime) {
 		this.input = input;
 		this.time = executeTime;
 	}
@@ -16,7 +17,7 @@ public class ConstraintFunction {
 		return input;
 	}
 	
-	public double getTime() {
+	public ReactiveNumber getTime() {
 		return time;
 	}
 	

@@ -8,6 +8,8 @@ import org.celluloidlang.announcment.Announcement;
 import org.celluloidlang.constraints.defined.Output;
 import org.celluloidlang.constraints.defined.StaticInput;
 import org.celluloidlang.constraints.defined.Video;
+import org.celluloidlang.reactive.ReactiveNumber;
+
 
 public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output, Runnable{
 	
@@ -24,13 +26,13 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 	}
 	
 	@Override
-	public void play(double offSet) {
+	public void play() {
 		this.start();
 		new Thread(this).start();
 	}
 
 	@Override
-	public void stop(double offSet) {
+	public void stop() {
 		if (this.getState() == Player.Started) {
 			this.stop();
 			this.setMediaTime(new Time(0));
@@ -38,7 +40,8 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 	}
 
 	@Override
-	public void rewind(double offSet, double speed) {
+	public void rewind(ReactiveNumber reactiveSpeed) {
+		double speed = reactiveSpeed.getView();
 		if (speed > 0)
 			return;
 		if ((this.getState() == MediaPlayer.Realized) ||
@@ -48,7 +51,8 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 	}
 
 	@Override
-	public void seek(double offSet, double time) {
+	public void seek(ReactiveNumber reactiveTime) {
+		double time = reactiveTime.getView();
 		if ((this.getState() == MediaPlayer.Realized) ||
 				(this.getState() == MediaPlayer.Prefetched)) {
 			this.setMediaTime(new Time(time));
@@ -56,7 +60,8 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 	}
 
 	@Override
-	public void ffwd(double offSet, double speed) {
+	public void ffwd(ReactiveNumber reactiveSpeed) {
+		double speed = reactiveSpeed.getView();
 		if (speed < 0)
 			return;
 		if ((this.getState() == MediaPlayer.Realized) ||
@@ -67,7 +72,7 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 	}
 
 	@Override
-	public void pause(double offSet) {
+	public void pause() {
 		if (this.getState() == Player.Started) {
 			this.stop();
 		}

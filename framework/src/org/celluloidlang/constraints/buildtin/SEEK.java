@@ -1,5 +1,7 @@
 package org.celluloidlang.constraints.buildtin;
 
+import org.celluloidlang.reactive.ReactiveNumber;
+
 /**
  * constraint seek
  * @author blake
@@ -11,5 +13,5 @@ public interface SEEK {
 	 * @param offSet
 	 * @param time
 	 */
-	public void seek(double offSet, double time);
+	public void seek(ReactiveNumber time);
 }

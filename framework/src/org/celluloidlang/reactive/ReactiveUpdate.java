@@ -6,5 +6,5 @@ package org.celluloidlang.reactive;
  *
  */
 public class ReactiveUpdate {
-
+	
 }
