@@ -14,6 +14,11 @@ tokens {
   ARG;
   ARGS;
   CALL;
+  PROGRAM;
+  EVENTS;
+  CONSTRAINTS;
+  DEVICES;
+  FUNCTIONS;
   
   IF;
   ELSEIF;
@@ -26,6 +31,7 @@ tokens {
   WHEN;
   EVERY;
   
+  PROGBLOCK;
   INBLOCK;
   LISTENBLOCK;
   IFBLOCK;
@@ -197,7 +203,7 @@ inBlockDeclaration
     ;
 inBlock 
     :	START
-            (block += inBlockDeclaration)*
+            (block += inBlockDeclaration | NEWLINE)*
         END
         -> ^(INBLOCK $block*)
     ;
@@ -218,38 +224,42 @@ ifStatement
         
     ;
 elseIfStatement 
-	:   'else if' (elseIfTest = logicalORExpression NEWLINE) 
-             (statements += (assignmentExpression | inStatement | ifStatement) NEWLINE )*
-             -> ^($elseIfTest ^(IFBLOCK $statements))
-	;
+    :   'else if' (elseIfTest = logicalORExpression NEWLINE) 
+        (statements += (assignmentExpression | inStatement | ifStatement) NEWLINE )*
+        -> ^($elseIfTest ^(IFBLOCK $statements))
+    ;
 
 elseStatement 
-	:   'else' (statements += (assignmentExpression | inStatement | ifStatement) NEWLINE)*
-             -> ^(IFBLOCK $statements)
-	;
+    :   'else' (statements += (assignmentExpression | inStatement | ifStatement) NEWLINE)*
+        -> ^(IFBLOCK $statements)
+    ;
 
+listenerBlockDeclaration
+    :    (assignmentExpression 
+          |  constraintFunctionCall 
+          |  ifStatement
+          |  constraintFunctionCall) 
+         NEWLINE
+    ;
+listenerBlock
+    :  START
+           (block += listenerBlockDeclaration)*
+       END 
+       -> ^(LISTENBLOCK $block*)
+    ;
 whenStatement
-    :   cond = ('when' | 'unless') logicalORExpression
-        START
-	    ((assignmentExpression | constraintFunctionCall | ifStatement) NEWLINE )+
-        END
-        -> ^(LISTENER EVERY ^(COND $cond logicalORExpression) 
-             ^(LISTENBLOCK assignmentExpression* constraintFunctionCall* ifStatement*))
+    :   cond = ('when' | 'unless') logicalORExpression listenerBlock
+        -> ^(LISTENER EVERY ^(COND $cond logicalORExpression) listenerBlock)
         //-> whenStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
-    
 everyStatement
-    :  'every' TIME (cond = ('when' | 'unless') logicalORExpression)?
-        START
-            (statements += ((assignmentExpression | constraintFunctionCall | ifStatement) NEWLINE )*)
-        END
-        -> ^(LISTENER ^(EVERY TIME) ^(COND $cond? logicalORExpression?)
-             ^(LISTENBLOCK assignmentExpression* constraintFunctionCall* ifStatement*))
+    :  'every' TIME (cond = ('when' | 'unless') logicalORExpression)? listenerBlock
+        -> ^(LISTENER ^(EVERY TIME) ^(COND $cond? logicalORExpression?) listenerBlock)
         //-> everyStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
     
 constraintFunctionCall 
-    :    ID ID expressionList 
+    :    ID idList expressionList 
     ;
     
 
@@ -269,11 +279,12 @@ functionHeader
 functionPredicateBlockDeclaration 
     :    variableDeclaration
     |    functionPredicateCall
+    |    inStatement
     |    assignmentExpression NEWLINE
     ;
 functionBlock      
     :    START 
-           ( block += functionPredicateBlockDeclaration )* 
+           ( block += functionPredicateBlockDeclaration | NEWLINE )* 
          END 
          -> ^(FUNBLOCK[$START, "FUNCBLOCK"] RETURN $block*) 
          //| in_timeline_stmt | if_stmt
@@ -302,7 +313,7 @@ predicateDefinition
 predicateBlock      
     :    // VERY  WEAK IMPLEMENTATION
          START
-           ( block += functionPredicateBlockDeclaration )* 
+           ( block += functionPredicateBlockDeclaration | NEWLINE )* 
            'return' retexp = assignmentExpression NEWLINE 
          END
          -> ^(FUNBLOCK[$START, "FUNBLOCK"] ^(RETURN $retexp) $block*) 
@@ -328,11 +339,16 @@ announcementDeclaration
 // End constraint declarations
 
 // Start device definitions
+constraintBlockDeclaration
+    :	variableDeclaration 
+    |   predicateHeader 
+    |   functionHeader 
+    ;
 constraintBlock 
     :    START 
-             (vars += variableDeclaration | preds += predicateHeader | funcs += functionHeader | announcements += announcementDeclaration)*
+             (block += constraintBlockDeclaration | announcements += announcementDeclaration)*
          END  
-         -> ^(CONBLOCK $vars* $preds* $funcs* ^(ANNOUNCEMENTS $announcements*))
+         -> ^(CONBLOCK $block* ^(ANNOUNCEMENTS $announcements*))
     ;    	
 
 constraintDefinition
@@ -344,12 +360,16 @@ constraintDefinition
          //-> constraintDefinition(name = { $ID.text }, requires = { $constraintList.st }) 
             // variableDeclaration* functionHeader* predicateHeader*)
     ;
-
+deviceBlockDeclaration
+    :    variableDeclaration 
+    |    predicateDefinition 
+    |    functionDefinition
+    ;
 deviceBlock 
     :    START 
-             (vars += variableDeclaration | preds += predicateDefinition | funcs += functionDefinition)* 
+              (block += deviceBlockDeclaration)*
          END	
-         -> ^(DEVBLOCK $vars* $preds* $funcs*)
+         -> ^(DEVBLOCK $block*)
     ;
 deviceDefinition     
     :    'device' ID ('accepts' accepts = idList)? deviceBlock
@@ -357,5 +377,30 @@ deviceDefinition
          //-> deviceDefinition(name = { $ID.text }, accepts = { $constraintList.st })
     ;
 // End device definitions
+
+// Begin program entry point
+
+program 
+    :    (events += eventDefinition NEWLINE)* 
+         NEWLINE*
+         (constraints += constraintDefinition NEWLINE)*
+         NEWLINE* 
+         (devices += deviceDefinition NEWLINE)*
+         NEWLINE*
+         (functionsPredicates += functionDefinition 
+          | functionsPredicates += predicateDefinition
+          | NEWLINE)*
+         NEWLINE*
+         (block += functionPredicateBlockDeclaration)*
+         NEWLINE*
+         -> ^(PROGRAM 
+                ^(EVENTS $events*)
+                ^(CONSTRAINTS $constraints*)
+                ^(DEVICES $devices*)
+                ^(FUNCTIONS $functionsPredicates*)
+                ^(PROGBLOCK $block*))
+    ;
+
+// End program entry point
 
 

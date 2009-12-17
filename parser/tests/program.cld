@@ -1,0 +1,32 @@
+event started
+event finished
+
+constraint core_input requires core_timeline do
+   time first
+   function play (time x)
+   announce played when play
+end
+
+device audio_file accepts core_input do
+  time first
+  function play (time x) do
+     timeline main
+  end
+end
+
+function foo (time y) do
+   time second
+end
+
+predicate bar (time z) do
+  time third
+  return third
+end
+
+timeline main
+number x
+
+foo(x)
+bar(x)
+
+
