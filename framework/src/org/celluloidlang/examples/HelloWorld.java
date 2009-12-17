@@ -2,6 +2,7 @@ package org.celluloidlang.examples;
 
 import org.celluloidlang.core.*;
 import org.celluloidlang.devices.JMFVideo;
+import org.celluloidlang.reactive.ReactiveNumber;
 
 public class HelloWorld {
 	public static void main(String[] args) {
@@ -10,9 +11,10 @@ public class HelloWorld {
 		JMFVideo jmf = new JMFVideo("/Users/kdrum.wav");
 		
 		//play the file at time 0
-		ConstraintFunction cf = new ConstraintFunction(jmf, 0) {
+		ReactiveNumber start = new ReactiveNumber(0.0);
+		ConstraintFunction cf = new ConstraintFunction(jmf, start) {
 			public void execute() {
-				((JMFVideo) input).play(0);
+				((JMFVideo) input).play();
 			}
 		};
 		timeline1.addConstraintFunction(cf);
@@ -27,9 +29,10 @@ public class HelloWorld {
 		timeline1.addConstraintFunction(cf);
 		*/
 		//play the file at time 0
-		cf = new ConstraintFunction(jmf, 1000) {
+		ReactiveNumber next = new ReactiveNumber(1000.0);
+		cf = new ConstraintFunction(jmf, next) {
 			public void execute() {
-				((JMFVideo) input).stop(0);
+				((JMFVideo) input).stop();
 			}
 		};
 		timeline1.addConstraintFunction(cf);

@@ -1,5 +1,7 @@
 package org.celluloidlang.constraints.buildtin;
 
+import org.celluloidlang.reactive.ReactiveNumber;
+
 /**
  * Constraint rewind
  * @author blake
@@ -11,5 +13,5 @@ public interface REWIND {
 	 * @param offSet time to start 
 	 * @param speed speed, as a multiplier
 	 */
-	public void rewind(double offSet, double speed);
+	public void rewind(ReactiveNumber speed);
 }

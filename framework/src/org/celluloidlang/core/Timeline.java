@@ -10,12 +10,14 @@ import javax.swing.Timer;
 import org.celluloidlang.announcment.Announcement;
 import org.celluloidlang.announcment.AnnouncementListener;
 import org.celluloidlang.constraints.defined.*;
+import org.celluloidlang.reactive.ReactiveListener;
+import org.celluloidlang.reactive.ReactiveUpdate;
 
 /*
  * synchronized?
  */
 
-public class Timeline implements AnnouncementListener {
+public class Timeline implements AnnouncementListener, ReactiveListener {
 	
 	static final int TIME_GRANULARITY = 100;
 	
@@ -61,7 +63,10 @@ public class Timeline implements AnnouncementListener {
 			inputs.add(cf.getInput());
 		}
 		int index = 0;
-		while ((index < willExecute.size()) && (cf.getTime() > willExecute.get(index).getTime())) {
+		/*
+		 *TODO: Change to priority queue and listen for update from reactive number to updates queue on changes
+		 */
+		while ((index < willExecute.size()) && (cf.getTime().getView() > willExecute.get(index).getTime().getView())) {
 			index++;
 		}
 		willExecute.add(index, cf);
@@ -69,7 +74,7 @@ public class Timeline implements AnnouncementListener {
 	
 	private synchronized void timeStep(long currentTime) {
 		long elapsed = currentTime - initialTime;
-		while ((willExecute.peek() != null) && (willExecute.peek().getTime() <= elapsed)) {
+		while ((willExecute.peek() != null) && (willExecute.peek().getTime().getView() <= elapsed)) {
 			ConstraintFunction cf = willExecute.pop();
 			didExecute.push(cf);
 			cf.execute();
@@ -91,5 +96,11 @@ public class Timeline implements AnnouncementListener {
 		for(ConstraintFunction c : announceEvents.get(a.getType())){
 			c.execute();
 		}
+	}
+
+	@Override
+	public void update(ReactiveUpdate e) {
+		// TODO reprioritize queue
+		
 	}
 }

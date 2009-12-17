@@ -1,4 +1,7 @@
 package org.celluloidlang.constraints.buildtin;
+
+import org.celluloidlang.reactive.ReactiveNumber;
+
 /**
  * Constraint ffwd
  * @author blake
@@ -10,5 +13,5 @@ public interface FFWD {
 	 * @param offSet  the time to start fast forwarding
 	 * @param speed  speed, as a multiplier, 
 	 */
-	public void ffwd(double offSet, double speed);
+	public void ffwd(ReactiveNumber speed);
 }

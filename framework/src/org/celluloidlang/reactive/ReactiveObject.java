@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author blake
  * 
  */
-public interface ReactiveObject<T> {
+public interface ReactiveObject<T> extends ReactiveListener {
 	/**
 	 * Performs actions on reactive Object
 	 * ADD, +
@@ -85,11 +85,6 @@ public interface ReactiveObject<T> {
 	 */
 	public T getView();
 
-	/**
-	 * Receive ReactiveUpdate and updates object view
-	 * 
-	 * @param e
-	 */
-	public void update(ReactiveUpdate e);
+
 
 }
