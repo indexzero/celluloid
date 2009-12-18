@@ -1,5 +1,6 @@
 package org.celluloidlang.devices;
 
+import java.awt.Component;
 import java.net.URL;
 
 import javax.media.MediaLocator;
@@ -15,13 +16,15 @@ import org.celluloidlang.reactive.ReactiveNumber;
 
 public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output, Runnable{
 	
+	/**
+	 * for each enum, must document what it does
+	 */
 	public enum Event{
 		AUDIO_GAIN
 	}
 	
 	public JMFVideo(URL url) {
-		this.setMediaLocation("file:////Users/david/Downloads/june_chorus.wav");
-		//this.setMediaLocator(new MediaLocator(url));
+		this.setMediaLocator(new MediaLocator(url));
 		this.setPlaybackLoop(false);
 		this.realize();
 		this.prefetch();
@@ -32,7 +35,6 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 	public void play() {
 		super.start();
 		new Thread(this).start();
-		System.out.println("Played");
 	}
 
 	@Override
@@ -40,7 +42,6 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 		if (this.getState() == Player.Started) {
 			super.stop();
 			super.setMediaTime(new Time(0));
-			System.out.println("Stopped");
 		}
 	}
 
@@ -51,6 +52,9 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 			return;
 		if ((super.getState() == MediaPlayer.Realized) ||
 				(super.getState() == MediaPlayer.Prefetched)) {
+			super.setRate((float) speed);
+		}
+		if (super.getState() == MediaPlayer.Started) {
 			super.setRate((float) speed);
 		}
 	}
@@ -73,12 +77,10 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 				(super.getState() == MediaPlayer.Prefetched)) {
 			super.stop();
 			super.setRate((float) speed);
+			super.start();
 		}
 		if (super.getState() == MediaPlayer.Started) {
-			System.out.println();
-			super.stop();
 			super.setRate((float) speed);
-			super.start();
 		}
 	}
 
@@ -116,5 +118,10 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 			}
 			announcer.notifyObservers(new Announcement(Event.AUDIO_GAIN + "=" + this.curVolumeLevel, this));
 		}
+	}
+
+	@Override
+	public Component getVisualData() {
+		return super.getVisualComponent();
 	}
 }
