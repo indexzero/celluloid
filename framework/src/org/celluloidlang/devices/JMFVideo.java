@@ -21,8 +21,7 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 	}
 	
 	public JMFVideo(URL url) {
-		this.setMediaLocation("file:////Users/david/Downloads/june_chorus.wav");
-		//this.setMediaLocator(new MediaLocator(url));
+		this.setMediaLocator(new MediaLocator(url));
 		this.setPlaybackLoop(false);
 		this.realize();
 		this.prefetch();
