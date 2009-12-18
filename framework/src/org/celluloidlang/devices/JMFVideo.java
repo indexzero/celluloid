@@ -75,6 +75,13 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 			super.stop();
 			super.setRate((float) speed);
 		}
+		/*
+		if (super.getState() == MediaPlayer.Started) {
+			System.out.println("BLAH");
+			super.stop();
+			super.setRate((float) speed);
+			super.start();
+		}*/
 	}
 
 	@Override
