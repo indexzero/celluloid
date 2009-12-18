@@ -34,7 +34,7 @@ public class HelloWorld {
 		start = new ReactiveNumber(2000.0);
 		cf = new ConstraintFunction<Input>(jmf, start) {
 			public void execute() {
-				((JMFVideo) input).stop();
+				((JMFVideo) input).ffwd(new ReactiveNumber(2.0));
 			}
 		};
 		timeline1.addConstraintFunction(cf);

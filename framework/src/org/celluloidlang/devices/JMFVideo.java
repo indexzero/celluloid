@@ -13,7 +13,6 @@ import org.celluloidlang.constraints.defined.StaticInput;
 import org.celluloidlang.constraints.defined.Video;
 import org.celluloidlang.reactive.ReactiveNumber;
 
-
 public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output, Runnable{
 	
 	public enum Event{
@@ -73,6 +72,12 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 				(super.getState() == MediaPlayer.Prefetched)) {
 			super.stop();
 			super.setRate((float) speed);
+		}
+		if (super.getState() == MediaPlayer.Started) {
+			System.out.println();
+			super.stop();
+			super.setRate((float) speed);
+			super.start();
 		}
 	}
 
