@@ -1,24 +1,35 @@
 package org.celluloidlang.core;
 
-import org.celluloidlang.constraints.defined.*;
 import org.celluloidlang.reactive.ReactiveNumber;
 
-public class ConstraintFunction {
+public class ConstraintFunction<T> implements Comparable<ConstraintFunction<T>> {
 	
-	protected Input input;
+	protected T input;
 	private ReactiveNumber time;
 	
-	public ConstraintFunction(Input input, ReactiveNumber executeTime) {
-		this.input = input;
+	public ConstraintFunction(T constraintObject, ReactiveNumber executeTime) {
+		this.input = constraintObject;
 		this.time = executeTime;
 	}
 	
-	public Input getInput() {
+	public T getConstraintObject() {
 		return input;
 	}
 	
 	public ReactiveNumber getTime() {
 		return time;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public int compareTo(ConstraintFunction other) {
+		
+		if (this.time.getView() < other.getTime().getView()) {
+			return -1;
+		} else if (this.time.getView() > other.getTime().getView()) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 	
 	/**

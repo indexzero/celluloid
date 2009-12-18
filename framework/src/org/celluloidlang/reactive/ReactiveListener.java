@@ -7,7 +7,7 @@ package org.celluloidlang.reactive;
  * @author blake
  * 
  */
-public interface ReactiveListener<T> {
+public interface ReactiveListener {
 
 	/**
 	 * Receive ReactiveUpdate and updates object view

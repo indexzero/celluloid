@@ -1,5 +1,8 @@
 package org.celluloidlang.devices;
 
+import java.net.URL;
+
+import javax.media.MediaLocator;
 import javax.media.Player;
 import javax.media.Time;
 import javax.media.bean.playerbean.MediaPlayer;
@@ -17,8 +20,9 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 		AUDIO_GAIN
 	}
 	
-	public JMFVideo(String pathname) {
-		this.setMediaLocation("file:////Users/david/Documents/cell/framework/playme.wav");
+	public JMFVideo(URL url) {
+		this.setMediaLocation("file:////Users/david/Downloads/june_chorus.wav");
+		//this.setMediaLocator(new MediaLocator(url));
 		this.setPlaybackLoop(false);
 		this.realize();
 		this.prefetch();
@@ -27,15 +31,17 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 	
 	@Override
 	public void play() {
-		this.start();
+		super.start();
 		new Thread(this).start();
+		System.out.println("Played");
 	}
 
 	@Override
 	public void stop() {
 		if (this.getState() == Player.Started) {
-			this.stop();
-			this.setMediaTime(new Time(0));
+			super.stop();
+			super.setMediaTime(new Time(0));
+			System.out.println("Stopped");
 		}
 	}
 
@@ -44,18 +50,18 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 		double speed = reactiveSpeed.getView();
 		if (speed > 0)
 			return;
-		if ((this.getState() == MediaPlayer.Realized) ||
-				(this.getState() == MediaPlayer.Prefetched)) {
-			this.setRate((float) speed);
+		if ((super.getState() == MediaPlayer.Realized) ||
+				(super.getState() == MediaPlayer.Prefetched)) {
+			super.setRate((float) speed);
 		}
 	}
 
 	@Override
 	public void seek(ReactiveNumber reactiveTime) {
 		double time = reactiveTime.getView();
-		if ((this.getState() == MediaPlayer.Realized) ||
-				(this.getState() == MediaPlayer.Prefetched)) {
-			this.setMediaTime(new Time(time));
+		if ((super.getState() == MediaPlayer.Realized) ||
+				(super.getState() == MediaPlayer.Prefetched)) {
+			super.setMediaTime(new Time(time));
 		}
 	}
 
@@ -64,27 +70,27 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 		double speed = reactiveSpeed.getView();
 		if (speed < 0)
 			return;
-		if ((this.getState() == MediaPlayer.Realized) ||
-				(this.getState() == MediaPlayer.Prefetched)) {
-			this.stop();
-			this.setRate((float) speed);
+		if ((super.getState() == MediaPlayer.Realized) ||
+				(super.getState() == MediaPlayer.Prefetched)) {
+			super.stop();
+			super.setRate((float) speed);
 		}
 	}
 
 	@Override
 	public void pause() {
-		if (this.getState() == Player.Started) {
-			this.stop();
+		if (super.getState() == Player.Started) {
+			super.stop();
 		}
 	}
 
 	@Override
 	public void size(double x1, double y1, double x2, double y2) {
-		this.setBounds((int) x1, (int) y1, (int) Math.abs(x2 - x1), (int) Math.abs(y2 - y1));
+		super.setBounds((int) x1, (int) y1, (int) Math.abs(x2 - x1), (int) Math.abs(y2 - y1));
 	}
 	
 	public void waitForPrefetch(){
-		while(!(this.getState() == MediaPlayer.Prefetched)){
+		while(!(super.getState() == MediaPlayer.Prefetched)){
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -105,10 +111,5 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 			}
 			announcer.notifyObservers(new Announcement(Event.AUDIO_GAIN + "=" + this.curVolumeLevel, this));
 		}
-		
-		
-		
 	}
-
-
 }

@@ -4,12 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Stack;
 import javax.swing.Timer;
 
 import org.celluloidlang.announcment.Announcement;
 import org.celluloidlang.announcment.AnnouncementListener;
-import org.celluloidlang.constraints.defined.*;
 import org.celluloidlang.reactive.ReactiveListener;
 import org.celluloidlang.reactive.ReactiveUpdate;
 
@@ -17,22 +17,22 @@ import org.celluloidlang.reactive.ReactiveUpdate;
  * synchronized?
  */
 
-public class Timeline implements AnnouncementListener, ReactiveListener {
+public class Timeline<T> implements AnnouncementListener, ReactiveListener {
 	
 	static final int TIME_GRANULARITY = 100;
 	
 	private Timer timer;
 	private long initialTime = -1;
-	private Stack<ConstraintFunction> didExecute;
-	private LinkedList<ConstraintFunction> willExecute;
-	private LinkedList<Input> inputs;
-	private HashMap<String, LinkedList<ConstraintFunction>> announceEvents;
+	private Stack<ConstraintFunction<T>> didExecute;
+	private PriorityQueue<ConstraintFunction<T>> willExecute;
+	private LinkedList<T> inputs;
+	private HashMap<String, LinkedList<EventFunction<T>>> announceEvents;
 	
 	public Timeline() {
-		didExecute = new Stack<ConstraintFunction>();
-		willExecute = new LinkedList<ConstraintFunction>();
-		inputs = new LinkedList<Input>();
-		announceEvents  = new HashMap<String, LinkedList<ConstraintFunction>>();
+		didExecute = new Stack<ConstraintFunction<T>>();
+		willExecute = new PriorityQueue<ConstraintFunction<T>>();
+		inputs = new LinkedList<T>();
+		announceEvents  = new HashMap<String, LinkedList<EventFunction<T>>>();
 		ActionListener taskPerformer = new ActionListener() {
 			public void actionPerformed(ActionEvent action) {
 				timeStep(System.currentTimeMillis());
@@ -58,24 +58,18 @@ public class Timeline implements AnnouncementListener, ReactiveListener {
 		this.resetStacks();
 	}
 	
-	public void addConstraintFunction(ConstraintFunction cf) {
-		if (!inputs.contains(cf.getInput())) {
-			inputs.add(cf.getInput());
+	public void addConstraintFunction(ConstraintFunction<T> cf) {
+		if (!inputs.contains(cf.getConstraintObject())) {
+			inputs.add(cf.getConstraintObject());
 		}
-		int index = 0;
-		/*
-		 *TODO: Change to priority queue and listen for update from reactive number to updates queue on changes
-		 */
-		while ((index < willExecute.size()) && (cf.getTime().getView() > willExecute.get(index).getTime().getView())) {
-			index++;
-		}
-		willExecute.add(index, cf);
+		
+		willExecute.offer(cf);
 	}
 	
 	private synchronized void timeStep(long currentTime) {
 		long elapsed = currentTime - initialTime;
 		while ((willExecute.peek() != null) && (willExecute.peek().getTime().getView() <= elapsed)) {
-			ConstraintFunction cf = willExecute.pop();
+			ConstraintFunction<T> cf = willExecute.poll();
 			didExecute.push(cf);
 			cf.execute();
 		}
@@ -83,17 +77,20 @@ public class Timeline implements AnnouncementListener, ReactiveListener {
 	
 	private synchronized void resetStacks() {
 		while (!didExecute.isEmpty()) {
-			willExecute.push(didExecute.pop());
+			willExecute.offer(didExecute.pop());
 		}
 	}
 
-	public void addEventConstraint(String type, ConstraintFunction constraint){
-		announceEvents.get(type).push(constraint);
+	public void addEventFunction(String type, EventFunction<T> event) {
+		if (!announceEvents.containsKey(type)) {
+			announceEvents.put(type, new LinkedList<EventFunction<T>>());
+		}
+		announceEvents.get(type).add(event);
 	}
 	
 	@Override
 	public synchronized void receiveAnnouncement(Announcement a) {
-		for(ConstraintFunction c : announceEvents.get(a.getType())){
+		for(EventFunction<T> c : announceEvents.get(a.getType())){
 			c.execute();
 		}
 	}
