@@ -13,7 +13,7 @@ public void <name> (<args>) "{"
   <block>
 "}"
 >>
-functionBlock(statements)             ::= "<statements:{ statement | <statement.st> }; separator\"\\n\">"
+functionBlock(statements)             ::= "<statements:{ statement | <statement.st> }; separator=\"\\n\">"
 functionCall(name, args)              ::=  "<name>(<args>);"
 
 predicateHeader(name, args)           ::= "public bool <name> (<args>)"
