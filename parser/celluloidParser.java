@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g 2009-12-19 17:21:25
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g 2009-12-19 17:45:57
 
 import org.antlr.runtime.*;
 import java.util.Stack;
@@ -555,7 +555,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: devices, functionsPredicates, block, events, constraints
+            // elements: devices, constraints, block, functionsPredicates, events
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -844,7 +844,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: eventName, functionName, predicateExpr
+            // elements: eventName, predicateExpr, functionName
             // token labels: eventName, functionName
             // rule labels: retval, predicateExpr
             // token list labels: 
@@ -1009,7 +1009,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: requires, announces, constraintBlock, ID
+            // elements: requires, constraintBlock, ID, announces
             // token labels: 
             // rule labels: retval, announces, requires
             // token list labels: 
@@ -1439,7 +1439,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: accepts, ID, deviceBlock
+            // elements: accepts, deviceBlock, ID
             // token labels: 
             // rule labels: retval, accepts
             // token list labels: 
@@ -1804,7 +1804,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: variableList, ID
+            // elements: ID, variableList
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1926,7 +1926,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: ID, functionBlock, variableList
+            // elements: functionBlock, ID, variableList
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2314,7 +2314,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: variableList, ID
+            // elements: ID, variableList
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2436,7 +2436,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: predicateBlock, variableList, ID
+            // elements: predicateBlock, ID, variableList
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2594,7 +2594,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: retexp, block
+            // elements: block, retexp
             // token labels: 
             // rule labels: retexp, retval
             // token list labels: 
@@ -2701,7 +2701,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: ID, inBlock
+            // elements: inBlock, ID
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -3245,7 +3245,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: block, elseStatement, elseifBlock
+            // elements: block, elseifBlock, elseStatement
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -3821,7 +3821,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: event, target, when, listenerBlock, unless
+            // elements: listenerBlock, when, event, unless, target
             // token labels: unless, event, when, target
             // rule labels: retval
             // token list labels: 
@@ -4058,7 +4058,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: unless, TIME, listenerBlock, event, when, target
+            // elements: unless, when, target, event, listenerBlock, TIME
             // token labels: unless, event, when, target
             // rule labels: retval
             // token list labels: 
@@ -4559,7 +4559,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: expressionList, function, id
+            // elements: function, expressionList, id
             // token labels: function
             // rule labels: retval
             // token list labels: id
@@ -5555,7 +5555,7 @@ public class celluloidParser extends Parser {
 
 
                             // AST REWRITE
-                            // elements: ID, 85
+                            // elements: 85, ID
                             // token labels: 
                             // rule labels: retval
                             // token list labels: 
@@ -5697,7 +5697,7 @@ public class celluloidParser extends Parser {
 
 
                             // AST REWRITE
-                            // elements: TYPE, initializer, ID
+                            // elements: initializer, ID, TYPE
                             // token labels: 
                             // rule labels: retval
                             // token list labels: 
