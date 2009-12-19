@@ -3,8 +3,12 @@ package org.celluloidlang.devices;
 import java.awt.Component;
 import java.net.URL;
 
+import javax.media.ControllerEvent;
+import javax.media.ControllerListener;
+import javax.media.EndOfMediaEvent;
 import javax.media.MediaLocator;
 import javax.media.Player;
+import javax.media.PrefetchCompleteEvent;
 import javax.media.Time;
 import javax.media.bean.playerbean.MediaPlayer;
 
@@ -14,7 +18,7 @@ import org.celluloidlang.constraints.defined.StaticInput;
 import org.celluloidlang.constraints.defined.Video;
 import org.celluloidlang.reactive.ReactiveNumber;
 
-public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output, Runnable {
+public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output, Runnable, ControllerListener {
 	
 	/**
 	 * for each ENUM, must document what it does
@@ -27,21 +31,26 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 		AUDIO_GAIN, STATUS, MEDIA_TIME, ZOOM_LEVEL
 	}
 	
-	private String status;
+	public enum Status{
+		PLAYING, STOPPED, PAUSED
+	}
+	
+	Status status;
 	
 	public JMFVideo(URL url) {
-		status = "initialized";
+		status = Status.STOPPED;
 		this.setMediaLocator(new MediaLocator(url));
 		this.setPlaybackLoop(false);
 		this.realize();
 		this.prefetch();
 		waitForPrefetch();
+		this.addControllerListener(this);
 	}
 	
 	@Override
 	public void play() {
 		super.start();
-		status = "playing";
+		status = Status.PLAYING;
 		new Thread(this).start();
 	}
 
@@ -49,7 +58,7 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 	public void stop() {
 		if (this.getState() == Player.Started) {
 			super.stop();
-			status = "stopped";
+			status = Status.STOPPED;
 			super.setMediaTime(new Time(0));
 		}
 	}
@@ -97,7 +106,7 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 	public void pause() {
 		if (super.getState() == Player.Started) {
 			super.stop();
-			status = "paused";
+			status = Status.PAUSED;
 		}
 	}
 
@@ -145,17 +154,17 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 
 	@Override
 	public boolean isPlaying() {
-		return status.equalsIgnoreCase("Playing");
+		return status.equals(Status.PLAYING);
 	}
 
 	@Override
 	public boolean isStopped() {
-		return status.equalsIgnoreCase("Stopped");
+		return status.equals(Status.STOPPED);
 	}
 
 	@Override
 	public boolean isPaused() {
-		return status.equalsIgnoreCase("Paused");
+		return status.equals(Status.PAUSED);
 	}
 
 	@Override
@@ -167,4 +176,15 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 	public boolean isFfwding() {
 		return (super.getRate() > 0) && (super.getRate() != 1);
 	}
+
+
+	@Override
+	public void controllerUpdate(ControllerEvent event) {
+		System.out.println(event.toString());
+		if (event instanceof EndOfMediaEvent) {
+			stop();
+		}
+
+	}
+
 }
