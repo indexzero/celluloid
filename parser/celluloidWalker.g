@@ -121,11 +121,19 @@ predicateBlock
 
 // Timline and procedural blocks
 inStatement
-    :  ^(IN ID inBlock)
+scope {
+  String timeline;
+}
+    :  ^(IN ID inBlock) {
+       $inStatement::timeline = $ID.text;
+    }
         //-> inStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
 inBlock 
-    :	^(INBLOCK inBlockDeclaration *)
+    :	^(INBLOCK (block += inBlockDeclaration)*) {
+                  $st = %statementList();
+                  %{$st}.statements = $block;
+    }
     ;
 inBlockDeclaration
     :	whenStatement 
@@ -173,7 +181,15 @@ listenerBlockDeclaration
     ;
     
 constraintFunctionCall 
-    :    ^(OBJCALL ID ID ^(ARGS expressionList?)) 
+    :    ^(OBJCALL function = ID target = ID ^(AT (time = TIME)?) ^(ARGS expressionList?)) {
+         $st = %constraintFunctionCall();
+         %{$st}.timeline = $inStatement::timeline;
+         %{$st}.target = $target.text;
+         %{$st}.type = ""; // TODO: inter timeline through semantic analysis
+         %{$st}.function = $function.text;
+         %{$st}.time = time != null ? $time.st : 0;
+         %{$st}.args = $expressionList.st;
+    }
     ;
     
 functionPredicateCall       

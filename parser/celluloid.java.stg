@@ -29,3 +29,20 @@ constraintList( ids )                 ::= "implements <ids>"
 deviceDefinition(name, accepts)       ::= "public class <name> extends device <accepts> { TODO: Members }"
 
 timelineDeclaration(name)             ::= "timeline <name> = new timeline();"
+
+inStatement(name, block)              ::=
+
+statementList(statements) ::= "<statements:{ statement | <statement.st> }; separator=\"\\n\">"
+
+inBlockDeclConstFuncCall(name, func, args)    ::= << <name>.addConstraintFunction(
+                                                        new ConstraintFunction(<args
+constraintFunctionCall(timeline, target, type, function, time, args) ::=
+<<
+<timeline>.addConstraintFunction(
+  new ConstraintFunction(<target>, new ReactiveNumber(<time>)) {
+				public void execute() {
+					((<type>) input).<function>(<args.st>);
+				}
+			}
+		);
+>>

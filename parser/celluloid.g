@@ -14,6 +14,7 @@ tokens {
   ARG;
   ARGS;
   OBJCALL;
+  AT;
   CALL;
   PROGRAM;
   EVENTS;
@@ -265,8 +266,8 @@ listenerBlockDeclaration
     ;
     
 constraintFunctionCall 
-    :    function = ID id += ID (',' id += ID)* expressionList? NEWLINE?
-         -> ^(OBJCALL $id $function ^(ARGS expressionList?))* 
+    :    function = ID id += ID (',' id += ID)* (time = TIME ',')? expressionList? NEWLINE?
+         -> ^(OBJCALL $id $function ^(AT $time?) ^(ARGS expressionList?))* 
     ;
     
 functionPredicateCall       
