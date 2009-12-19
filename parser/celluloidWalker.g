@@ -183,7 +183,7 @@ functionPredicateCall
 
 // Lists of IDs, variables, and expressions
 idList 
-    :    ID+
+    :    ids += ID+ -> idList(ids = { $ids }) 
     ;
 
 variableList  
