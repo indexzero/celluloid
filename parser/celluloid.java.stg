@@ -1,31 +1,49 @@
 group jcelluloid;
 
-variableDeclaration(type, name, init) ::= "<type> <name> <init>"
-initializer(exp)                      ::= " = <exp>"
+announcementDefinition()              ::= ""
+eventDefinition(name)                 ::= "public class name extends event { }"
+constraintDefinition(name, requires)  ::= "public interface <name> <requires> { TODO: Members }"
+deviceDefinition(name, accepts)       ::= "public class <name> extends device <accepts> { TODO: Members }"
 
-idList(ids)                           ::= "<ids:{ id | <id.text> }; separator=\", \">"
-variableList(vars)                    ::= "<vars:{ var | <var.st> }; separator=\", \">"
-expressionList(exps)                  ::= "<exps:{ exp | <exp.st> }; separator=\", \">"
-
-functionDefintion(name, args, block)      ::=
+functionHeader()                      ::= ""
+functionDefintion(name, args, block)  ::=
 <<
 public void <name> (<args>) "{"
   <block>
 "}"
 >>
-functionBlock(statements)             ::= "<statements:{ statement | <statement.st> }; separator=\"\\n\">"
-functionCall(name, args)              ::=  "<name>(<args>);"
 
 predicateHeader(name, args)           ::= "public bool <name> (<args>)"
 predicateDefinition (header, block)   ::= << <header> "{" <block> "}" >>
-predicateBlock(block, exp)            ::= "<block> \\n returns <exp>;"
-predicateCall(name,args)              ::= "<name>(<args>);"
 
-eventDefinition(name)                 ::= "public class name extends event { }"
+inStatement(name, block)              ::= ""
+ifStatement()                         ::= ""
+whenEveryStatement()                  ::= ""
 
-constraintDefinition(name, requires)  ::= "public interface <name> <requires> { TODO: Members }"
-constraintList( ids )                 ::= "implements <ids>"
+constraintFunctionCall(
+ timeline, target,
+ type, function,
+ time, args)                          ::=
+<<
+<timeline>.addConstraintFunction(
+  new ConstraintFunction(<target>, new ReactiveNumber(<time>)) {
+                public void execute() {
+                    ((<type>) input).<function>(<args.st>);
+                }
+            }
+        );
+>>
 
-deviceDefinition(name, accepts)       ::= "public class <name> extends device <accepts> { TODO: Members }"
+functionPredicateCall()               ::= ""
 
+idList(ids)                           ::= "<ids:{ id | <id.text> }; separator=\", \">"
+variableList(vars)                    ::= "<vars:{ var | <var.st> }; separator=\", \">"
+expressionList(exps)                  ::= "<exps:{ exp | <exp.st> }; separator=\", \">"
+statementList(statements)             ::= "<statements:{ statement | <statement.st> }; separator=\"\\n\">"
+
+variableDeclaration(type, name, init) ::= "<type> <name> <init>"
 timelineDeclaration(name)             ::= "timeline <name> = new timeline();"
+initializer(exp)                      ::= " = <exp>"
+expression()                          ::= ""
+logicalORExpression                   ::= ""
+primaryExpression                     ::= ""
