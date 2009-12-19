@@ -3,9 +3,8 @@ package org.celluloidlang.examples;
 import java.io.File;
 import java.net.MalformedURLException;
 
-import org.celluloidlang.constraints.defined.Input;
 import org.celluloidlang.core.*;
-import org.celluloidlang.devices.JMFVideo;
+import org.celluloidlang.devices.JMFAudio;
 import org.celluloidlang.devices.SwingOutput;
 import org.celluloidlang.reactive.ReactiveNumber;
 /**
@@ -36,7 +35,7 @@ public class HelloCh1 {
 		//output output1 = new Output(*somefile*)
 		//JMFVideo is a video and out.
 		try {
-		JMFVideo audio1 = new JMFVideo(
+		JMFAudio audio1 = new JMFAudio(
 				new File("acousticgrunge.wav").toURI().toURL());
 
 		//output output1 = new Output(*somefile*)
@@ -49,7 +48,7 @@ public class HelloCh1 {
 		timeline1.addConstraintFunction(
 			new ConstraintFunction(audio1, new ReactiveNumber(0.0)) {
 				public void execute() {
-					((JMFVideo) input).play();
+					((JMFAudio) input).play();
 				}
 			}
 		);

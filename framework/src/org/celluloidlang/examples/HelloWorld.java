@@ -9,84 +9,88 @@ import org.celluloidlang.devices.SwingOutput;
 import org.celluloidlang.reactive.ReactiveNumber;
 
 public class HelloWorld {
+	
 	public static void main(String[] args) {
 
+		/*
+		 * This is the one and only global timeline.
+		 */
+		Timeline globalTimeline = new Timeline();
+		
+		//this is a timeline defined in source.cld
 		Timeline timeline1 = new Timeline();
 		
-		File file = new File("june_chorus.wav");
+		//output size
+		SwingOutput output1 = new SwingOutput("Celluloid Output", 1024, 768);
+		
+		//this is an input defined in source.cld
 		JMFVideo jmf;
 		try {
-			jmf = new JMFVideo(file.toURI().toURL());
+			jmf = new JMFVideo(new File("june_chorus.wav").toURI().toURL());
 		} catch (MalformedURLException e) {
 			System.err.println("Could not generate URL");
 			return;
 		}
 		
 		//play the file at time 0 (MUST BE IN MILLISECONDS)
-		ReactiveNumber start = new ReactiveNumber(0000.0);
-		ConstraintFunction cf = new ConstraintFunction(jmf, start) {
+		timeline1.addConstraintFunction(new ConstraintFunction(jmf, new ReactiveNumber(0000.0)) {
 			public void execute() {
 				((JMFVideo) input).play();
 			}
-		};
-		timeline1.addConstraintFunction(cf);
+		});
 		
 		//ffwd at time 2
-		start = new ReactiveNumber(2000.0);
-		cf = new ConstraintFunction(jmf, start) {
+		timeline1.addConstraintFunction(new ConstraintFunction(jmf, new ReactiveNumber(2000.0)) {
 			public void execute() {
 				((JMFVideo) input).ffwd(new ReactiveNumber(2.0));
 			}
-		};
-		timeline1.addConstraintFunction(cf);
+		});
 		
 		//ffwd rate back to 1
-		start = new ReactiveNumber(4000.0);
-		cf = new ConstraintFunction(jmf, start) {
+		timeline1.addConstraintFunction(new ConstraintFunction(jmf, new ReactiveNumber(4000.0)) {
 			public void execute() {
 				((JMFVideo) input).ffwd(new ReactiveNumber(1.0));
 			}
-		};
-		timeline1.addConstraintFunction(cf);
+		});
 		
-		start = new ReactiveNumber(6000.0);
-		cf = new ConstraintFunction(jmf, start) {
+		//play every second
+		timeline1.addEveryFunction(new EveryFunction(new ReactiveNumber((float)1000), jmf)  {
 			public void execute() {
 				((JMFVideo) input).play();
 			}
-		};
-		timeline1.addConstraintFunction(cf);
+		});
 		
-		//this is an event, like a when keyword event
-		
-		EventFunction ev = new EventFunction(jmf) {
+		//stop every two seconds
+		timeline1.addEveryFunction(new EveryFunction(new ReactiveNumber((float)2000), jmf)  {
 			public void execute() {
-				((JMFVideo) input).play();
+				((JMFVideo) input).stop();
 			}
-		};
+		});
 		
-		
-		//output size
-		SwingOutput output1 = new SwingOutput("Celluloid Output", 1024, 768);
-		
-		OutputConstraintFunction ocf = new OutputConstraintFunction(timeline1, output1, new ReactiveNumber(0.0)) {
+		/* when you come across a block such as:
+		 * in output1 do
+		 * 	play timeline1 @start
+		 * end
+		 * 
+		 * you have to do two things, both in anonymous classes:
+		 * 
+		 * timeline1.attachOutput(output1);
+		 * timeline1.play();
+		 * 
+		 * Basically, look at the following code, which corresponds to the celluloid
+		 * code I just used, like 8 lines above this one
+		 */
+		globalTimeline.addConstraintFunction(new OutputConstraintFunction(timeline1, output1, new ReactiveNumber(0.0)) {
 			public void execute() {
 				((Timeline) input).attachOutput(output);
 			}
-		};
+		});
 		
-		/*
-		 * This is the one and only global timeline.  Everything
-		 */
-		Timeline globalTimeline = new Timeline();
-		
-		ConstraintFunction gf = new ConstraintFunction(timeline1, new ReactiveNumber(0.0)) {
+		globalTimeline.addConstraintFunction(new ConstraintFunction(timeline1, new ReactiveNumber(0.0)) {
 			public void execute() {
 				((Timeline) input).play();
 			}
-		};
-		globalTimeline.addConstraintFunction(gf);
-		globalTimeline.addConstraintFunction(ocf);
+		});
 		
 		/*
 		 * EXECUTION BEGINS HERE
