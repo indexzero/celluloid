@@ -32,6 +32,8 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	private PriorityQueue<ConstraintFunction> willExecute;
 	private LinkedList<Input> inputs;
 	private HashMap<String, LinkedList<EventFunction>> announceEvents;
+	private HashMap<EveryFunction, Float> everyFunctionHash;
+	private LinkedList<EveryFunction> everyFunctionList;
 	private String status; //can be "initialized", "playing", and "stopped"
 	
 	public Timeline() {
@@ -40,6 +42,8 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		willExecute = new PriorityQueue<ConstraintFunction>();
 		inputs = new LinkedList<Input>();
 		announceEvents  = new HashMap<String, LinkedList<EventFunction>>();
+		everyFunctionHash = new HashMap<EveryFunction, Float>();
+		everyFunctionList = new LinkedList<EveryFunction>();
 		ActionListener taskPerformer = new ActionListener() {
 			public void actionPerformed(ActionEvent action) {
 				timeStep(System.currentTimeMillis());
@@ -81,6 +85,7 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 			didExecute.push(cf);
 			cf.execute();
 		}
+		this.evaluateEveryFunction(currentTime);
 	}
 	
 	private synchronized void resetStacks() {
@@ -115,7 +120,19 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	}
 	
 	public void addEveryFunction(EveryFunction every) {
-		
+		if (every != null) {
+			everyFunctionList.add(every);
+			everyFunctionHash.put(every, every.getExecuteTime().getView());
+		}
+	}
+	
+	private void evaluateEveryFunction(long currentTime) {
+		long elapsed = currentTime - initialTime;
+		for (EveryFunction ef : everyFunctionList) {
+			if (everyFunctionHash.get(ef) <= elapsed) {
+				ef.execute();
+			}
+		}
 	}
 	
 	@Override

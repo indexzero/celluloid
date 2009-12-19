@@ -15,6 +15,10 @@ public class EveryFunction {
 		this.evals = evals;
 	}
 	
+	public ReactiveNumber getExecuteTime() {
+		return everyTime;
+	}
+	
 	/**
 	 * need to overwrite this function (anonymous function)
 	 */

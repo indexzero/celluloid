@@ -118,7 +118,7 @@ public class JMFAudio extends MediaPlayer implements StaticInput, Output, Runnab
 			}
 			announcer.notifyObservers(new Announcement(Event.AUDIO_GAIN + "=" +this.curVolumeLevel, this));
 			announcer.notifyObservers(new Announcement(Event.STATUS + "=" +this.status, this));
-			announcer.notifyObservers(new Announcement(Event.MEDIA_TIME + "=" +this.getMediaTime().getSeconds(), this));
+			announcer.notifyObservers(new Announcement(Event.MEDIA_TIME + "=" +(this.getMediaTime().getSeconds() * 1000), this));
 		}
 	}
 
