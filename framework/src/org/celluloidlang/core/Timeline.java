@@ -87,7 +87,7 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 			didExecute.push(cf);
 			cf.execute();
 		}
-		this.evaluateEveryFunction(currentTime);
+		this.evaluateEveryFunctions(currentTime);
 	}
 	
 	private synchronized void resetStacks() {
@@ -138,7 +138,7 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		}
 	}
 	
-	private void evaluateEveryFunction(long currentTime) {
+	private void evaluateEveryFunctions(long currentTime) {
 		long elapsed = currentTime - initialTime;
 		for (EveryFunction ef : everyFunctionList) {
 			ArrayList<Float> oldAl = everyFunctionHash.get(ef);
