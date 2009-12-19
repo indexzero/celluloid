@@ -13,6 +13,7 @@ public class SwingOutput implements Output {
 		frame = new JFrame(title);
 		frame.setLayout(null);
 		frame.setBackground(Color.black);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setBounds(0, 0, width, height);
 	}
 }

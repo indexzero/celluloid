@@ -36,7 +36,7 @@ public class HelloCh2 {
 	public static void main(String[] args) {
 
 		//timeline timeline1
-		Timeline<Input> timeline1 = new Timeline<Input>();
+		Timeline timeline1 = new Timeline();
 		
 		//input audio1 = new AudioFile(*somefile*)
 		try {
@@ -56,7 +56,7 @@ public class HelloCh2 {
 		 *end
 		 */ 
 		timeline1.addConstraintFunction(
-			new ConstraintFunction<Input>(audio1, new ReactiveNumber(0.0)) {
+			new ConstraintFunction(audio1, new ReactiveNumber(0.0)) {
 				public void execute() {
 					((JMFVideo) input).play();
 				}
@@ -66,7 +66,7 @@ public class HelloCh2 {
 		//pause audio1 @1m 
 		
 		timeline1.addConstraintFunction(
-				new ConstraintFunction<Input>(audio1, new ReactiveNumber(1000.0)) {
+				new ConstraintFunction(audio1, new ReactiveNumber(1000.0)) {
 					public void execute() {
 						((JMFVideo) input).pause();
 					}
@@ -74,7 +74,7 @@ public class HelloCh2 {
 			);
 		//play audio2 @1m 
 		timeline1.addConstraintFunction(
-				new ConstraintFunction<Input>(audio2, new ReactiveNumber(1000.0)) {
+				new ConstraintFunction(audio2, new ReactiveNumber(1000.0)) {
 					public void execute() {
 						((JMFVideo) input).play();
 					}
@@ -82,7 +82,7 @@ public class HelloCh2 {
 			);
 		//stop audio2 @2m 
 		timeline1.addConstraintFunction(
-				new ConstraintFunction<Input>(audio2, new ReactiveNumber(2000.0)) {
+				new ConstraintFunction(audio2, new ReactiveNumber(2000.0)) {
 					public void execute() {
 						((JMFVideo) input).stop();
 					}
@@ -90,7 +90,7 @@ public class HelloCh2 {
 			);
 		//play audio1 @2m 
 		timeline1.addConstraintFunction(
-				new ConstraintFunction<Input>(audio1, new ReactiveNumber(2000.0)) {
+				new ConstraintFunction(audio1, new ReactiveNumber(2000.0)) {
 					public void execute() {
 						((JMFVideo) input).play();
 					}

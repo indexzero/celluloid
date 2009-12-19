@@ -14,15 +14,17 @@ import org.celluloidlang.constraints.defined.StaticInput;
 import org.celluloidlang.constraints.defined.Video;
 import org.celluloidlang.reactive.ReactiveNumber;
 
-public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output, Runnable{
+public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output, Runnable {
 	
 	/**
 	 * for each ENUM, must document what it does
 	 * 
+	 * AUDIO_GAIN: [0,1]
 	 * STATUS: initialized, playing, stopped, paused
+	 * MEDIA_TIME:
 	 */
 	public enum Event{
-		AUDIO_GAIN, STATUS
+		AUDIO_GAIN, STATUS, MEDIA_TIME, ZOOM_LEVEL
 	}
 	
 	private String status;
@@ -121,21 +123,50 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 	@Override
 	public void run() {
 		while(true){
-			
-			
+
 			announcer.notifyObservers(new Announcement(Event.AUDIO_GAIN + "=" +this.curVolumeLevel, this));
 			announcer.notifyObservers(new Announcement(Event.STATUS + "=" +this.status, this));
+			announcer.notifyObservers(new Announcement(Event.MEDIA_TIME + "=" +this.getMediaTime().getSeconds(), this));
+			announcer.notifyObservers(new Announcement(Event.ZOOM_LEVEL + "=" +this.curZoomLevel, this));
+			
+
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				System.out.println("Error in JMFVideo eventAnnouncer");
 			}
 
+
 		}
 	}
 
 	@Override
 	public Component getVisualData() {
-		return super.getVisualComponent();
+		return null;
+	}
+
+	@Override
+	public boolean isPlaying() {
+		return status.equalsIgnoreCase("Playing");
+	}
+
+	@Override
+	public boolean isStopped() {
+		return status.equalsIgnoreCase("Stopped");
+	}
+
+	@Override
+	public boolean isPaused() {
+		return status.equalsIgnoreCase("Paused");
+	}
+
+	@Override
+	public boolean isRewinding() {
+		return super.getRate() < 0;
+	}
+
+	@Override
+	public boolean isFfwding() {
+		return (super.getRate() > 0) && (super.getRate() != 1);
 	}
 }

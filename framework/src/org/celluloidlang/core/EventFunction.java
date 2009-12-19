@@ -1,11 +1,13 @@
 package org.celluloidlang.core;
 
-public class EventFunction<T> {
+import org.celluloidlang.constraints.defined.Input;
+
+public class EventFunction {
 	
-	protected T input;
-	protected T evals[];
+	protected Input input;
+	protected Input evals[];
 	
-	public EventFunction(T eventObject, T... evals) {
+	public EventFunction(Input eventObject, Input... evals) {
 		this.input = eventObject;
 		this.evals = evals;
 	}

@@ -23,22 +23,24 @@ import org.celluloidlang.reactive.ReactiveUpdate;
  * synchronized?
  */
 
-public class Timeline<T extends Input> implements AnnouncementListener, ReactiveListener, Input {
+public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	
 	static final int TIME_GRANULARITY = 100;
 	
 	private Timer timer;
 	private long initialTime = -1;
-	private Stack<ConstraintFunction<T>> didExecute;
-	private PriorityQueue<ConstraintFunction<T>> willExecute;
-	private LinkedList<T> inputs;
-	private HashMap<String, LinkedList<EventFunction<T>>> announceEvents;
+	private Stack<ConstraintFunction> didExecute;
+	private PriorityQueue<ConstraintFunction> willExecute;
+	private LinkedList<Input> inputs;
+	private HashMap<String, LinkedList<EventFunction>> announceEvents;
+	private String status; //can be "initialized", "playing", and "stopped"
 	
 	public Timeline() {
-		didExecute = new Stack<ConstraintFunction<T>>();
-		willExecute = new PriorityQueue<ConstraintFunction<T>>();
-		inputs = new LinkedList<T>();
-		announceEvents  = new HashMap<String, LinkedList<EventFunction<T>>>();
+		status = "initialized";
+		didExecute = new Stack<ConstraintFunction>();
+		willExecute = new PriorityQueue<ConstraintFunction>();
+		inputs = new LinkedList<Input>();
+		announceEvents  = new HashMap<String, LinkedList<EventFunction>>();
 		ActionListener taskPerformer = new ActionListener() {
 			public void actionPerformed(ActionEvent action) {
 				timeStep(System.currentTimeMillis());
@@ -51,20 +53,21 @@ public class Timeline<T extends Input> implements AnnouncementListener, Reactive
 		if (initialTime < 0) {
 			initialTime = System.currentTimeMillis();
 			timer.start();
+			status = "Playing";
 		}
-	}
-	
-	public synchronized void pause() {
-		timer.stop();
 	}
 	
 	public synchronized void stop() {
 		timer.stop();
+		status = "Stopped";
 		initialTime = -1;
+		for (Input i: inputs) {
+			i.stop();
+		}
 		this.resetStacks();
 	}
 	
-	public void addConstraintFunction(ConstraintFunction<T> cf) {
+	public void addConstraintFunction(ConstraintFunction cf) {
 		if (!inputs.contains(cf.getConstraintObject())) {
 			inputs.add(cf.getConstraintObject());
 		}
@@ -75,7 +78,7 @@ public class Timeline<T extends Input> implements AnnouncementListener, Reactive
 	private synchronized void timeStep(long currentTime) {
 		long elapsed = currentTime - initialTime;
 		while ((willExecute.peek() != null) && (willExecute.peek().getTime().getView() <= elapsed)) {
-			ConstraintFunction<T> cf = willExecute.poll();
+			ConstraintFunction cf = willExecute.poll();
 			didExecute.push(cf);
 			cf.execute();
 		}
@@ -87,7 +90,7 @@ public class Timeline<T extends Input> implements AnnouncementListener, Reactive
 		}
 	}
 	
-	public LinkedList<T> getInputs() {
+	public LinkedList<Input> getInputs() {
 		return inputs;
 	}
 
@@ -105,24 +108,28 @@ public class Timeline<T extends Input> implements AnnouncementListener, Reactive
 		}
 	}
 
-	public void addEventFunction(Input audio1, String type, EventFunction<T> event) {
+	public void addEventFunction(Input audio1, String type, EventFunction event) {
 		audio1.announcer.attach(this);
 		
 		type=audio1.hashCode() +":" + type;
 		System.out.println(type);
 		if (!announceEvents.containsKey(type)) {
-			announceEvents.put(type, new LinkedList<EventFunction<T>>());
+			announceEvents.put(type, new LinkedList<EventFunction>());
 		}
 		announceEvents.get(type).add(event);
+	}
+	
+	public void addEveryFunction(EveryFunction every) {
+		
 	}
 	
 	@Override
 	public synchronized void receiveAnnouncement(Announcement a) {
 		String type = a.getOwner().hashCode() + ":" + a.getType();
 		
-		LinkedList<EventFunction<T>> constraints = announceEvents.get(type);
+		LinkedList<EventFunction> constraints = announceEvents.get(type);
 		if(constraints!=null){
-			for(EventFunction<T> c : constraints){
+			for(EventFunction c : constraints){
 				c.execute();
 			}
 		}
@@ -130,11 +137,21 @@ public class Timeline<T extends Input> implements AnnouncementListener, Reactive
 
 	@Override
 	public void update(ReactiveUpdate e) {
-		// TODO reprioritize queue
+		//reprioritize queue
 	}
 
 	@Override
 	public Component getVisualData() {
 		return null;
+	}
+
+	@Override
+	public boolean isPlaying() {
+		return status.equalsIgnoreCase("Playing");
+	}
+
+	@Override
+	public boolean isStopped() {
+		return status.equalsIgnoreCase("Stopped");
 	}
 }

@@ -37,7 +37,7 @@ public class HelloEvents {
 		
 		
 		//timeline timeline1
-		Timeline<Input> timeline1 = new Timeline<Input>();
+		Timeline timeline1 = new Timeline();
 		
 		//input audio1 = new AudioFile(*somefile*)
 		//output output1 = new Output(*somefile*)
@@ -57,7 +57,7 @@ public class HelloEvents {
 		 *end
 		 */ 
 		timeline1.addConstraintFunction(
-			new ConstraintFunction<Input>(audio1, new ReactiveNumber(0.0)) {
+			new ConstraintFunction(audio1, new ReactiveNumber(0.0)) {
 				public void execute() {
 					((JMFVideo) input).play();
 				}
@@ -65,24 +65,32 @@ public class HelloEvents {
 		);
 
 		timeline1.addConstraintFunction(
-				new ConstraintFunction<Input>(audio1, new ReactiveNumber(3000.0)) {
+				new ConstraintFunction(audio1, new ReactiveNumber(3000.0)) {
 					public void execute() {
 						((JMFVideo) input).setVolumeLevel("2");
 					}
 				}
 			);
 		
-		//when AudioGain=2 do
+		//when AudioGain=2 do 
 		// play audio2
 		timeline1.addEventFunction(audio1, "AUDIO_GAIN" + "=" + "2",
-				new EventFunction<Input>(audio2) {
+				new EventFunction(audio2) {
 					public void execute() {
 						((JMFVideo) input).play();
 					}
 				}
 			);
 		
-		
+		//when AudioGain=2 do unless audio2
+		// play audio2
+		timeline1.addConstraintFunction(
+				new ConstraintFunction(audio1, new ReactiveNumber(3000.0)) {
+					public void execute() {
+						((JMFVideo) input).setVolumeLevel("3");
+					}
+				}
+			);
 		
 		
 		

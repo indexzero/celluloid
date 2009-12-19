@@ -47,7 +47,7 @@ public class HelloCh1 {
 		 *end
 		 */ 
 		timeline1.addConstraintFunction(
-			new ConstraintFunction<Input>(audio1, new ReactiveNumber(0.0)) {
+			new ConstraintFunction(audio1, new ReactiveNumber(0.0)) {
 				public void execute() {
 					((JMFVideo) input).play();
 				}
@@ -70,7 +70,7 @@ public class HelloCh1 {
 						new SwingOutput("Celluloid Output", 1024, 768), 
 						new ReactiveNumber(0.0)) {
 							public void execute() {
-								((Timeline<Input>) input).attachOutput(output);
+								((Timeline) input).attachOutput(output);
 							}
 				}
 				);

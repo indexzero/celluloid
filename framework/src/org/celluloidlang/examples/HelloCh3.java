@@ -37,7 +37,7 @@ public class HelloCh3 {
 	public static void main(String[] args) {
 
 		//timeline timeline1
-		Timeline<Input> timeline1 = new Timeline<Input>();
+		Timeline timeline1 = new Timeline();
 		
 		//input audio1 = new AudioFile(*somefile*)
 		//output output1 = new Output(*somefile*)
@@ -54,7 +54,7 @@ public class HelloCh3 {
 		 *end
 		 */ 
 		timeline1.addConstraintFunction(
-			new ConstraintFunction<Input>(audio1, new ReactiveNumber(0.0)) {
+			new ConstraintFunction(audio1, new ReactiveNumber(0.0)) {
 				public void execute() {
 					((JMFVideo) input).play();
 				}
