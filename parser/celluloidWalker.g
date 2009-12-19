@@ -64,8 +64,11 @@ constraintDefinition
     :    ^(CONSTRAINT ID ^(REQUIRES requires = idList?) ^(ANNOUNCES announces = idList?) constraintBlock) {
            $st = %constraintDefinition();
            %{$st}.name = $ID.text;
+           %{$st}.require = requires != null ? "implements" : ""; 
            %{$st}.requires = $requires.st;
+           %{$st}.block = $constraintBlock.st;
            
+           // TODO: Semantic analysis
            System.out.println(announces);
          }
     ;
@@ -80,7 +83,13 @@ constraintBlockDeclaration
    	
 // Device definition
 deviceDefinition     
-    :    ^(DEVICE ID ^(ACCEPTS  idList?) deviceBlock)
+    :    ^(DEVICE ID ^(ACCEPTS  idList?) deviceBlock) {
+           $st = %deviceDefinition();
+           %{$st}.name = $ID.text;
+           %{$st}.accepts = idList != null ? "implements" : "";
+           %{$st}.accpets = $idList.st;
+           %{$st}.block = $deviceBlock.st;
+         }
     ;
 deviceBlock 
     :    ^(DEVBLOCK deviceBlockDeclaration*)
@@ -93,7 +102,11 @@ deviceBlockDeclaration
     	
 // Function / Predicate definitions
 functionHeader
-    :    ^(FUNHEAD ID ^(ARGS variableList))
+    :    ^(FUNHEAD ID ^(ARGS variableList)) {
+           $st = %functionHeader();
+           %{$st}.name = $ID.text;
+           %{$st}.args = $variableList.st;
+         } 
     ;
 functionDefinition 
     :    ^(FUNC ID ^(ARGS variableList) functionBlock?)

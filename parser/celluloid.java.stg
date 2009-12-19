@@ -7,6 +7,7 @@ idList(ids)                           ::= "<ids:{ id | <id.text> }; separator=\"
 variableList(vars)                    ::= "<vars:{ var | <var.st> }; separator=\", \">"
 expressionList(exps)                  ::= "<exps:{ exp | <exp.st> }; separator=\", \">"
 
+functionHeader(name, args) ::= "public void <name> (<args:{ arg | <arg.st> }; separator=\", \">)"
 functionDefintion(name, args, block)      ::=
 <<
 public void <name> (<args>) "{"
@@ -23,9 +24,18 @@ predicateCall(name,args)              ::= "<name>(<args>);"
 
 eventDefinition(name)                 ::= "public class name extends event { }"
 
-constraintDefinition(name, requires)  ::= "public interface <name> <requires> { TODO: Members }"
-constraintList( ids )                 ::= "implements <ids>"
+constraintDefinition(name, require, requires, block) ::=
+<<
+public interface <name> <require> <requires> {
+  <block>
+}
+>>
 
-deviceDefinition(name, accepts)       ::= "public class <name> extends device <accepts> { TODO: Members }"
+deviceDefinition(name, accept, accepts, block) ::=
+<<
+public class <name> <accept> <accepts> { 
+  <block>
+}
+>>
 
 timelineDeclaration(name)             ::= "timeline <name> = new timeline();"
