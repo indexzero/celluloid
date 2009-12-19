@@ -52,6 +52,8 @@ public class ASTGrammarRulesTestCase extends TestCase {
         this.printTestResults(this.shouldParseConstraintFunctionCall());
         this.printTestResults(this.shouldParseInStatement());
 
+        //this.printTestResults(this.shouldParseLanguageBlockDefinition());
+
         this.printTestResults(this.shouldParseFunctionHeader());
         this.printTestResults(this.shouldParseFunctionBlock());
         this.printTestResults(this.shouldParseFunctionDefinition());
@@ -347,6 +349,17 @@ public class ASTGrammarRulesTestCase extends TestCase {
         celluloidParser parser = this.createParserFromFile("deviceDefinition.cld");
         return (CommonTree)parser.deviceDefinition().getTree();
     }
+
+    /**
+     * Tests the constraintDefinition rule in celluloid.g
+     * @throws IOException
+     * @throws RecognitionException
+     */
+    //public CommonTree shouldParseLanguageBlockDefinition() throws IOException, RecognitionException {
+    //    System.out.println("Testing languageBlockDefinition: languageBlockDefinition.cld");
+    //    celluloidParser parser = this.createParserFromFile("languageBlockDefinition.cld");
+    //    return (CommonTree)parser.languageBlockDefinition().getTree();
+    //}
 
     /**
      * Tests the constraintDefinition rule in celluloid.g

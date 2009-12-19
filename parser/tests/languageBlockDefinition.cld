@@ -1,0 +1,5 @@
+in java do
+  << System.out.println("This is a java block in Celluloid");
+  << this.callMyFunction;
+  << // This is a comment
+end

@@ -39,6 +39,7 @@ tokens {
   FUNBLOCK;
   CONBLOCK;
   DEVBLOCK;
+  LANGBLOCK;
   
   FUNHEAD;
   PREDHEAD;
@@ -141,11 +142,11 @@ deviceBlockDeclaration
 // Start function blocks
 functionHeader
     :    'function' ID '(' variableList ')' NEWLINE
-         -> ^(FUNHEAD ID variableList)
+         -> ^(FUNHEAD ID ^(ARGS variableList))
     ;
 functionDefinition 
     :    'function' ID '(' variableList ')' functionBlock 
-         -> ^(FUNC ID variableList functionBlock?)
+         -> ^(FUNC ID ^(ARGS variableList) functionBlock?)
          //-> functionDefinition(name = { $ID.text}, args = { variableList.st }, block = { $functionBlock.st })
     ;
 functionBlock      
@@ -169,12 +170,12 @@ functionPredicateBlockDeclaration
 // Start predicate blocks
 predicateHeader     
     :    'predicate' ID '(' variableList ')' NEWLINE
-         -> ^(PREDHEAD ID variableList)
+         -> ^(PREDHEAD ID ^(ARGS variableList))
          //-> predicateHeader(name = { $ID.text }, args = { $variableList.st }) 
     ;	
 predicateDefinition 
     :    'predicate' ID '(' variableList ')' predicateBlock 
-    	 -> ^(PRED ID variableList predicateBlock)
+    	 -> ^(PRED ID ^(ARGS variableList) predicateBlock)
          //-> predicateDefinition(header = { $predicateHeader.st}, block = { $predicateBlock.st})
     ;
 predicateBlock      
@@ -294,8 +295,10 @@ variableList
 
 expressionList 
     :    exps += expression (',' exps += expression)*
+         -> expression+
          //-> expressionList(exps = { $exps })
     |    '(' exps += expression (',' exps += expression)* ')'
+         -> expression+
          //-> expressionList(exps = { $exps })
     ;
 // End lists and generic declarations
@@ -323,36 +326,29 @@ initializer
                     
 expression     
     :    logicalORExpression (ASSIGNMENT_OPERATOR^ expression)? NEWLINE!?
-    ;
-	          	                 
+    ;          	                 
 logicalORExpression      
     :    'not'? logicalANDExpression ('or'^ logicalORExpression)?
-    ;	
-	 
+    ;	 
 logicalANDExpression
     :    equalityExpression ('and'^ logicalANDExpression)?
     ;
-
 equalityExpression       
     :    relationalExpression (EQUALITY_OPERATOR^ equalityExpression)?
     ;
-
 relationalExpression     
     :    additiveExpression (RELATIONAL_OPERATOR^ relationalExpression)?
     ;
-
 additiveExpression      
     :    multiplicativeExpression (ADDITIVE_OPERATOR^ additiveExpression)?
     ;
-
 multiplicativeExpression 
     : primaryExpression (MULTIPLICATIVE_OPERATOR^ multiplicativeExpression)?
     ;	
-
 primaryExpression
     :    literal
     |    ID
-    |    'new' ID '(' expressionList ')'
+    |    'new'! ID '('! expressionList ')'!
     |    functionPredicateCall
     ;
 // End generic literals and declarations
@@ -366,14 +362,13 @@ ADDITIVE_OPERATOR        : '+' | '-';
 MULTIPLICATIVE_OPERATOR  : '*' | '/' | '%';
 // End operators 
 
-
-// Start generic literals and language blocks
+// Start generic literals
 literal : BOOL | NUMBER | STRING | TIME;
 
 // Start language blocks
-languageBlockDefinition : 'in' LANGUAGE START languageCode* END;
-LANGUAGE                : 'JAVA';
-languageCode            :  ~(NEWLINE)* NEWLINE;
+//languageBlockDefinition : 'in' LANGUAGE START (lines += LANGUAGECODE)* END -> ^(LANGBLOCK $lines*);
+//LANGUAGE                : 'JAVA' | 'java' | 'Java';
+//LANGUAGECODE            : '<' '<' ANYTHING* NEWLINE;
 // End generic literals language blocks
 
 // Start string literal	
