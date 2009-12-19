@@ -32,6 +32,7 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 		super.start();
 		new Thread(this).start();
 		System.out.println("Played");
+		
 	}
 
 	@Override
@@ -103,17 +104,24 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 			}
 		}
 	}
-
+	
+	public boolean evaluateEvent(){
+		return true;
+	}
+	
 	@Override
 	public void run() {
 		while(true){
+			
+			System.out.println(this.curVolumeValue + " " + this.curVolumeLevel);
+			announcer.notifyObservers(new Announcement(Event.AUDIO_GAIN + "=" + this.curVolumeLevel, this));
+			
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			announcer.notifyObservers(new Announcement(Event.AUDIO_GAIN + "=" + this.curVolumeLevel, this));
+			}			
 		}
 	}
 }
