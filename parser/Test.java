@@ -26,8 +26,9 @@ public class Test {
     //System.out.println(output.toStringTree());// emit translation
     //GrammarTestCase testCase = new GrammarTestCase("GrammarTestCase", "C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\tests", "celluloid.java.stg");
     //testCase.TestAllGrammarRules();
-    ASTGrammarRulesTestCase testCase = new ASTGrammarRulesTestCase("ASTTests", "tests\\");
-    testCase.runAllTests();
+    //ASTGrammarRulesTestCase testCase = new ASTGrammarRulesTestCase("ASTTests", "tests\\");
+    STGrammarRulesTestCase testCase = new STGrammarRulesTestCase("STTests", "tests\\", "celluloid.java.stg");
+    testCase.shouldGenerateConstraintDefinition();
     //testCase.printTestResults(testCase.shouldParseConstraintBlock());
   }
 }
