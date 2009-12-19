@@ -1,0 +1,10 @@
+if x < 5 do
+  #x = 4
+  number x
+else if x < 4
+  #x = 3
+  number y
+else
+  #x = 0
+  number z
+end

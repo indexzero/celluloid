@@ -1,0 +1,8 @@
+in timeline1 do
+  play input1 @start
+  play input2 @10s
+
+  when input1 stopped do
+    play input1 @now
+  end
+end
