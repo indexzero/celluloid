@@ -115,11 +115,11 @@ ifBlockDeclaration
     ;
 
 whenStatement
-    :   ^(LISTENER ^(ARG ID?) EVERY ^(COND 'when'? 'unless' logicalORExpression? ID?) listenerBlock)
+    :   ^(LISTENER ^(ARG ID?) EVERY ^(COND 'when'? 'unless' ID?) listenerBlock)
         //-> whenStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
 everyStatement
-    :   ^(LISTENER ^(ARG ID?) ^(EVERY TIME) ^(COND 'when'? 'unless'? logicalORExpression? ID?) listenerBlock)
+    :   ^(LISTENER ^(ARG ID?) ^(EVERY TIME) ^(COND 'when'? 'unless'? ID?) listenerBlock)
         //-> everyStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
 listenerBlock
