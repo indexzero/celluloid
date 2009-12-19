@@ -68,9 +68,14 @@ public class HelloWorld {
 		timeline1.addEventConstraint(jmf+":" + JMFVideo.Event.AUDIO_GAIN + "=" + "6", ev);
 		*/
 		
-		SwingOutput so = new SwingOutput();
+		//output size
+		SwingOutput output1 = new SwingOutput("Celluloid Output", 1024, 768);
 		
-		timeline1.attachOutput(so);
+		OutputConstraintFunction<Timeline<Input>> ocf = new OutputConstraintFunction<Timeline<Input>>(timeline1, output1, new ReactiveNumber(0.0)) {
+			public void execute() {
+				((Timeline<Input>) input).attachOutput(output);
+			}
+		};
 		
 		/*
 		 * This is the one and only global timeline.  Everything starts execution from
@@ -84,6 +89,7 @@ public class HelloWorld {
 			}
 		};
 		globalTimeline.addConstraintFunction(gf);
+		globalTimeline.addConstraintFunction(ocf);
 		
 		/*
 		 * EXECUTION BEGINS HERE

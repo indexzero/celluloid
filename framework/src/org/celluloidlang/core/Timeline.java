@@ -3,6 +3,7 @@ package org.celluloidlang.core;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -88,17 +89,21 @@ public class Timeline<T extends Input> implements AnnouncementListener, Reactive
 		}
 	}
 	
+	public LinkedList<T> getInputs() {
+		return inputs;
+	}
+
 	public void attachOutput(Output out) {
 		if (out instanceof SwingOutput) {
-			//gather inputs
-			JPanel outputPanel = ((SwingOutput) out).getPanel();
-			LinkedList<Component> visInputs = new LinkedList<Component>();
-			for (T i : inputs) {
+			((SwingOutput) out).frame.removeAll();
+			for (Input i : inputs) {
 				Component ret = i.getVisualData();
+				
 				if (ret != null) {
-					outputPanel.add(ret);
+					((SwingOutput) out).frame.add(ret);
 				}
 			}
+			((SwingOutput) out).frame.setVisible(true);
 		}
 	}
 
