@@ -1,0 +1,4 @@
+every @10s do
+  pause timeline1 @now
+  play timeline2
+end

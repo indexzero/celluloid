@@ -1,0 +1,3 @@
+when input1 stopped do
+  stop timeline1, timeline2
+end
