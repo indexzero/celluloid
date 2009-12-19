@@ -59,14 +59,13 @@ public class HelloWorld {
 		timeline1.addConstraintFunction(cf);
 		
 		//this is an event, like a when keyword event
-		/*
+		
 		EventFunction<Input> ev = new EventFunction<Input>(jmf) {
 			public void execute() {
 				((JMFVideo) input).play();
 			}
 		};
-		timeline1.addEventConstraint(jmf+":" + JMFVideo.Event.AUDIO_GAIN + "=" + "6", ev);
-		*/
+		timeline1.addEventFunction(jmf+":" + JMFVideo.Event.AUDIO_GAIN + "=" + "4", ev);
 		
 		//output size
 		SwingOutput output1 = new SwingOutput("Celluloid Output", 1024, 768);
@@ -78,8 +77,7 @@ public class HelloWorld {
 		};
 		
 		/*
-		 * This is the one and only global timeline.  Everything starts execution from
-		 * this point.
+		 * This is the one and only global timeline.  Everything
 		 */
 		Timeline<Timeline<Input>> globalTimeline = new Timeline<Timeline<Input>>();
 		
