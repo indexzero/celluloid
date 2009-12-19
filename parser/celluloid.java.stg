@@ -1,11 +1,25 @@
 group jcelluloid;
 
 announcementDefinition()              ::= ""
-eventDefinition(name)                 ::= "public class name extends event { }"
-constraintDefinition(name, requires)  ::= "public interface <name> <requires> { TODO: Members }"
-deviceDefinition(name, accepts)       ::= "public class <name> extends device <accepts> { TODO: Members }"
+eventDefinition(name)                 ::= "public class <name> extends event { /* <name> event */ }"
 
-functionHeader()                      ::= ""
+constraintDefinition(
+ name, require,
+ requires, block)                     ::=
+<<
+public interface <name> <requires> {
+  <block>
+}
+>>
+
+deviceDefinition(name, accepts)       ::=
+<<
+public class <name> <accept> <accepts> {
+ <block>
+}
+>>
+
+functionHeader(name, args)            ::= "<name>(<args>)"
 functionDefintion(name, args, block)  ::=
 <<
 public void <name> (<args>) "{"
