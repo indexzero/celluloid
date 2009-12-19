@@ -71,6 +71,14 @@ public class HelloEvents {
 					}
 				}
 			);
+
+		timeline1.addConstraintFunction(
+				new ConstraintFunction(audio1, new ReactiveNumber(4000.0)) {
+					public void execute() {
+						((JMFVideo) input).setVolumeLevel("4");
+					}
+				}
+			);
 		
 		//when AudioGain=2 do 
 		// play audio2
@@ -82,12 +90,18 @@ public class HelloEvents {
 				}
 			);
 		
-		//when AudioGain=2 do unless audio2
+		
+		
+		//when AudioGain=2 unless audio2.isPlaying do
 		// play audio2
-		timeline1.addConstraintFunction(
-				new ConstraintFunction(audio1, new ReactiveNumber(3000.0)) {
+		timeline1.addEventFunction(audio1, "AUDIO_GAIN" + "=" + "4",
+				new EventFunction(audio2, audio2) {
 					public void execute() {
-						((JMFVideo) input).setVolumeLevel("3");
+						if(!evals[0].isPlaying()){
+							System.out.println("Not Playing twice");
+							((JMFVideo) input).play();
+						}
+							
 					}
 				}
 			);
