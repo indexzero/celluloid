@@ -1,11 +1,12 @@
 package org.celluloidlang.core;
 
+import org.celluloidlang.constraints.defined.Input;
 import org.celluloidlang.reactive.ReactiveNumber;
 
-public class ConstraintFunction<T> implements Comparable<ConstraintFunction<T>> {
+public class ConstraintFunction<T extends Input> implements Comparable<ConstraintFunction<T>> {
 	
 	protected T input;
-	private ReactiveNumber time;
+	protected ReactiveNumber time;
 	
 	public ConstraintFunction(T constraintObject, ReactiveNumber executeTime) {
 		this.input = constraintObject;
