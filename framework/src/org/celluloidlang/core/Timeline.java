@@ -1,15 +1,20 @@
 package org.celluloidlang.core;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Stack;
+
 import javax.swing.Timer;
 
 import org.celluloidlang.announcment.Announcement;
 import org.celluloidlang.announcment.AnnouncementListener;
+import org.celluloidlang.constraints.defined.Input;
+import org.celluloidlang.constraints.defined.Output;
+import org.celluloidlang.devices.SwingOutput;
 import org.celluloidlang.reactive.ReactiveListener;
 import org.celluloidlang.reactive.ReactiveUpdate;
 
@@ -17,7 +22,7 @@ import org.celluloidlang.reactive.ReactiveUpdate;
  * synchronized?
  */
 
-public class Timeline<T> implements AnnouncementListener, ReactiveListener {
+public class Timeline<T extends Input> implements AnnouncementListener, ReactiveListener, Input {
 	
 	static final int TIME_GRANULARITY = 100;
 	
@@ -80,6 +85,24 @@ public class Timeline<T> implements AnnouncementListener, ReactiveListener {
 			willExecute.offer(didExecute.pop());
 		}
 	}
+	
+	public LinkedList<T> getInputs() {
+		return inputs;
+	}
+
+	public void attachOutput(Output out) {
+		if (out instanceof SwingOutput) {
+			((SwingOutput) out).frame.removeAll();
+			for (Input i : inputs) {
+				Component ret = i.getVisualData();
+				
+				if (ret != null) {
+					((SwingOutput) out).frame.add(ret);
+				}
+			}
+			((SwingOutput) out).frame.setVisible(true);
+		}
+	}
 
 	public void addEventFunction(String type, EventFunction<T> event) {
 		if (!announceEvents.containsKey(type)) {
@@ -98,6 +121,10 @@ public class Timeline<T> implements AnnouncementListener, ReactiveListener {
 	@Override
 	public void update(ReactiveUpdate e) {
 		// TODO reprioritize queue
-		
+	}
+
+	@Override
+	public Component getVisualData() {
+		return null;
 	}
 }

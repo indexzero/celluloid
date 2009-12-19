@@ -1,5 +1,6 @@
 package org.celluloidlang.devices;
 
+import java.awt.Component;
 import java.net.URL;
 
 import javax.media.MediaLocator;
@@ -15,11 +16,19 @@ import org.celluloidlang.reactive.ReactiveNumber;
 
 public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output, Runnable{
 	
+	/**
+	 * for each ENUM, must document what it does
+	 * 
+	 * STATUS: initialized, playing, stopped, paused
+	 */
 	public enum Event{
-		AUDIO_GAIN
+		AUDIO_GAIN, STATUS
 	}
 	
+	private String status;
+	
 	public JMFVideo(URL url) {
+		status = "initialized";
 		this.setMediaLocator(new MediaLocator(url));
 		this.setPlaybackLoop(false);
 		this.realize();
@@ -30,17 +39,16 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 	@Override
 	public void play() {
 		super.start();
+		status = "playing";
 		new Thread(this).start();
-		System.out.println("Played");
-		
 	}
 
 	@Override
 	public void stop() {
 		if (this.getState() == Player.Started) {
 			super.stop();
+			status = "stopped";
 			super.setMediaTime(new Time(0));
-			System.out.println("Stopped");
 		}
 	}
 
@@ -51,6 +59,9 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 			return;
 		if ((super.getState() == MediaPlayer.Realized) ||
 				(super.getState() == MediaPlayer.Prefetched)) {
+			super.setRate((float) speed);
+		}
+		if (super.getState() == MediaPlayer.Started) {
 			super.setRate((float) speed);
 		}
 	}
@@ -73,12 +84,10 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 				(super.getState() == MediaPlayer.Prefetched)) {
 			super.stop();
 			super.setRate((float) speed);
+			super.start();
 		}
 		if (super.getState() == MediaPlayer.Started) {
-			System.out.println();
-			super.stop();
 			super.setRate((float) speed);
-			super.start();
 		}
 	}
 
@@ -86,6 +95,7 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 	public void pause() {
 		if (super.getState() == Player.Started) {
 			super.stop();
+			status = "paused";
 		}
 	}
 
@@ -99,8 +109,7 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("Error prefetching video file");
 			}
 		}
 	}
@@ -119,9 +128,15 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
+				System.out.println("Error in JMFVideo eventAnnouncer");
+			}
+			announcer.notifyObservers(new Announcement(Event.AUDIO_GAIN + "=" +this.curVolumeLevel, this));
+			announcer.notifyObservers(new Announcement(Event.STATUS + "=" +this.status, this));
 		}
+	}
+
+	@Override
+	public Component getVisualData() {
+		return super.getVisualComponent();
 	}
 }
