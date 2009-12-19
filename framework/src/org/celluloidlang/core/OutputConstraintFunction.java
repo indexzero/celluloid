@@ -1,9 +1,10 @@
 package org.celluloidlang.core;
 
+import org.celluloidlang.constraints.defined.Input;
 import org.celluloidlang.constraints.defined.Output;
 import org.celluloidlang.reactive.ReactiveNumber;
 
-public class OutputConstraintFunction<T> extends ConstraintFunction<T> {
+public class OutputConstraintFunction<T extends Input> extends ConstraintFunction<T> {
 
 	protected Output output;
 	

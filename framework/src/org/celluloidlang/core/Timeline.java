@@ -14,6 +14,7 @@ import org.celluloidlang.announcment.Announcement;
 import org.celluloidlang.announcment.AnnouncementListener;
 import org.celluloidlang.constraints.defined.Input;
 import org.celluloidlang.constraints.defined.Output;
+import org.celluloidlang.devices.JMFVideo;
 import org.celluloidlang.devices.SwingOutput;
 import org.celluloidlang.reactive.ReactiveListener;
 import org.celluloidlang.reactive.ReactiveUpdate;
@@ -104,7 +105,11 @@ public class Timeline<T extends Input> implements AnnouncementListener, Reactive
 		}
 	}
 
-	public void addEventFunction(String type, EventFunction<T> event) {
+	public void addEventFunction(Input audio1, String type, EventFunction<T> event) {
+		audio1.announcer.attach(this);
+		
+		type=audio1.hashCode() +":" + type;
+		System.out.println(type);
 		if (!announceEvents.containsKey(type)) {
 			announceEvents.put(type, new LinkedList<EventFunction<T>>());
 		}
@@ -113,8 +118,13 @@ public class Timeline<T extends Input> implements AnnouncementListener, Reactive
 	
 	@Override
 	public synchronized void receiveAnnouncement(Announcement a) {
-		for(EventFunction<T> c : announceEvents.get(a.getType())){
-			c.execute();
+		String type = a.getOwner().hashCode() + ":" + a.getType();
+		
+		LinkedList<EventFunction<T>> constraints = announceEvents.get(type);
+		if(constraints!=null){
+			for(EventFunction<T> c : constraints){
+				c.execute();
+			}
 		}
 	}
 
