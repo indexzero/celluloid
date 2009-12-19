@@ -66,6 +66,22 @@ public class HelloWorld {
 		};
 		
 		
+		EveryFunction eff = new EveryFunction(new ReactiveNumber((float)1000), jmf)  {
+			public void execute() {
+				((JMFVideo) input).play();
+			}
+		};
+		
+		timeline1.addEveryFunction(eff);
+		
+		EveryFunction efff = new EveryFunction(new ReactiveNumber((float)2000), jmf)  {
+			public void execute() {
+				((JMFVideo) input).stop();
+			}
+		};
+		
+		timeline1.addEveryFunction(efff);
+		
 		//output size
 		SwingOutput output1 = new SwingOutput("Celluloid Output", 1024, 768);
 		

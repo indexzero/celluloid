@@ -3,6 +3,7 @@ package org.celluloidlang.core;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -33,7 +34,7 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	private PriorityQueue<ConstraintFunction> willExecute;
 	private LinkedList<Input> inputs;
 	private HashMap<String, LinkedList<EventFunction>> announceEvents;
-	private HashMap<EveryFunction, Float> everyFunctionHash;
+	private HashMap<EveryFunction, ArrayList<Float>> everyFunctionHash;
 	private LinkedList<EveryFunction> everyFunctionList;
 	private String status; //can be "initialized", "playing", and "stopped"
 	
@@ -43,7 +44,7 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		willExecute = new PriorityQueue<ConstraintFunction>();
 		inputs = new LinkedList<Input>();
 		announceEvents  = new HashMap<String, LinkedList<EventFunction>>();
-		everyFunctionHash = new HashMap<EveryFunction, Float>();
+		everyFunctionHash = new HashMap<EveryFunction, ArrayList<Float>>();
 		everyFunctionList = new LinkedList<EveryFunction>();
 		ActionListener taskPerformer = new ActionListener() {
 			public void actionPerformed(ActionEvent action) {
@@ -126,17 +127,32 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	
 	public void addEveryFunction(EveryFunction every) {
 		if (every != null) {
-			everyFunctionList.add(every);
-			everyFunctionHash.put(every, every.getExecuteTime().getView());
+			if (everyFunctionList.contains(every)) {
+				everyFunctionHash.get(every).add(every.getExecuteTime().getView());
+			} else {
+				everyFunctionList.add(every);
+				ArrayList<Float> al = new ArrayList<Float>();
+				al.add(every.getExecuteTime().getView());
+				everyFunctionHash.put(every, al);
+			}
 		}
 	}
 	
 	private void evaluateEveryFunction(long currentTime) {
 		long elapsed = currentTime - initialTime;
 		for (EveryFunction ef : everyFunctionList) {
-			if (everyFunctionHash.get(ef) <= elapsed) {
-				ef.execute();
+			ArrayList<Float> oldAl = everyFunctionHash.get(ef);
+			ArrayList<Float> newAl = new ArrayList<Float>();
+			for (Float fl : oldAl) {
+				if (fl < elapsed) {
+					ef.execute();
+					newAl.add(fl + ef.getExecuteTime().getView());
+				} else {
+					newAl.add(fl);
+				}
 			}
+			everyFunctionHash.remove(ef);
+			everyFunctionHash.put(ef, newAl);
 		}
 	}
 	

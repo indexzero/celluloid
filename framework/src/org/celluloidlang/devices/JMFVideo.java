@@ -51,6 +51,7 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 			super.stop();
 			status = "stopped";
 			super.setMediaTime(new Time(0));
+			super.prefetch();
 		}
 	}
 
