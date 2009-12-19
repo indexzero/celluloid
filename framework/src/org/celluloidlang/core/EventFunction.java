@@ -5,9 +5,11 @@ import org.celluloidlang.constraints.defined.Input;
 public class EventFunction {
 	
 	protected Input input;
+	protected Input evals[];
 	
-	public EventFunction(Input eventObject) {
+	public EventFunction(Input eventObject, Input... evals) {
 		this.input = eventObject;
+		this.evals = evals;
 	}
 	
 	/**

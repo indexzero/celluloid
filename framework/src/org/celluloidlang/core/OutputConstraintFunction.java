@@ -4,6 +4,7 @@ import org.celluloidlang.constraints.defined.Input;
 import org.celluloidlang.constraints.defined.Output;
 import org.celluloidlang.reactive.ReactiveNumber;
 
+
 public class OutputConstraintFunction extends ConstraintFunction {
 
 	protected Output output;

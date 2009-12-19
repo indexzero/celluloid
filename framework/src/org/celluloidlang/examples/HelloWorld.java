@@ -64,7 +64,7 @@ public class HelloWorld {
 				((JMFVideo) input).play();
 			}
 		};
-		timeline1.addEventFunction(jmf+":" + JMFVideo.Event.AUDIO_GAIN + "=" + "4", ev);
+		
 		
 		//output size
 		SwingOutput output1 = new SwingOutput("Celluloid Output", 1024, 768);

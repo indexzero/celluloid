@@ -115,19 +115,26 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 			}
 		}
 	}
-
+	
+	public boolean evaluateEvent(){
+		return true;
+	}
+	
 	@Override
 	public void run() {
 		while(true){
+
+			announcer.notifyObservers(new Announcement(Event.AUDIO_GAIN + "=" +this.curVolumeLevel, this));
+			announcer.notifyObservers(new Announcement(Event.STATUS + "=" +this.status, this));
+			announcer.notifyObservers(new Announcement(Event.MEDIA_TIME + "=" +(this.getMediaTime().getSeconds() * 1000), this));
+			announcer.notifyObservers(new Announcement(Event.ZOOM_LEVEL + "=" +this.curZoomLevel, this));
+			
+
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				System.out.println("Error in JMFVideo eventAnnouncer");
 			}
-			announcer.notifyObservers(new Announcement(Event.AUDIO_GAIN + "=" +this.curVolumeLevel, this));
-			announcer.notifyObservers(new Announcement(Event.STATUS + "=" +this.status, this));
-			announcer.notifyObservers(new Announcement(Event.MEDIA_TIME + "=" +(this.getMediaTime().getSeconds() * 1000), this));
-			announcer.notifyObservers(new Announcement(Event.ZOOM_LEVEL + "=" +this.curZoomLevel, this));
 		}
 	}
 
