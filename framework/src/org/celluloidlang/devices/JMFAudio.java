@@ -3,6 +3,9 @@ package org.celluloidlang.devices;
 import java.awt.Component;
 import java.net.URL;
 
+import javax.media.ControllerEvent;
+import javax.media.ControllerListener;
+import javax.media.EndOfMediaEvent;
 import javax.media.MediaLocator;
 import javax.media.Player;
 import javax.media.Time;
@@ -13,7 +16,7 @@ import org.celluloidlang.constraints.defined.Output;
 import org.celluloidlang.constraints.defined.StaticInput;
 import org.celluloidlang.reactive.ReactiveNumber;
 
-public class JMFAudio extends MediaPlayer implements StaticInput, Output, Runnable {
+public class JMFAudio extends MediaPlayer implements StaticInput, Output, Runnable, ControllerListener {
 	
 	/**
 	 * for each ENUM, must document what it does
@@ -152,5 +155,15 @@ public class JMFAudio extends MediaPlayer implements StaticInput, Output, Runnab
 	@Override
 	public boolean isFfwding() {
 		return (super.getRate() > 0) && (super.getRate() != 1);
+	}
+	
+
+	@Override
+	public void controllerUpdate(ControllerEvent event) {
+		System.out.println(event.toString());
+		if (event instanceof EndOfMediaEvent) {
+			stop();
+		}
+
 	}
 }
