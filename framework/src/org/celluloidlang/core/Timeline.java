@@ -32,8 +32,10 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	private PriorityQueue<ConstraintFunction> willExecute;
 	private LinkedList<Input> inputs;
 	private HashMap<String, LinkedList<EventFunction>> announceEvents;
+	private String status; //can be "initialized", "playing", and "stopped"
 	
 	public Timeline() {
+		status = "initialized";
 		didExecute = new Stack<ConstraintFunction>();
 		willExecute = new PriorityQueue<ConstraintFunction>();
 		inputs = new LinkedList<Input>();
@@ -50,16 +52,17 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		if (initialTime < 0) {
 			initialTime = System.currentTimeMillis();
 			timer.start();
+			status = "Playing";
 		}
-	}
-	
-	public synchronized void pause() {
-		timer.stop();
 	}
 	
 	public synchronized void stop() {
 		timer.stop();
+		status = "Stopped";
 		initialTime = -1;
+		for (Input i: inputs) {
+			i.stop();
+		}
 		this.resetStacks();
 	}
 	
@@ -124,11 +127,21 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 
 	@Override
 	public void update(ReactiveUpdate e) {
-		// TODO reprioritize queue
+		//reprioritize queue
 	}
 
 	@Override
 	public Component getVisualData() {
 		return null;
+	}
+
+	@Override
+	public boolean isPlaying() {
+		return status.equalsIgnoreCase("Playing");
+	}
+
+	@Override
+	public boolean isStopped() {
+		return status.equalsIgnoreCase("Stopped");
 	}
 }

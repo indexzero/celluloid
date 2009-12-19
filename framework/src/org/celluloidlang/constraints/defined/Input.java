@@ -7,9 +7,10 @@ import org.celluloidlang.constraints.buildtin.*;
 import org.celluloidlang.reactive.Reactive;
 
 
-public interface Input extends PLAY, STOP{
+public interface Input extends PLAY, STOP {
 	Announcer announcer = new Announcer();
 	Reactive reactive = new Reactive();
 	
 	public Component getVisualData();
+	
 }

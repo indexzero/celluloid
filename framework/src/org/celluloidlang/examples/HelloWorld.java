@@ -13,7 +13,7 @@ public class HelloWorld {
 
 		Timeline timeline1 = new Timeline();
 		
-		File file = new File("snagItNarration.avi");
+		File file = new File("june_chorus.wav");
 		JMFVideo jmf;
 		try {
 			jmf = new JMFVideo(file.toURI().toURL());

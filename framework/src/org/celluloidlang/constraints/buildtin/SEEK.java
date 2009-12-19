@@ -1,11 +1,8 @@
 package org.celluloidlang.constraints.buildtin;
 
 import org.celluloidlang.reactive.ReactiveNumber;
-
 /**
- * constraint seek
- * @author blake
- *
+ * Constraint SEEK
  */
 public interface SEEK {
 	/**
