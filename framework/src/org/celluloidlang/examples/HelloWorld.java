@@ -53,20 +53,6 @@ public class HelloWorld {
 			}
 		});
 		
-		timeline1.addConstraintFunction(new ConstraintFunction(jmf, new ReactiveNumber(6000.0)) {
-			public void execute() {
-				((JMFVideo) input).play();
-			}
-		});
-		
-		//this is an event, like a when keyword event
-		
-		EventFunction ev = new EventFunction(jmf) {
-			public void execute() {
-				((JMFVideo) input).play();
-			}
-		};
-		
 		//play every second
 		timeline1.addEveryFunction(new EveryFunction(new ReactiveNumber((float)1000), jmf)  {
 			public void execute() {
