@@ -1,5 +1,5 @@
 in timeline1 do
-  play input1 @start
+  play input1 @start, var1, var2
   play input2 @10s
 
   when input1 stopped do
