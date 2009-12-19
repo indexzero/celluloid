@@ -3,10 +3,41 @@ tree grammar celluloidWalker;
 options {
 	tokenVocab=celluloid;
 	ASTLabelType=CommonTree;
+	output=template;
 }
+
+@header { 
+  import java.util.HashMap;  
+}
+
+@members {
+  private class SymbolEntry {
+    private String name;
+    private String type;
+    
+    public SymbolEntry(String name, String type) {
+      this.name = name;
+      this.type = type;
+    }
+    
+    public String getName() {
+      return this.name;
+    }
+    
+    public String getType() {
+      return this.type;
+    }
+  }
+
+  private HashMap<String, SymbolEntry> symbolTable;  
+}
+
 
 // Program main entry point
 program 
+@init {
+  this.symbolTable = new HashMap<String, SymbolEntry>();
+}
     :    ^(PROGRAM 
              ^(EVENTS eventDefinition NEWLINE*)
              ^(CONSTRAINTS constraintDefinition NEWLINE*)
@@ -17,17 +48,26 @@ program
 
 // Event definition
 eventDefinition 
-    :    ^(EVENT ID)
+    :    ^(EVENT ID) {
+           $st = %eventDefinition();
+           %{$st}.name = $ID.text;
+           this.symbolTable.put($ID.text, new SymbolEntry($ID.text, "event"));
+         }
     ;
 
 // Announcement definition
 announcementDeclaration
-    :    ^(ANNOUNCEMENT ID 'when' ID variableDeclaration?)
+    :    ^(ANNOUNCEMENT ID ID variableDeclaration?)
     ; 
 
-// Constraint definition
 constraintDefinition
-    :    ^(CONSTRAINT ID ^(REQUIRES  idList?) ^(ANNOUNCES  idList?) constraintBlock)
+    :    ^(CONSTRAINT ID ^(REQUIRES requires = idList?) ^(ANNOUNCES announces = idList?) constraintBlock) {
+           $st = %constraintDefinition();
+           %{$st}.name = $ID.text;
+           %{$st}.requires = $requires.st;
+           
+           System.out.println(announces);
+         }
     ;
 constraintBlock 
     :    ^(CONBLOCK constraintBlockDeclaration* ^(ANNOUNCEMENTS announcementDeclaration*))
@@ -143,7 +183,7 @@ functionPredicateCall
 
 // Lists of IDs, variables, and expressions
 idList 
-    :    ID+
+    :    ids += ID+ -> idList(ids = { $ids }) 
     ;
 
 variableList  

@@ -23,9 +23,9 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 	/**
 	 * for each ENUM, must document what it does
 	 * 
-	 * AUDIO_GAIN: [0,1]
+	 * AUDIO_GAIN: [0,1,2,3,4,5]
 	 * STATUS: initialized, playing, stopped, paused
-	 * MEDIA_TIME:
+	 * MEDIA_TIME: media time in milliseconds
 	 */
 	public enum Event{
 		AUDIO_GAIN, STATUS, MEDIA_TIME, ZOOM_LEVEL
@@ -149,7 +149,7 @@ public class JMFVideo extends MediaPlayer implements StaticInput, Video, Output,
 
 	@Override
 	public Component getVisualData() {
-		return null;
+		return super.getVisualComponent();
 	}
 
 	@Override

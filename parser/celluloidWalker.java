@@ -1,10 +1,16 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g 2009-12-19 03:24:24
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g 2009-12-19 17:21:32
+ 
+  import java.util.HashMap;  
+
 
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.*;import java.util.Stack;
 import java.util.List;
 import java.util.ArrayList;
 
+import org.antlr.stringtemplate.*;
+import org.antlr.stringtemplate.language.*;
+import java.util.HashMap;
 public class celluloidWalker extends TreeParser {
     public static final String[] tokenNames = new String[] {
         "<invalid>", "<EOR>", "<DOWN>", "<UP>", "VARDEF", "FUNC", "PRED", "ARG", "ARGS", "OBJCALL", "CALL", "PROGRAM", "EVENTS", "CONSTRAINTS", "DEVICES", "FUNCTIONS", "IF", "ELSEIF", "ELSE", "LISTENER", "EVERY", "COND", "RETURN", "IN", "WHEN", "PROGBLOCK", "INBLOCK", "LISTENBLOCK", "IFBLOCK", "FUNBLOCK", "CONBLOCK", "DEVBLOCK", "LANGBLOCK", "FUNHEAD", "PREDHEAD", "EVENT", "CONSTRAINT", "REQUIRES", "ANNOUNCES", "ANNOUNCEMENT", "ANNOUNCEMENTS", "DEVICE", "ACCEPTS", "NEWLINE", "ID", "START", "END", "TIME", "TYPE", "ASSIGNMENT_OPERATOR", "EQUALITY_OPERATOR", "RELATIONAL_OPERATOR", "ADDITIVE_OPERATOR", "MULTIPLICATIVE_OPERATOR", "BOOL", "NUMBER", "STRING", "ESCAPE", "DAY", "HOUR", "MINUTE", "SECOND", "EXPONENT", "WS", "COMMENT", "'event'", "'announce'", "'when'", "'constraint'", "'requires'", "'announces'", "'device'", "'accepts'", "'function'", "'('", "')'", "'predicate'", "'return'", "'in'", "'if'", "'else if'", "'else'", "'unless'", "'every'", "','", "'timeline'", "'='", "'not'", "'or'", "'and'", "'new'"
@@ -110,31 +116,85 @@ public class celluloidWalker extends TreeParser {
              
         }
         
+    protected StringTemplateGroup templateLib =
+      new StringTemplateGroup("celluloidWalkerTemplates", AngleBracketTemplateLexer.class);
+
+    public void setTemplateLib(StringTemplateGroup templateLib) {
+      this.templateLib = templateLib;
+    }
+    public StringTemplateGroup getTemplateLib() {
+      return templateLib;
+    }
+    /** allows convenient multi-value initialization:
+     *  "new STAttrMap().put(...).put(...)"
+     */
+    public static class STAttrMap extends HashMap {
+      public STAttrMap put(String attrName, Object value) {
+        super.put(attrName, value);
+        return this;
+      }
+      public STAttrMap put(String attrName, int value) {
+        super.put(attrName, new Integer(value));
+        return this;
+      }
+    }
 
     public String[] getTokenNames() { return celluloidWalker.tokenNames; }
     public String getGrammarFileName() { return "C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g"; }
 
 
+      private class SymbolEntry {
+        private String name;
+        private String type;
+        
+        public SymbolEntry(String name, String type) {
+          this.name = name;
+          this.type = type;
+        }
+        
+        public String getName() {
+          return this.name;
+        }
+        
+        public String getType() {
+          return this.type;
+        }
+      }
+
+      private HashMap<String, SymbolEntry> symbolTable;  
+
+
+    public static class program_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "program"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:9:1: program : ^( PROGRAM ^( EVENTS eventDefinition ( NEWLINE )* ) ^( CONSTRAINTS constraintDefinition ( NEWLINE )* ) ^( DEVICES deviceDefinition ( NEWLINE )* ) ^( FUNCTIONS ( functionDefinition | predicateDefinition )* ) ^( PROGBLOCK ( functionPredicateBlockDeclaration )* ) ) ;
-    public final void program() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:37:1: program : ^( PROGRAM ^( EVENTS eventDefinition ( NEWLINE )* ) ^( CONSTRAINTS constraintDefinition ( NEWLINE )* ) ^( DEVICES deviceDefinition ( NEWLINE )* ) ^( FUNCTIONS ( functionDefinition | predicateDefinition )* ) ^( PROGBLOCK ( functionPredicateBlockDeclaration )* ) ) ;
+    public final celluloidWalker.program_return program() throws RecognitionException {
+        celluloidWalker.program_return retval = new celluloidWalker.program_return();
+        retval.start = input.LT(1);
+
+
+          this.symbolTable = new HashMap<String, SymbolEntry>();
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:10:5: ( ^( PROGRAM ^( EVENTS eventDefinition ( NEWLINE )* ) ^( CONSTRAINTS constraintDefinition ( NEWLINE )* ) ^( DEVICES deviceDefinition ( NEWLINE )* ) ^( FUNCTIONS ( functionDefinition | predicateDefinition )* ) ^( PROGBLOCK ( functionPredicateBlockDeclaration )* ) ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:10:10: ^( PROGRAM ^( EVENTS eventDefinition ( NEWLINE )* ) ^( CONSTRAINTS constraintDefinition ( NEWLINE )* ) ^( DEVICES deviceDefinition ( NEWLINE )* ) ^( FUNCTIONS ( functionDefinition | predicateDefinition )* ) ^( PROGBLOCK ( functionPredicateBlockDeclaration )* ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:41:5: ( ^( PROGRAM ^( EVENTS eventDefinition ( NEWLINE )* ) ^( CONSTRAINTS constraintDefinition ( NEWLINE )* ) ^( DEVICES deviceDefinition ( NEWLINE )* ) ^( FUNCTIONS ( functionDefinition | predicateDefinition )* ) ^( PROGBLOCK ( functionPredicateBlockDeclaration )* ) ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:41:10: ^( PROGRAM ^( EVENTS eventDefinition ( NEWLINE )* ) ^( CONSTRAINTS constraintDefinition ( NEWLINE )* ) ^( DEVICES deviceDefinition ( NEWLINE )* ) ^( FUNCTIONS ( functionDefinition | predicateDefinition )* ) ^( PROGBLOCK ( functionPredicateBlockDeclaration )* ) )
             {
-            match(input,PROGRAM,FOLLOW_PROGRAM_in_program39); 
+            match(input,PROGRAM,FOLLOW_PROGRAM_in_program63); 
 
             match(input, Token.DOWN, null); 
-            match(input,EVENTS,FOLLOW_EVENTS_in_program56); 
+            match(input,EVENTS,FOLLOW_EVENTS_in_program80); 
 
             match(input, Token.DOWN, null); 
-            pushFollow(FOLLOW_eventDefinition_in_program58);
+            pushFollow(FOLLOW_eventDefinition_in_program82);
             eventDefinition();
 
             state._fsp--;
 
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:11:39: ( NEWLINE )*
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:42:39: ( NEWLINE )*
             loop1:
             do {
                 int alt1=2;
@@ -147,9 +207,9 @@ public class celluloidWalker extends TreeParser {
 
                 switch (alt1) {
             	case 1 :
-            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:11:39: NEWLINE
+            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:42:39: NEWLINE
             	    {
-            	    match(input,NEWLINE,FOLLOW_NEWLINE_in_program60); 
+            	    match(input,NEWLINE,FOLLOW_NEWLINE_in_program84); 
 
             	    }
             	    break;
@@ -161,15 +221,15 @@ public class celluloidWalker extends TreeParser {
 
 
             match(input, Token.UP, null); 
-            match(input,CONSTRAINTS,FOLLOW_CONSTRAINTS_in_program78); 
+            match(input,CONSTRAINTS,FOLLOW_CONSTRAINTS_in_program102); 
 
             match(input, Token.DOWN, null); 
-            pushFollow(FOLLOW_constraintDefinition_in_program80);
+            pushFollow(FOLLOW_constraintDefinition_in_program104);
             constraintDefinition();
 
             state._fsp--;
 
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:12:49: ( NEWLINE )*
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:43:49: ( NEWLINE )*
             loop2:
             do {
                 int alt2=2;
@@ -182,9 +242,9 @@ public class celluloidWalker extends TreeParser {
 
                 switch (alt2) {
             	case 1 :
-            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:12:49: NEWLINE
+            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:43:49: NEWLINE
             	    {
-            	    match(input,NEWLINE,FOLLOW_NEWLINE_in_program82); 
+            	    match(input,NEWLINE,FOLLOW_NEWLINE_in_program106); 
 
             	    }
             	    break;
@@ -196,15 +256,15 @@ public class celluloidWalker extends TreeParser {
 
 
             match(input, Token.UP, null); 
-            match(input,DEVICES,FOLLOW_DEVICES_in_program100); 
+            match(input,DEVICES,FOLLOW_DEVICES_in_program124); 
 
             match(input, Token.DOWN, null); 
-            pushFollow(FOLLOW_deviceDefinition_in_program102);
+            pushFollow(FOLLOW_deviceDefinition_in_program126);
             deviceDefinition();
 
             state._fsp--;
 
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:13:41: ( NEWLINE )*
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:44:41: ( NEWLINE )*
             loop3:
             do {
                 int alt3=2;
@@ -217,9 +277,9 @@ public class celluloidWalker extends TreeParser {
 
                 switch (alt3) {
             	case 1 :
-            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:13:41: NEWLINE
+            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:44:41: NEWLINE
             	    {
-            	    match(input,NEWLINE,FOLLOW_NEWLINE_in_program104); 
+            	    match(input,NEWLINE,FOLLOW_NEWLINE_in_program128); 
 
             	    }
             	    break;
@@ -231,11 +291,11 @@ public class celluloidWalker extends TreeParser {
 
 
             match(input, Token.UP, null); 
-            match(input,FUNCTIONS,FOLLOW_FUNCTIONS_in_program122); 
+            match(input,FUNCTIONS,FOLLOW_FUNCTIONS_in_program146); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:14:26: ( functionDefinition | predicateDefinition )*
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:45:26: ( functionDefinition | predicateDefinition )*
                 loop4:
                 do {
                     int alt4=3;
@@ -251,9 +311,9 @@ public class celluloidWalker extends TreeParser {
 
                     switch (alt4) {
                 	case 1 :
-                	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:14:27: functionDefinition
+                	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:45:27: functionDefinition
                 	    {
-                	    pushFollow(FOLLOW_functionDefinition_in_program125);
+                	    pushFollow(FOLLOW_functionDefinition_in_program149);
                 	    functionDefinition();
 
                 	    state._fsp--;
@@ -262,9 +322,9 @@ public class celluloidWalker extends TreeParser {
                 	    }
                 	    break;
                 	case 2 :
-                	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:14:48: predicateDefinition
+                	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:45:48: predicateDefinition
                 	    {
-                	    pushFollow(FOLLOW_predicateDefinition_in_program129);
+                	    pushFollow(FOLLOW_predicateDefinition_in_program153);
                 	    predicateDefinition();
 
                 	    state._fsp--;
@@ -281,11 +341,11 @@ public class celluloidWalker extends TreeParser {
 
                 match(input, Token.UP, null); 
             }
-            match(input,PROGBLOCK,FOLLOW_PROGBLOCK_in_program148); 
+            match(input,PROGBLOCK,FOLLOW_PROGBLOCK_in_program172); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:15:26: ( functionPredicateBlockDeclaration )*
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:46:26: ( functionPredicateBlockDeclaration )*
                 loop5:
                 do {
                     int alt5=2;
@@ -298,9 +358,9 @@ public class celluloidWalker extends TreeParser {
 
                     switch (alt5) {
                 	case 1 :
-                	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:15:26: functionPredicateBlockDeclaration
+                	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:46:26: functionPredicateBlockDeclaration
                 	    {
-                	    pushFollow(FOLLOW_functionPredicateBlockDeclaration_in_program150);
+                	    pushFollow(FOLLOW_functionPredicateBlockDeclaration_in_program174);
                 	    functionPredicateBlockDeclaration();
 
                 	    state._fsp--;
@@ -329,24 +389,39 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "program"
 
+    public static class eventDefinition_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "eventDefinition"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:19:1: eventDefinition : ^( EVENT ID ) ;
-    public final void eventDefinition() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:50:1: eventDefinition : ^( EVENT ID ) ;
+    public final celluloidWalker.eventDefinition_return eventDefinition() throws RecognitionException {
+        celluloidWalker.eventDefinition_return retval = new celluloidWalker.eventDefinition_return();
+        retval.start = input.LT(1);
+
+        CommonTree ID1=null;
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:20:5: ( ^( EVENT ID ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:20:10: ^( EVENT ID )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:51:5: ( ^( EVENT ID ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:51:10: ^( EVENT ID )
             {
-            match(input,EVENT,FOLLOW_EVENT_in_eventDefinition176); 
+            match(input,EVENT,FOLLOW_EVENT_in_eventDefinition200); 
 
             match(input, Token.DOWN, null); 
-            match(input,ID,FOLLOW_ID_in_eventDefinition178); 
+            ID1=(CommonTree)match(input,ID,FOLLOW_ID_in_eventDefinition202); 
 
             match(input, Token.UP, null); 
+
+                       retval.st = templateLib.getInstanceOf("eventDefinition");
+                       (retval.st).setAttribute("name", (ID1!=null?ID1.getText():null));
+                       this.symbolTable.put((ID1!=null?ID1.getText():null), new SymbolEntry((ID1!=null?ID1.getText():null), "event"));
+                     
 
             }
 
@@ -357,25 +432,32 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "eventDefinition"
 
+    public static class announcementDeclaration_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "announcementDeclaration"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:24:1: announcementDeclaration : ^( ANNOUNCEMENT ID 'when' ID ( variableDeclaration )? ) ;
-    public final void announcementDeclaration() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:59:1: announcementDeclaration : ^( ANNOUNCEMENT ID ID ( variableDeclaration )? ) ;
+    public final celluloidWalker.announcementDeclaration_return announcementDeclaration() throws RecognitionException {
+        celluloidWalker.announcementDeclaration_return retval = new celluloidWalker.announcementDeclaration_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:25:5: ( ^( ANNOUNCEMENT ID 'when' ID ( variableDeclaration )? ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:25:10: ^( ANNOUNCEMENT ID 'when' ID ( variableDeclaration )? )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:60:5: ( ^( ANNOUNCEMENT ID ID ( variableDeclaration )? ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:60:10: ^( ANNOUNCEMENT ID ID ( variableDeclaration )? )
             {
-            match(input,ANNOUNCEMENT,FOLLOW_ANNOUNCEMENT_in_announcementDeclaration201); 
+            match(input,ANNOUNCEMENT,FOLLOW_ANNOUNCEMENT_in_announcementDeclaration227); 
 
             match(input, Token.DOWN, null); 
-            match(input,ID,FOLLOW_ID_in_announcementDeclaration203); 
-            match(input,67,FOLLOW_67_in_announcementDeclaration205); 
-            match(input,ID,FOLLOW_ID_in_announcementDeclaration207); 
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:25:38: ( variableDeclaration )?
+            match(input,ID,FOLLOW_ID_in_announcementDeclaration229); 
+            match(input,ID,FOLLOW_ID_in_announcementDeclaration231); 
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:60:31: ( variableDeclaration )?
             int alt6=2;
             int LA6_0 = input.LA(1);
 
@@ -384,9 +466,9 @@ public class celluloidWalker extends TreeParser {
             }
             switch (alt6) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:25:38: variableDeclaration
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:60:31: variableDeclaration
                     {
-                    pushFollow(FOLLOW_variableDeclaration_in_announcementDeclaration209);
+                    pushFollow(FOLLOW_variableDeclaration_in_announcementDeclaration233);
                     variableDeclaration();
 
                     state._fsp--;
@@ -409,27 +491,41 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "announcementDeclaration"
 
+    public static class constraintDefinition_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "constraintDefinition"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:29:1: constraintDefinition : ^( CONSTRAINT ID ^( REQUIRES ( idList )? ) ^( ANNOUNCES ( idList )? ) constraintBlock ) ;
-    public final void constraintDefinition() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:63:1: constraintDefinition : ^( CONSTRAINT ID ^( REQUIRES (requires= idList )? ) ^( ANNOUNCES (announces= idList )? ) constraintBlock ) ;
+    public final celluloidWalker.constraintDefinition_return constraintDefinition() throws RecognitionException {
+        celluloidWalker.constraintDefinition_return retval = new celluloidWalker.constraintDefinition_return();
+        retval.start = input.LT(1);
+
+        CommonTree ID2=null;
+        celluloidWalker.idList_return requires = null;
+
+        celluloidWalker.idList_return announces = null;
+
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:30:5: ( ^( CONSTRAINT ID ^( REQUIRES ( idList )? ) ^( ANNOUNCES ( idList )? ) constraintBlock ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:30:10: ^( CONSTRAINT ID ^( REQUIRES ( idList )? ) ^( ANNOUNCES ( idList )? ) constraintBlock )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:64:5: ( ^( CONSTRAINT ID ^( REQUIRES (requires= idList )? ) ^( ANNOUNCES (announces= idList )? ) constraintBlock ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:64:10: ^( CONSTRAINT ID ^( REQUIRES (requires= idList )? ) ^( ANNOUNCES (announces= idList )? ) constraintBlock )
             {
-            match(input,CONSTRAINT,FOLLOW_CONSTRAINT_in_constraintDefinition234); 
+            match(input,CONSTRAINT,FOLLOW_CONSTRAINT_in_constraintDefinition257); 
 
             match(input, Token.DOWN, null); 
-            match(input,ID,FOLLOW_ID_in_constraintDefinition236); 
-            match(input,REQUIRES,FOLLOW_REQUIRES_in_constraintDefinition239); 
+            ID2=(CommonTree)match(input,ID,FOLLOW_ID_in_constraintDefinition259); 
+            match(input,REQUIRES,FOLLOW_REQUIRES_in_constraintDefinition262); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:30:38: ( idList )?
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:64:46: (requires= idList )?
                 int alt7=2;
                 int LA7_0 = input.LA(1);
 
@@ -438,10 +534,10 @@ public class celluloidWalker extends TreeParser {
                 }
                 switch (alt7) {
                     case 1 :
-                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:30:38: idList
+                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:64:46: requires= idList
                         {
-                        pushFollow(FOLLOW_idList_in_constraintDefinition242);
-                        idList();
+                        pushFollow(FOLLOW_idList_in_constraintDefinition268);
+                        requires=idList();
 
                         state._fsp--;
 
@@ -454,11 +550,11 @@ public class celluloidWalker extends TreeParser {
 
                 match(input, Token.UP, null); 
             }
-            match(input,ANNOUNCES,FOLLOW_ANNOUNCES_in_constraintDefinition247); 
+            match(input,ANNOUNCES,FOLLOW_ANNOUNCES_in_constraintDefinition273); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:30:60: ( idList )?
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:64:79: (announces= idList )?
                 int alt8=2;
                 int LA8_0 = input.LA(1);
 
@@ -467,10 +563,10 @@ public class celluloidWalker extends TreeParser {
                 }
                 switch (alt8) {
                     case 1 :
-                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:30:60: idList
+                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:64:79: announces= idList
                         {
-                        pushFollow(FOLLOW_idList_in_constraintDefinition250);
-                        idList();
+                        pushFollow(FOLLOW_idList_in_constraintDefinition279);
+                        announces=idList();
 
                         state._fsp--;
 
@@ -483,13 +579,20 @@ public class celluloidWalker extends TreeParser {
 
                 match(input, Token.UP, null); 
             }
-            pushFollow(FOLLOW_constraintBlock_in_constraintDefinition254);
+            pushFollow(FOLLOW_constraintBlock_in_constraintDefinition283);
             constraintBlock();
 
             state._fsp--;
 
 
             match(input, Token.UP, null); 
+
+                       retval.st = templateLib.getInstanceOf("constraintDefinition");
+                       (retval.st).setAttribute("name", (ID2!=null?ID2.getText():null));
+                       (retval.st).setAttribute("requires", (requires!=null?requires.st:null));
+                       
+                       System.out.println(announces);
+                     
 
             }
 
@@ -500,22 +603,30 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "constraintDefinition"
 
+    public static class constraintBlock_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "constraintBlock"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:32:1: constraintBlock : ^( CONBLOCK ( constraintBlockDeclaration )* ^( ANNOUNCEMENTS ( announcementDeclaration )* ) ) ;
-    public final void constraintBlock() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:72:1: constraintBlock : ^( CONBLOCK ( constraintBlockDeclaration )* ^( ANNOUNCEMENTS ( announcementDeclaration )* ) ) ;
+    public final celluloidWalker.constraintBlock_return constraintBlock() throws RecognitionException {
+        celluloidWalker.constraintBlock_return retval = new celluloidWalker.constraintBlock_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:33:5: ( ^( CONBLOCK ( constraintBlockDeclaration )* ^( ANNOUNCEMENTS ( announcementDeclaration )* ) ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:33:10: ^( CONBLOCK ( constraintBlockDeclaration )* ^( ANNOUNCEMENTS ( announcementDeclaration )* ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:73:5: ( ^( CONBLOCK ( constraintBlockDeclaration )* ^( ANNOUNCEMENTS ( announcementDeclaration )* ) ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:73:10: ^( CONBLOCK ( constraintBlockDeclaration )* ^( ANNOUNCEMENTS ( announcementDeclaration )* ) )
             {
-            match(input,CONBLOCK,FOLLOW_CONBLOCK_in_constraintBlock276); 
+            match(input,CONBLOCK,FOLLOW_CONBLOCK_in_constraintBlock307); 
 
             match(input, Token.DOWN, null); 
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:33:21: ( constraintBlockDeclaration )*
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:73:21: ( constraintBlockDeclaration )*
             loop9:
             do {
                 int alt9=2;
@@ -528,9 +639,9 @@ public class celluloidWalker extends TreeParser {
 
                 switch (alt9) {
             	case 1 :
-            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:33:21: constraintBlockDeclaration
+            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:73:21: constraintBlockDeclaration
             	    {
-            	    pushFollow(FOLLOW_constraintBlockDeclaration_in_constraintBlock278);
+            	    pushFollow(FOLLOW_constraintBlockDeclaration_in_constraintBlock309);
             	    constraintBlockDeclaration();
 
             	    state._fsp--;
@@ -544,11 +655,11 @@ public class celluloidWalker extends TreeParser {
                 }
             } while (true);
 
-            match(input,ANNOUNCEMENTS,FOLLOW_ANNOUNCEMENTS_in_constraintBlock282); 
+            match(input,ANNOUNCEMENTS,FOLLOW_ANNOUNCEMENTS_in_constraintBlock313); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:33:65: ( announcementDeclaration )*
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:73:65: ( announcementDeclaration )*
                 loop10:
                 do {
                     int alt10=2;
@@ -561,9 +672,9 @@ public class celluloidWalker extends TreeParser {
 
                     switch (alt10) {
                 	case 1 :
-                	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:33:65: announcementDeclaration
+                	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:73:65: announcementDeclaration
                 	    {
-                	    pushFollow(FOLLOW_announcementDeclaration_in_constraintBlock284);
+                	    pushFollow(FOLLOW_announcementDeclaration_in_constraintBlock315);
                 	    announcementDeclaration();
 
                 	    state._fsp--;
@@ -592,16 +703,24 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "constraintBlock"
 
+    public static class constraintBlockDeclaration_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "constraintBlockDeclaration"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:35:1: constraintBlockDeclaration : ( variableDeclaration | predicateHeader | functionHeader );
-    public final void constraintBlockDeclaration() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:75:1: constraintBlockDeclaration : ( variableDeclaration | predicateHeader | functionHeader );
+    public final celluloidWalker.constraintBlockDeclaration_return constraintBlockDeclaration() throws RecognitionException {
+        celluloidWalker.constraintBlockDeclaration_return retval = new celluloidWalker.constraintBlockDeclaration_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:36:5: ( variableDeclaration | predicateHeader | functionHeader )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:76:5: ( variableDeclaration | predicateHeader | functionHeader )
             int alt11=3;
             switch ( input.LA(1) ) {
             case VARDEF:
@@ -629,9 +748,9 @@ public class celluloidWalker extends TreeParser {
 
             switch (alt11) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:36:8: variableDeclaration
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:76:8: variableDeclaration
                     {
-                    pushFollow(FOLLOW_variableDeclaration_in_constraintBlockDeclaration309);
+                    pushFollow(FOLLOW_variableDeclaration_in_constraintBlockDeclaration340);
                     variableDeclaration();
 
                     state._fsp--;
@@ -640,9 +759,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:37:10: predicateHeader
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:77:10: predicateHeader
                     {
-                    pushFollow(FOLLOW_predicateHeader_in_constraintBlockDeclaration321);
+                    pushFollow(FOLLOW_predicateHeader_in_constraintBlockDeclaration352);
                     predicateHeader();
 
                     state._fsp--;
@@ -651,9 +770,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:38:10: functionHeader
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:78:10: functionHeader
                     {
-                    pushFollow(FOLLOW_functionHeader_in_constraintBlockDeclaration333);
+                    pushFollow(FOLLOW_functionHeader_in_constraintBlockDeclaration364);
                     functionHeader();
 
                     state._fsp--;
@@ -670,27 +789,35 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "constraintBlockDeclaration"
 
+    public static class deviceDefinition_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "deviceDefinition"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:42:1: deviceDefinition : ^( DEVICE ID ^( ACCEPTS ( idList )? ) deviceBlock ) ;
-    public final void deviceDefinition() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:82:1: deviceDefinition : ^( DEVICE ID ^( ACCEPTS ( idList )? ) deviceBlock ) ;
+    public final celluloidWalker.deviceDefinition_return deviceDefinition() throws RecognitionException {
+        celluloidWalker.deviceDefinition_return retval = new celluloidWalker.deviceDefinition_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:43:5: ( ^( DEVICE ID ^( ACCEPTS ( idList )? ) deviceBlock ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:43:10: ^( DEVICE ID ^( ACCEPTS ( idList )? ) deviceBlock )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:83:5: ( ^( DEVICE ID ^( ACCEPTS ( idList )? ) deviceBlock ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:83:10: ^( DEVICE ID ^( ACCEPTS ( idList )? ) deviceBlock )
             {
-            match(input,DEVICE,FOLLOW_DEVICE_in_deviceDefinition365); 
+            match(input,DEVICE,FOLLOW_DEVICE_in_deviceDefinition396); 
 
             match(input, Token.DOWN, null); 
-            match(input,ID,FOLLOW_ID_in_deviceDefinition367); 
-            match(input,ACCEPTS,FOLLOW_ACCEPTS_in_deviceDefinition370); 
+            match(input,ID,FOLLOW_ID_in_deviceDefinition398); 
+            match(input,ACCEPTS,FOLLOW_ACCEPTS_in_deviceDefinition401); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:43:33: ( idList )?
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:83:33: ( idList )?
                 int alt12=2;
                 int LA12_0 = input.LA(1);
 
@@ -699,9 +826,9 @@ public class celluloidWalker extends TreeParser {
                 }
                 switch (alt12) {
                     case 1 :
-                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:43:33: idList
+                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:83:33: idList
                         {
-                        pushFollow(FOLLOW_idList_in_deviceDefinition373);
+                        pushFollow(FOLLOW_idList_in_deviceDefinition404);
                         idList();
 
                         state._fsp--;
@@ -715,7 +842,7 @@ public class celluloidWalker extends TreeParser {
 
                 match(input, Token.UP, null); 
             }
-            pushFollow(FOLLOW_deviceBlock_in_deviceDefinition377);
+            pushFollow(FOLLOW_deviceBlock_in_deviceDefinition408);
             deviceBlock();
 
             state._fsp--;
@@ -732,23 +859,31 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "deviceDefinition"
 
+    public static class deviceBlock_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "deviceBlock"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:45:1: deviceBlock : ^( DEVBLOCK ( deviceBlockDeclaration )* ) ;
-    public final void deviceBlock() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:85:1: deviceBlock : ^( DEVBLOCK ( deviceBlockDeclaration )* ) ;
+    public final celluloidWalker.deviceBlock_return deviceBlock() throws RecognitionException {
+        celluloidWalker.deviceBlock_return retval = new celluloidWalker.deviceBlock_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:46:5: ( ^( DEVBLOCK ( deviceBlockDeclaration )* ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:46:10: ^( DEVBLOCK ( deviceBlockDeclaration )* )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:86:5: ( ^( DEVBLOCK ( deviceBlockDeclaration )* ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:86:10: ^( DEVBLOCK ( deviceBlockDeclaration )* )
             {
-            match(input,DEVBLOCK,FOLLOW_DEVBLOCK_in_deviceBlock399); 
+            match(input,DEVBLOCK,FOLLOW_DEVBLOCK_in_deviceBlock430); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:46:21: ( deviceBlockDeclaration )*
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:86:21: ( deviceBlockDeclaration )*
                 loop13:
                 do {
                     int alt13=2;
@@ -761,9 +896,9 @@ public class celluloidWalker extends TreeParser {
 
                     switch (alt13) {
                 	case 1 :
-                	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:46:21: deviceBlockDeclaration
+                	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:86:21: deviceBlockDeclaration
                 	    {
-                	    pushFollow(FOLLOW_deviceBlockDeclaration_in_deviceBlock401);
+                	    pushFollow(FOLLOW_deviceBlockDeclaration_in_deviceBlock432);
                 	    deviceBlockDeclaration();
 
                 	    state._fsp--;
@@ -790,16 +925,24 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "deviceBlock"
 
+    public static class deviceBlockDeclaration_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "deviceBlockDeclaration"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:48:1: deviceBlockDeclaration : ( variableDeclaration | predicateDefinition | functionDefinition );
-    public final void deviceBlockDeclaration() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:88:1: deviceBlockDeclaration : ( variableDeclaration | predicateDefinition | functionDefinition );
+    public final celluloidWalker.deviceBlockDeclaration_return deviceBlockDeclaration() throws RecognitionException {
+        celluloidWalker.deviceBlockDeclaration_return retval = new celluloidWalker.deviceBlockDeclaration_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:49:5: ( variableDeclaration | predicateDefinition | functionDefinition )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:89:5: ( variableDeclaration | predicateDefinition | functionDefinition )
             int alt14=3;
             switch ( input.LA(1) ) {
             case VARDEF:
@@ -827,9 +970,9 @@ public class celluloidWalker extends TreeParser {
 
             switch (alt14) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:49:10: variableDeclaration
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:89:10: variableDeclaration
                     {
-                    pushFollow(FOLLOW_variableDeclaration_in_deviceBlockDeclaration422);
+                    pushFollow(FOLLOW_variableDeclaration_in_deviceBlockDeclaration453);
                     variableDeclaration();
 
                     state._fsp--;
@@ -838,9 +981,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:50:10: predicateDefinition
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:90:10: predicateDefinition
                     {
-                    pushFollow(FOLLOW_predicateDefinition_in_deviceBlockDeclaration434);
+                    pushFollow(FOLLOW_predicateDefinition_in_deviceBlockDeclaration465);
                     predicateDefinition();
 
                     state._fsp--;
@@ -849,9 +992,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:51:10: functionDefinition
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:91:10: functionDefinition
                     {
-                    pushFollow(FOLLOW_functionDefinition_in_deviceBlockDeclaration446);
+                    pushFollow(FOLLOW_functionDefinition_in_deviceBlockDeclaration477);
                     functionDefinition();
 
                     state._fsp--;
@@ -868,26 +1011,34 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "deviceBlockDeclaration"
 
+    public static class functionHeader_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "functionHeader"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:55:1: functionHeader : ^( FUNHEAD ID ^( ARGS variableList ) ) ;
-    public final void functionHeader() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:95:1: functionHeader : ^( FUNHEAD ID ^( ARGS variableList ) ) ;
+    public final celluloidWalker.functionHeader_return functionHeader() throws RecognitionException {
+        celluloidWalker.functionHeader_return retval = new celluloidWalker.functionHeader_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:56:5: ( ^( FUNHEAD ID ^( ARGS variableList ) ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:56:10: ^( FUNHEAD ID ^( ARGS variableList ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:96:5: ( ^( FUNHEAD ID ^( ARGS variableList ) ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:96:10: ^( FUNHEAD ID ^( ARGS variableList ) )
             {
-            match(input,FUNHEAD,FOLLOW_FUNHEAD_in_functionHeader473); 
+            match(input,FUNHEAD,FOLLOW_FUNHEAD_in_functionHeader504); 
 
             match(input, Token.DOWN, null); 
-            match(input,ID,FOLLOW_ID_in_functionHeader475); 
-            match(input,ARGS,FOLLOW_ARGS_in_functionHeader478); 
+            match(input,ID,FOLLOW_ID_in_functionHeader506); 
+            match(input,ARGS,FOLLOW_ARGS_in_functionHeader509); 
 
             match(input, Token.DOWN, null); 
-            pushFollow(FOLLOW_variableList_in_functionHeader480);
+            pushFollow(FOLLOW_variableList_in_functionHeader511);
             variableList();
 
             state._fsp--;
@@ -906,33 +1057,41 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "functionHeader"
 
+    public static class functionDefinition_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "functionDefinition"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:58:1: functionDefinition : ^( FUNC ID ^( ARGS variableList ) ( functionBlock )? ) ;
-    public final void functionDefinition() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:98:1: functionDefinition : ^( FUNC ID ^( ARGS variableList ) ( functionBlock )? ) ;
+    public final celluloidWalker.functionDefinition_return functionDefinition() throws RecognitionException {
+        celluloidWalker.functionDefinition_return retval = new celluloidWalker.functionDefinition_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:59:5: ( ^( FUNC ID ^( ARGS variableList ) ( functionBlock )? ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:59:10: ^( FUNC ID ^( ARGS variableList ) ( functionBlock )? )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:99:5: ( ^( FUNC ID ^( ARGS variableList ) ( functionBlock )? ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:99:10: ^( FUNC ID ^( ARGS variableList ) ( functionBlock )? )
             {
-            match(input,FUNC,FOLLOW_FUNC_in_functionDefinition503); 
+            match(input,FUNC,FOLLOW_FUNC_in_functionDefinition534); 
 
             match(input, Token.DOWN, null); 
-            match(input,ID,FOLLOW_ID_in_functionDefinition505); 
-            match(input,ARGS,FOLLOW_ARGS_in_functionDefinition508); 
+            match(input,ID,FOLLOW_ID_in_functionDefinition536); 
+            match(input,ARGS,FOLLOW_ARGS_in_functionDefinition539); 
 
             match(input, Token.DOWN, null); 
-            pushFollow(FOLLOW_variableList_in_functionDefinition510);
+            pushFollow(FOLLOW_variableList_in_functionDefinition541);
             variableList();
 
             state._fsp--;
 
 
             match(input, Token.UP, null); 
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:59:41: ( functionBlock )?
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:99:41: ( functionBlock )?
             int alt15=2;
             int LA15_0 = input.LA(1);
 
@@ -941,9 +1100,9 @@ public class celluloidWalker extends TreeParser {
             }
             switch (alt15) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:59:41: functionBlock
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:99:41: functionBlock
                     {
-                    pushFollow(FOLLOW_functionBlock_in_functionDefinition513);
+                    pushFollow(FOLLOW_functionBlock_in_functionDefinition544);
                     functionBlock();
 
                     state._fsp--;
@@ -966,23 +1125,31 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "functionDefinition"
 
+    public static class functionBlock_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "functionBlock"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:61:1: functionBlock : ^( FUNBLOCK RETURN ( functionPredicateBlockDeclaration )* ) ;
-    public final void functionBlock() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:101:1: functionBlock : ^( FUNBLOCK RETURN ( functionPredicateBlockDeclaration )* ) ;
+    public final celluloidWalker.functionBlock_return functionBlock() throws RecognitionException {
+        celluloidWalker.functionBlock_return retval = new celluloidWalker.functionBlock_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:62:5: ( ^( FUNBLOCK RETURN ( functionPredicateBlockDeclaration )* ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:62:10: ^( FUNBLOCK RETURN ( functionPredicateBlockDeclaration )* )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:102:5: ( ^( FUNBLOCK RETURN ( functionPredicateBlockDeclaration )* ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:102:10: ^( FUNBLOCK RETURN ( functionPredicateBlockDeclaration )* )
             {
-            match(input,FUNBLOCK,FOLLOW_FUNBLOCK_in_functionBlock541); 
+            match(input,FUNBLOCK,FOLLOW_FUNBLOCK_in_functionBlock572); 
 
             match(input, Token.DOWN, null); 
-            match(input,RETURN,FOLLOW_RETURN_in_functionBlock543); 
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:62:28: ( functionPredicateBlockDeclaration )*
+            match(input,RETURN,FOLLOW_RETURN_in_functionBlock574); 
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:102:28: ( functionPredicateBlockDeclaration )*
             loop16:
             do {
                 int alt16=2;
@@ -995,9 +1162,9 @@ public class celluloidWalker extends TreeParser {
 
                 switch (alt16) {
             	case 1 :
-            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:62:28: functionPredicateBlockDeclaration
+            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:102:28: functionPredicateBlockDeclaration
             	    {
-            	    pushFollow(FOLLOW_functionPredicateBlockDeclaration_in_functionBlock545);
+            	    pushFollow(FOLLOW_functionPredicateBlockDeclaration_in_functionBlock576);
             	    functionPredicateBlockDeclaration();
 
             	    state._fsp--;
@@ -1023,16 +1190,24 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "functionBlock"
 
+    public static class functionPredicateBlockDeclaration_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "functionPredicateBlockDeclaration"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:64:1: functionPredicateBlockDeclaration : ( variableDeclaration | expression | inStatement | ifStatement | functionPredicateCall );
-    public final void functionPredicateBlockDeclaration() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:104:1: functionPredicateBlockDeclaration : ( variableDeclaration | expression | inStatement | ifStatement | functionPredicateCall );
+    public final celluloidWalker.functionPredicateBlockDeclaration_return functionPredicateBlockDeclaration() throws RecognitionException {
+        celluloidWalker.functionPredicateBlockDeclaration_return retval = new celluloidWalker.functionPredicateBlockDeclaration_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:65:5: ( variableDeclaration | expression | inStatement | ifStatement | functionPredicateCall )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:105:5: ( variableDeclaration | expression | inStatement | ifStatement | functionPredicateCall )
             int alt17=5;
             switch ( input.LA(1) ) {
             case VARDEF:
@@ -1070,9 +1245,9 @@ public class celluloidWalker extends TreeParser {
 
             switch (alt17) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:65:10: variableDeclaration
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:105:10: variableDeclaration
                     {
-                    pushFollow(FOLLOW_variableDeclaration_in_functionPredicateBlockDeclaration568);
+                    pushFollow(FOLLOW_variableDeclaration_in_functionPredicateBlockDeclaration599);
                     variableDeclaration();
 
                     state._fsp--;
@@ -1081,9 +1256,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:66:10: expression
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:106:10: expression
                     {
-                    pushFollow(FOLLOW_expression_in_functionPredicateBlockDeclaration579);
+                    pushFollow(FOLLOW_expression_in_functionPredicateBlockDeclaration610);
                     expression();
 
                     state._fsp--;
@@ -1092,9 +1267,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:67:10: inStatement
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:107:10: inStatement
                     {
-                    pushFollow(FOLLOW_inStatement_in_functionPredicateBlockDeclaration590);
+                    pushFollow(FOLLOW_inStatement_in_functionPredicateBlockDeclaration621);
                     inStatement();
 
                     state._fsp--;
@@ -1103,9 +1278,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 4 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:68:10: ifStatement
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:108:10: ifStatement
                     {
-                    pushFollow(FOLLOW_ifStatement_in_functionPredicateBlockDeclaration602);
+                    pushFollow(FOLLOW_ifStatement_in_functionPredicateBlockDeclaration633);
                     ifStatement();
 
                     state._fsp--;
@@ -1114,9 +1289,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 5 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:69:10: functionPredicateCall
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:109:10: functionPredicateCall
                     {
-                    pushFollow(FOLLOW_functionPredicateCall_in_functionPredicateBlockDeclaration613);
+                    pushFollow(FOLLOW_functionPredicateCall_in_functionPredicateBlockDeclaration644);
                     functionPredicateCall();
 
                     state._fsp--;
@@ -1133,26 +1308,34 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "functionPredicateBlockDeclaration"
 
+    public static class predicateHeader_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "predicateHeader"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:72:1: predicateHeader : ^( PREDHEAD ID ^( ARGS variableList ) ) ;
-    public final void predicateHeader() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:112:1: predicateHeader : ^( PREDHEAD ID ^( ARGS variableList ) ) ;
+    public final celluloidWalker.predicateHeader_return predicateHeader() throws RecognitionException {
+        celluloidWalker.predicateHeader_return retval = new celluloidWalker.predicateHeader_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:73:5: ( ^( PREDHEAD ID ^( ARGS variableList ) ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:73:10: ^( PREDHEAD ID ^( ARGS variableList ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:113:5: ( ^( PREDHEAD ID ^( ARGS variableList ) ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:113:10: ^( PREDHEAD ID ^( ARGS variableList ) )
             {
-            match(input,PREDHEAD,FOLLOW_PREDHEAD_in_predicateHeader639); 
+            match(input,PREDHEAD,FOLLOW_PREDHEAD_in_predicateHeader670); 
 
             match(input, Token.DOWN, null); 
-            match(input,ID,FOLLOW_ID_in_predicateHeader641); 
-            match(input,ARGS,FOLLOW_ARGS_in_predicateHeader644); 
+            match(input,ID,FOLLOW_ID_in_predicateHeader672); 
+            match(input,ARGS,FOLLOW_ARGS_in_predicateHeader675); 
 
             match(input, Token.DOWN, null); 
-            pushFollow(FOLLOW_variableList_in_predicateHeader646);
+            pushFollow(FOLLOW_variableList_in_predicateHeader677);
             variableList();
 
             state._fsp--;
@@ -1171,33 +1354,41 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "predicateHeader"
 
+    public static class predicateDefinition_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "predicateDefinition"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:75:1: predicateDefinition : ^( PRED ID ^( ARGS variableList ) predicateBlock ) ;
-    public final void predicateDefinition() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:115:1: predicateDefinition : ^( PRED ID ^( ARGS variableList ) predicateBlock ) ;
+    public final celluloidWalker.predicateDefinition_return predicateDefinition() throws RecognitionException {
+        celluloidWalker.predicateDefinition_return retval = new celluloidWalker.predicateDefinition_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:76:5: ( ^( PRED ID ^( ARGS variableList ) predicateBlock ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:76:10: ^( PRED ID ^( ARGS variableList ) predicateBlock )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:116:5: ( ^( PRED ID ^( ARGS variableList ) predicateBlock ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:116:10: ^( PRED ID ^( ARGS variableList ) predicateBlock )
             {
-            match(input,PRED,FOLLOW_PRED_in_predicateDefinition673); 
+            match(input,PRED,FOLLOW_PRED_in_predicateDefinition704); 
 
             match(input, Token.DOWN, null); 
-            match(input,ID,FOLLOW_ID_in_predicateDefinition675); 
-            match(input,ARGS,FOLLOW_ARGS_in_predicateDefinition678); 
+            match(input,ID,FOLLOW_ID_in_predicateDefinition706); 
+            match(input,ARGS,FOLLOW_ARGS_in_predicateDefinition709); 
 
             match(input, Token.DOWN, null); 
-            pushFollow(FOLLOW_variableList_in_predicateDefinition680);
+            pushFollow(FOLLOW_variableList_in_predicateDefinition711);
             variableList();
 
             state._fsp--;
 
 
             match(input, Token.UP, null); 
-            pushFollow(FOLLOW_predicateBlock_in_predicateDefinition683);
+            pushFollow(FOLLOW_predicateBlock_in_predicateDefinition714);
             predicateBlock();
 
             state._fsp--;
@@ -1214,32 +1405,40 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "predicateDefinition"
 
+    public static class predicateBlock_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "predicateBlock"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:78:1: predicateBlock : ^( FUNBLOCK ^( RETURN expression ) ( functionPredicateBlockDeclaration )* ) ;
-    public final void predicateBlock() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:118:1: predicateBlock : ^( FUNBLOCK ^( RETURN expression ) ( functionPredicateBlockDeclaration )* ) ;
+    public final celluloidWalker.predicateBlock_return predicateBlock() throws RecognitionException {
+        celluloidWalker.predicateBlock_return retval = new celluloidWalker.predicateBlock_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:79:5: ( ^( FUNBLOCK ^( RETURN expression ) ( functionPredicateBlockDeclaration )* ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:79:10: ^( FUNBLOCK ^( RETURN expression ) ( functionPredicateBlockDeclaration )* )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:119:5: ( ^( FUNBLOCK ^( RETURN expression ) ( functionPredicateBlockDeclaration )* ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:119:10: ^( FUNBLOCK ^( RETURN expression ) ( functionPredicateBlockDeclaration )* )
             {
-            match(input,FUNBLOCK,FOLLOW_FUNBLOCK_in_predicateBlock715); 
+            match(input,FUNBLOCK,FOLLOW_FUNBLOCK_in_predicateBlock746); 
 
             match(input, Token.DOWN, null); 
-            match(input,RETURN,FOLLOW_RETURN_in_predicateBlock718); 
+            match(input,RETURN,FOLLOW_RETURN_in_predicateBlock749); 
 
             match(input, Token.DOWN, null); 
-            pushFollow(FOLLOW_expression_in_predicateBlock720);
+            pushFollow(FOLLOW_expression_in_predicateBlock751);
             expression();
 
             state._fsp--;
 
 
             match(input, Token.UP, null); 
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:79:42: ( functionPredicateBlockDeclaration )*
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:119:42: ( functionPredicateBlockDeclaration )*
             loop18:
             do {
                 int alt18=2;
@@ -1252,9 +1451,9 @@ public class celluloidWalker extends TreeParser {
 
                 switch (alt18) {
             	case 1 :
-            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:79:42: functionPredicateBlockDeclaration
+            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:119:42: functionPredicateBlockDeclaration
             	    {
-            	    pushFollow(FOLLOW_functionPredicateBlockDeclaration_in_predicateBlock723);
+            	    pushFollow(FOLLOW_functionPredicateBlockDeclaration_in_predicateBlock754);
             	    functionPredicateBlockDeclaration();
 
             	    state._fsp--;
@@ -1280,23 +1479,31 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "predicateBlock"
 
+    public static class inStatement_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "inStatement"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:83:1: inStatement : ^( IN ID inBlock ) ;
-    public final void inStatement() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:123:1: inStatement : ^( IN ID inBlock ) ;
+    public final celluloidWalker.inStatement_return inStatement() throws RecognitionException {
+        celluloidWalker.inStatement_return retval = new celluloidWalker.inStatement_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:84:5: ( ^( IN ID inBlock ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:84:8: ^( IN ID inBlock )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:124:5: ( ^( IN ID inBlock ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:124:8: ^( IN ID inBlock )
             {
-            match(input,IN,FOLLOW_IN_in_inStatement746); 
+            match(input,IN,FOLLOW_IN_in_inStatement777); 
 
             match(input, Token.DOWN, null); 
-            match(input,ID,FOLLOW_ID_in_inStatement748); 
-            pushFollow(FOLLOW_inBlock_in_inStatement750);
+            match(input,ID,FOLLOW_ID_in_inStatement779); 
+            pushFollow(FOLLOW_inBlock_in_inStatement781);
             inBlock();
 
             state._fsp--;
@@ -1313,23 +1520,31 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "inStatement"
 
+    public static class inBlock_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "inBlock"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:87:1: inBlock : ^( INBLOCK ( inBlockDeclaration )* ) ;
-    public final void inBlock() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:127:1: inBlock : ^( INBLOCK ( inBlockDeclaration )* ) ;
+    public final celluloidWalker.inBlock_return inBlock() throws RecognitionException {
+        celluloidWalker.inBlock_return retval = new celluloidWalker.inBlock_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:88:5: ( ^( INBLOCK ( inBlockDeclaration )* ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:88:7: ^( INBLOCK ( inBlockDeclaration )* )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:128:5: ( ^( INBLOCK ( inBlockDeclaration )* ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:128:7: ^( INBLOCK ( inBlockDeclaration )* )
             {
-            match(input,INBLOCK,FOLLOW_INBLOCK_in_inBlock778); 
+            match(input,INBLOCK,FOLLOW_INBLOCK_in_inBlock809); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:88:17: ( inBlockDeclaration )*
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:128:17: ( inBlockDeclaration )*
                 loop19:
                 do {
                     int alt19=2;
@@ -1342,9 +1557,9 @@ public class celluloidWalker extends TreeParser {
 
                     switch (alt19) {
                 	case 1 :
-                	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:88:17: inBlockDeclaration
+                	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:128:17: inBlockDeclaration
                 	    {
-                	    pushFollow(FOLLOW_inBlockDeclaration_in_inBlock780);
+                	    pushFollow(FOLLOW_inBlockDeclaration_in_inBlock811);
                 	    inBlockDeclaration();
 
                 	    state._fsp--;
@@ -1371,23 +1586,31 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "inBlock"
 
+    public static class inBlockDeclaration_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "inBlockDeclaration"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:90:1: inBlockDeclaration : ( whenStatement | everyStatement | constraintFunctionCall );
-    public final void inBlockDeclaration() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:130:1: inBlockDeclaration : ( whenStatement | everyStatement | constraintFunctionCall );
+    public final celluloidWalker.inBlockDeclaration_return inBlockDeclaration() throws RecognitionException {
+        celluloidWalker.inBlockDeclaration_return retval = new celluloidWalker.inBlockDeclaration_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:91:5: ( whenStatement | everyStatement | constraintFunctionCall )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:131:5: ( whenStatement | everyStatement | constraintFunctionCall )
             int alt20=3;
             alt20 = dfa20.predict(input);
             switch (alt20) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:91:7: whenStatement
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:131:7: whenStatement
                     {
-                    pushFollow(FOLLOW_whenStatement_in_inBlockDeclaration799);
+                    pushFollow(FOLLOW_whenStatement_in_inBlockDeclaration830);
                     whenStatement();
 
                     state._fsp--;
@@ -1396,9 +1619,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:92:9: everyStatement
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:132:9: everyStatement
                     {
-                    pushFollow(FOLLOW_everyStatement_in_inBlockDeclaration810);
+                    pushFollow(FOLLOW_everyStatement_in_inBlockDeclaration841);
                     everyStatement();
 
                     state._fsp--;
@@ -1407,9 +1630,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:93:9: constraintFunctionCall
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:133:9: constraintFunctionCall
                     {
-                    pushFollow(FOLLOW_constraintFunctionCall_in_inBlockDeclaration821);
+                    pushFollow(FOLLOW_constraintFunctionCall_in_inBlockDeclaration852);
                     constraintFunctionCall();
 
                     state._fsp--;
@@ -1426,27 +1649,35 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "inBlockDeclaration"
 
+    public static class ifStatement_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "ifStatement"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:96:1: ifStatement : ^( IF logicalORExpression ifBlock ) ;
-    public final void ifStatement() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:136:1: ifStatement : ^( IF logicalORExpression ifBlock ) ;
+    public final celluloidWalker.ifStatement_return ifStatement() throws RecognitionException {
+        celluloidWalker.ifStatement_return retval = new celluloidWalker.ifStatement_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:97:5: ( ^( IF logicalORExpression ifBlock ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:97:8: ^( IF logicalORExpression ifBlock )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:137:5: ( ^( IF logicalORExpression ifBlock ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:137:8: ^( IF logicalORExpression ifBlock )
             {
-            match(input,IF,FOLLOW_IF_in_ifStatement840); 
+            match(input,IF,FOLLOW_IF_in_ifStatement871); 
 
             match(input, Token.DOWN, null); 
-            pushFollow(FOLLOW_logicalORExpression_in_ifStatement842);
+            pushFollow(FOLLOW_logicalORExpression_in_ifStatement873);
             logicalORExpression();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_ifBlock_in_ifStatement844);
+            pushFollow(FOLLOW_ifBlock_in_ifStatement875);
             ifBlock();
 
             state._fsp--;
@@ -1463,22 +1694,30 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "ifStatement"
 
+    public static class ifBlock_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "ifBlock"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:99:1: ifBlock : ^( IFBLOCK ( ifBlockDeclaration )+ ) ^( ELSEIF ( elseIfStatement )* ) ^( ELSE ( elseStatement )? ) ;
-    public final void ifBlock() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:139:1: ifBlock : ^( IFBLOCK ( ifBlockDeclaration )+ ) ^( ELSEIF ( elseIfStatement )* ) ^( ELSE ( elseStatement )? ) ;
+    public final celluloidWalker.ifBlock_return ifBlock() throws RecognitionException {
+        celluloidWalker.ifBlock_return retval = new celluloidWalker.ifBlock_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:100:5: ( ^( IFBLOCK ( ifBlockDeclaration )+ ) ^( ELSEIF ( elseIfStatement )* ) ^( ELSE ( elseStatement )? ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:100:9: ^( IFBLOCK ( ifBlockDeclaration )+ ) ^( ELSEIF ( elseIfStatement )* ) ^( ELSE ( elseStatement )? )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:140:5: ( ^( IFBLOCK ( ifBlockDeclaration )+ ) ^( ELSEIF ( elseIfStatement )* ) ^( ELSE ( elseStatement )? ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:140:9: ^( IFBLOCK ( ifBlockDeclaration )+ ) ^( ELSEIF ( elseIfStatement )* ) ^( ELSE ( elseStatement )? )
             {
-            match(input,IFBLOCK,FOLLOW_IFBLOCK_in_ifBlock864); 
+            match(input,IFBLOCK,FOLLOW_IFBLOCK_in_ifBlock895); 
 
             match(input, Token.DOWN, null); 
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:100:19: ( ifBlockDeclaration )+
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:140:19: ( ifBlockDeclaration )+
             int cnt21=0;
             loop21:
             do {
@@ -1492,9 +1731,9 @@ public class celluloidWalker extends TreeParser {
 
                 switch (alt21) {
             	case 1 :
-            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:100:19: ifBlockDeclaration
+            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:140:19: ifBlockDeclaration
             	    {
-            	    pushFollow(FOLLOW_ifBlockDeclaration_in_ifBlock866);
+            	    pushFollow(FOLLOW_ifBlockDeclaration_in_ifBlock897);
             	    ifBlockDeclaration();
 
             	    state._fsp--;
@@ -1514,11 +1753,11 @@ public class celluloidWalker extends TreeParser {
 
 
             match(input, Token.UP, null); 
-            match(input,ELSEIF,FOLLOW_ELSEIF_in_ifBlock871); 
+            match(input,ELSEIF,FOLLOW_ELSEIF_in_ifBlock902); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:100:49: ( elseIfStatement )*
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:140:49: ( elseIfStatement )*
                 loop22:
                 do {
                     int alt22=2;
@@ -1531,9 +1770,9 @@ public class celluloidWalker extends TreeParser {
 
                     switch (alt22) {
                 	case 1 :
-                	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:100:49: elseIfStatement
+                	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:140:49: elseIfStatement
                 	    {
-                	    pushFollow(FOLLOW_elseIfStatement_in_ifBlock873);
+                	    pushFollow(FOLLOW_elseIfStatement_in_ifBlock904);
                 	    elseIfStatement();
 
                 	    state._fsp--;
@@ -1550,11 +1789,11 @@ public class celluloidWalker extends TreeParser {
 
                 match(input, Token.UP, null); 
             }
-            match(input,ELSE,FOLLOW_ELSE_in_ifBlock878); 
+            match(input,ELSE,FOLLOW_ELSE_in_ifBlock909); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:100:74: ( elseStatement )?
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:140:74: ( elseStatement )?
                 int alt23=2;
                 int LA23_0 = input.LA(1);
 
@@ -1563,9 +1802,9 @@ public class celluloidWalker extends TreeParser {
                 }
                 switch (alt23) {
                     case 1 :
-                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:100:74: elseStatement
+                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:140:74: elseStatement
                         {
-                        pushFollow(FOLLOW_elseStatement_in_ifBlock880);
+                        pushFollow(FOLLOW_elseStatement_in_ifBlock911);
                         elseStatement();
 
                         state._fsp--;
@@ -1589,22 +1828,30 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "ifBlock"
 
+    public static class elseStatement_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "elseStatement"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:103:1: elseStatement : ^( IFBLOCK ifBlockDeclaration ) ;
-    public final void elseStatement() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:143:1: elseStatement : ^( IFBLOCK ifBlockDeclaration ) ;
+    public final celluloidWalker.elseStatement_return elseStatement() throws RecognitionException {
+        celluloidWalker.elseStatement_return retval = new celluloidWalker.elseStatement_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:104:5: ( ^( IFBLOCK ifBlockDeclaration ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:104:9: ^( IFBLOCK ifBlockDeclaration )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:144:5: ( ^( IFBLOCK ifBlockDeclaration ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:144:9: ^( IFBLOCK ifBlockDeclaration )
             {
-            match(input,IFBLOCK,FOLLOW_IFBLOCK_in_elseStatement907); 
+            match(input,IFBLOCK,FOLLOW_IFBLOCK_in_elseStatement938); 
 
             match(input, Token.DOWN, null); 
-            pushFollow(FOLLOW_ifBlockDeclaration_in_elseStatement909);
+            pushFollow(FOLLOW_ifBlockDeclaration_in_elseStatement940);
             ifBlockDeclaration();
 
             state._fsp--;
@@ -1621,29 +1868,37 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "elseStatement"
 
+    public static class elseIfStatement_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "elseIfStatement"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:106:1: elseIfStatement : ^( logicalORExpression ^( IFBLOCK ifBlockDeclaration ) ) ;
-    public final void elseIfStatement() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:146:1: elseIfStatement : ^( logicalORExpression ^( IFBLOCK ifBlockDeclaration ) ) ;
+    public final celluloidWalker.elseIfStatement_return elseIfStatement() throws RecognitionException {
+        celluloidWalker.elseIfStatement_return retval = new celluloidWalker.elseIfStatement_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:107:5: ( ^( logicalORExpression ^( IFBLOCK ifBlockDeclaration ) ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:107:9: ^( logicalORExpression ^( IFBLOCK ifBlockDeclaration ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:147:5: ( ^( logicalORExpression ^( IFBLOCK ifBlockDeclaration ) ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:147:9: ^( logicalORExpression ^( IFBLOCK ifBlockDeclaration ) )
             {
-            pushFollow(FOLLOW_logicalORExpression_in_elseIfStatement930);
+            pushFollow(FOLLOW_logicalORExpression_in_elseIfStatement961);
             logicalORExpression();
 
             state._fsp--;
 
 
             match(input, Token.DOWN, null); 
-            match(input,IFBLOCK,FOLLOW_IFBLOCK_in_elseIfStatement933); 
+            match(input,IFBLOCK,FOLLOW_IFBLOCK_in_elseIfStatement964); 
 
             match(input, Token.DOWN, null); 
-            pushFollow(FOLLOW_ifBlockDeclaration_in_elseIfStatement935);
+            pushFollow(FOLLOW_ifBlockDeclaration_in_elseIfStatement966);
             ifBlockDeclaration();
 
             state._fsp--;
@@ -1662,16 +1917,24 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "elseIfStatement"
 
+    public static class ifBlockDeclaration_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "ifBlockDeclaration"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:109:1: ifBlockDeclaration : ( variableDeclaration | expression | inStatement | ifStatement | functionPredicateCall );
-    public final void ifBlockDeclaration() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:149:1: ifBlockDeclaration : ( variableDeclaration | expression | inStatement | ifStatement | functionPredicateCall );
+    public final celluloidWalker.ifBlockDeclaration_return ifBlockDeclaration() throws RecognitionException {
+        celluloidWalker.ifBlockDeclaration_return retval = new celluloidWalker.ifBlockDeclaration_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:110:5: ( variableDeclaration | expression | inStatement | ifStatement | functionPredicateCall )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:150:5: ( variableDeclaration | expression | inStatement | ifStatement | functionPredicateCall )
             int alt24=5;
             switch ( input.LA(1) ) {
             case VARDEF:
@@ -1709,9 +1972,9 @@ public class celluloidWalker extends TreeParser {
 
             switch (alt24) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:110:7: variableDeclaration
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:150:7: variableDeclaration
                     {
-                    pushFollow(FOLLOW_variableDeclaration_in_ifBlockDeclaration953);
+                    pushFollow(FOLLOW_variableDeclaration_in_ifBlockDeclaration984);
                     variableDeclaration();
 
                     state._fsp--;
@@ -1720,9 +1983,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:111:9: expression
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:151:9: expression
                     {
-                    pushFollow(FOLLOW_expression_in_ifBlockDeclaration963);
+                    pushFollow(FOLLOW_expression_in_ifBlockDeclaration994);
                     expression();
 
                     state._fsp--;
@@ -1731,9 +1994,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:112:9: inStatement
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:152:9: inStatement
                     {
-                    pushFollow(FOLLOW_inStatement_in_ifBlockDeclaration974);
+                    pushFollow(FOLLOW_inStatement_in_ifBlockDeclaration1005);
                     inStatement();
 
                     state._fsp--;
@@ -1742,9 +2005,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 4 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:113:9: ifStatement
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:153:9: ifStatement
                     {
-                    pushFollow(FOLLOW_ifStatement_in_ifBlockDeclaration985);
+                    pushFollow(FOLLOW_ifStatement_in_ifBlockDeclaration1016);
                     ifStatement();
 
                     state._fsp--;
@@ -1753,9 +2016,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 5 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:114:9: functionPredicateCall
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:154:9: functionPredicateCall
                     {
-                    pushFollow(FOLLOW_functionPredicateCall_in_ifBlockDeclaration995);
+                    pushFollow(FOLLOW_functionPredicateCall_in_ifBlockDeclaration1026);
                     functionPredicateCall();
 
                     state._fsp--;
@@ -1772,26 +2035,34 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "ifBlockDeclaration"
 
+    public static class whenStatement_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "whenStatement"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:117:1: whenStatement : ^( LISTENER ^( ARG ( ID )? ) EVERY ^( COND ( 'when' )? 'unless' ( logicalORExpression )? ( ID )? ) listenerBlock ) ;
-    public final void whenStatement() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:157:1: whenStatement : ^( LISTENER ^( ARG ( ID )? ) EVERY ^( COND ( 'when' )? 'unless' ( ID )? ) listenerBlock ) ;
+    public final celluloidWalker.whenStatement_return whenStatement() throws RecognitionException {
+        celluloidWalker.whenStatement_return retval = new celluloidWalker.whenStatement_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:118:5: ( ^( LISTENER ^( ARG ( ID )? ) EVERY ^( COND ( 'when' )? 'unless' ( logicalORExpression )? ( ID )? ) listenerBlock ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:118:9: ^( LISTENER ^( ARG ( ID )? ) EVERY ^( COND ( 'when' )? 'unless' ( logicalORExpression )? ( ID )? ) listenerBlock )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:158:5: ( ^( LISTENER ^( ARG ( ID )? ) EVERY ^( COND ( 'when' )? 'unless' ( ID )? ) listenerBlock ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:158:9: ^( LISTENER ^( ARG ( ID )? ) EVERY ^( COND ( 'when' )? 'unless' ( ID )? ) listenerBlock )
             {
-            match(input,LISTENER,FOLLOW_LISTENER_in_whenStatement1015); 
+            match(input,LISTENER,FOLLOW_LISTENER_in_whenStatement1046); 
 
             match(input, Token.DOWN, null); 
-            match(input,ARG,FOLLOW_ARG_in_whenStatement1018); 
+            match(input,ARG,FOLLOW_ARG_in_whenStatement1049); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:118:26: ( ID )?
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:158:26: ( ID )?
                 int alt25=2;
                 int LA25_0 = input.LA(1);
 
@@ -1800,9 +2071,9 @@ public class celluloidWalker extends TreeParser {
                 }
                 switch (alt25) {
                     case 1 :
-                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:118:26: ID
+                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:158:26: ID
                         {
-                        match(input,ID,FOLLOW_ID_in_whenStatement1020); 
+                        match(input,ID,FOLLOW_ID_in_whenStatement1051); 
 
                         }
                         break;
@@ -1812,11 +2083,11 @@ public class celluloidWalker extends TreeParser {
 
                 match(input, Token.UP, null); 
             }
-            match(input,EVERY,FOLLOW_EVERY_in_whenStatement1024); 
-            match(input,COND,FOLLOW_COND_in_whenStatement1027); 
+            match(input,EVERY,FOLLOW_EVERY_in_whenStatement1055); 
+            match(input,COND,FOLLOW_COND_in_whenStatement1058); 
 
             match(input, Token.DOWN, null); 
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:118:44: ( 'when' )?
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:158:44: ( 'when' )?
             int alt26=2;
             int LA26_0 = input.LA(1);
 
@@ -1825,50 +2096,28 @@ public class celluloidWalker extends TreeParser {
             }
             switch (alt26) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:118:44: 'when'
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:158:44: 'when'
                     {
-                    match(input,67,FOLLOW_67_in_whenStatement1029); 
+                    match(input,67,FOLLOW_67_in_whenStatement1060); 
 
                     }
                     break;
 
             }
 
-            match(input,82,FOLLOW_82_in_whenStatement1032); 
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:118:61: ( logicalORExpression )?
+            match(input,82,FOLLOW_82_in_whenStatement1063); 
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:158:61: ( ID )?
             int alt27=2;
             int LA27_0 = input.LA(1);
 
-            if ( ((LA27_0>=EQUALITY_OPERATOR && LA27_0<=MULTIPLICATIVE_OPERATOR)||(LA27_0>=88 && LA27_0<=89)) ) {
+            if ( (LA27_0==ID) ) {
                 alt27=1;
             }
             switch (alt27) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:118:61: logicalORExpression
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:158:61: ID
                     {
-                    pushFollow(FOLLOW_logicalORExpression_in_whenStatement1034);
-                    logicalORExpression();
-
-                    state._fsp--;
-
-
-                    }
-                    break;
-
-            }
-
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:118:82: ( ID )?
-            int alt28=2;
-            int LA28_0 = input.LA(1);
-
-            if ( (LA28_0==ID) ) {
-                alt28=1;
-            }
-            switch (alt28) {
-                case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:118:82: ID
-                    {
-                    match(input,ID,FOLLOW_ID_in_whenStatement1037); 
+                    match(input,ID,FOLLOW_ID_in_whenStatement1065); 
 
                     }
                     break;
@@ -1877,7 +2126,7 @@ public class celluloidWalker extends TreeParser {
 
 
             match(input, Token.UP, null); 
-            pushFollow(FOLLOW_listenerBlock_in_whenStatement1041);
+            pushFollow(FOLLOW_listenerBlock_in_whenStatement1069);
             listenerBlock();
 
             state._fsp--;
@@ -1894,126 +2143,112 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "whenStatement"
 
+    public static class everyStatement_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "everyStatement"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:121:1: everyStatement : ^( LISTENER ^( ARG ( ID )? ) ^( EVERY TIME ) ^( COND ( 'when' )? ( 'unless' )? ( logicalORExpression )? ( ID )? ) listenerBlock ) ;
-    public final void everyStatement() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:161:1: everyStatement : ^( LISTENER ^( ARG ( ID )? ) ^( EVERY TIME ) ^( COND ( 'when' )? ( 'unless' )? ( ID )? ) listenerBlock ) ;
+    public final celluloidWalker.everyStatement_return everyStatement() throws RecognitionException {
+        celluloidWalker.everyStatement_return retval = new celluloidWalker.everyStatement_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:122:5: ( ^( LISTENER ^( ARG ( ID )? ) ^( EVERY TIME ) ^( COND ( 'when' )? ( 'unless' )? ( logicalORExpression )? ( ID )? ) listenerBlock ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:122:9: ^( LISTENER ^( ARG ( ID )? ) ^( EVERY TIME ) ^( COND ( 'when' )? ( 'unless' )? ( logicalORExpression )? ( ID )? ) listenerBlock )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:162:5: ( ^( LISTENER ^( ARG ( ID )? ) ^( EVERY TIME ) ^( COND ( 'when' )? ( 'unless' )? ( ID )? ) listenerBlock ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:162:9: ^( LISTENER ^( ARG ( ID )? ) ^( EVERY TIME ) ^( COND ( 'when' )? ( 'unless' )? ( ID )? ) listenerBlock )
             {
-            match(input,LISTENER,FOLLOW_LISTENER_in_everyStatement1070); 
+            match(input,LISTENER,FOLLOW_LISTENER_in_everyStatement1098); 
 
             match(input, Token.DOWN, null); 
-            match(input,ARG,FOLLOW_ARG_in_everyStatement1073); 
+            match(input,ARG,FOLLOW_ARG_in_everyStatement1101); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:122:26: ( ID )?
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:162:26: ( ID )?
+                int alt28=2;
+                int LA28_0 = input.LA(1);
+
+                if ( (LA28_0==ID) ) {
+                    alt28=1;
+                }
+                switch (alt28) {
+                    case 1 :
+                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:162:26: ID
+                        {
+                        match(input,ID,FOLLOW_ID_in_everyStatement1103); 
+
+                        }
+                        break;
+
+                }
+
+
+                match(input, Token.UP, null); 
+            }
+            match(input,EVERY,FOLLOW_EVERY_in_everyStatement1108); 
+
+            match(input, Token.DOWN, null); 
+            match(input,TIME,FOLLOW_TIME_in_everyStatement1110); 
+
+            match(input, Token.UP, null); 
+            match(input,COND,FOLLOW_COND_in_everyStatement1114); 
+
+            if ( input.LA(1)==Token.DOWN ) {
+                match(input, Token.DOWN, null); 
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:162:52: ( 'when' )?
                 int alt29=2;
                 int LA29_0 = input.LA(1);
 
-                if ( (LA29_0==ID) ) {
+                if ( (LA29_0==67) ) {
                     alt29=1;
                 }
                 switch (alt29) {
                     case 1 :
-                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:122:26: ID
+                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:162:52: 'when'
                         {
-                        match(input,ID,FOLLOW_ID_in_everyStatement1075); 
+                        match(input,67,FOLLOW_67_in_everyStatement1116); 
 
                         }
                         break;
 
                 }
 
-
-                match(input, Token.UP, null); 
-            }
-            match(input,EVERY,FOLLOW_EVERY_in_everyStatement1080); 
-
-            match(input, Token.DOWN, null); 
-            match(input,TIME,FOLLOW_TIME_in_everyStatement1082); 
-
-            match(input, Token.UP, null); 
-            match(input,COND,FOLLOW_COND_in_everyStatement1086); 
-
-            if ( input.LA(1)==Token.DOWN ) {
-                match(input, Token.DOWN, null); 
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:122:52: ( 'when' )?
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:162:60: ( 'unless' )?
                 int alt30=2;
                 int LA30_0 = input.LA(1);
 
-                if ( (LA30_0==67) ) {
+                if ( (LA30_0==82) ) {
                     alt30=1;
                 }
                 switch (alt30) {
                     case 1 :
-                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:122:52: 'when'
+                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:162:60: 'unless'
                         {
-                        match(input,67,FOLLOW_67_in_everyStatement1088); 
+                        match(input,82,FOLLOW_82_in_everyStatement1119); 
 
                         }
                         break;
 
                 }
 
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:122:60: ( 'unless' )?
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:162:70: ( ID )?
                 int alt31=2;
                 int LA31_0 = input.LA(1);
 
-                if ( (LA31_0==82) ) {
+                if ( (LA31_0==ID) ) {
                     alt31=1;
                 }
                 switch (alt31) {
                     case 1 :
-                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:122:60: 'unless'
+                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:162:70: ID
                         {
-                        match(input,82,FOLLOW_82_in_everyStatement1091); 
-
-                        }
-                        break;
-
-                }
-
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:122:70: ( logicalORExpression )?
-                int alt32=2;
-                int LA32_0 = input.LA(1);
-
-                if ( ((LA32_0>=EQUALITY_OPERATOR && LA32_0<=MULTIPLICATIVE_OPERATOR)||(LA32_0>=88 && LA32_0<=89)) ) {
-                    alt32=1;
-                }
-                switch (alt32) {
-                    case 1 :
-                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:122:70: logicalORExpression
-                        {
-                        pushFollow(FOLLOW_logicalORExpression_in_everyStatement1094);
-                        logicalORExpression();
-
-                        state._fsp--;
-
-
-                        }
-                        break;
-
-                }
-
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:122:91: ( ID )?
-                int alt33=2;
-                int LA33_0 = input.LA(1);
-
-                if ( (LA33_0==ID) ) {
-                    alt33=1;
-                }
-                switch (alt33) {
-                    case 1 :
-                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:122:91: ID
-                        {
-                        match(input,ID,FOLLOW_ID_in_everyStatement1097); 
+                        match(input,ID,FOLLOW_ID_in_everyStatement1122); 
 
                         }
                         break;
@@ -2023,7 +2258,7 @@ public class celluloidWalker extends TreeParser {
 
                 match(input, Token.UP, null); 
             }
-            pushFollow(FOLLOW_listenerBlock_in_everyStatement1101);
+            pushFollow(FOLLOW_listenerBlock_in_everyStatement1126);
             listenerBlock();
 
             state._fsp--;
@@ -2040,38 +2275,46 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "everyStatement"
 
+    public static class listenerBlock_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "listenerBlock"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:125:1: listenerBlock : ^( LISTENBLOCK ( listenerBlockDeclaration )* ) ;
-    public final void listenerBlock() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:165:1: listenerBlock : ^( LISTENBLOCK ( listenerBlockDeclaration )* ) ;
+    public final celluloidWalker.listenerBlock_return listenerBlock() throws RecognitionException {
+        celluloidWalker.listenerBlock_return retval = new celluloidWalker.listenerBlock_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:126:5: ( ^( LISTENBLOCK ( listenerBlockDeclaration )* ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:126:8: ^( LISTENBLOCK ( listenerBlockDeclaration )* )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:166:5: ( ^( LISTENBLOCK ( listenerBlockDeclaration )* ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:166:8: ^( LISTENBLOCK ( listenerBlockDeclaration )* )
             {
-            match(input,LISTENBLOCK,FOLLOW_LISTENBLOCK_in_listenerBlock1129); 
+            match(input,LISTENBLOCK,FOLLOW_LISTENBLOCK_in_listenerBlock1154); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:126:22: ( listenerBlockDeclaration )*
-                loop34:
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:166:22: ( listenerBlockDeclaration )*
+                loop32:
                 do {
-                    int alt34=2;
-                    int LA34_0 = input.LA(1);
+                    int alt32=2;
+                    int LA32_0 = input.LA(1);
 
-                    if ( (LA34_0==VARDEF||LA34_0==ARG||(LA34_0>=OBJCALL && LA34_0<=CALL)||LA34_0==ASSIGNMENT_OPERATOR) ) {
-                        alt34=1;
+                    if ( (LA32_0==VARDEF||LA32_0==ARG||(LA32_0>=OBJCALL && LA32_0<=CALL)||LA32_0==ASSIGNMENT_OPERATOR) ) {
+                        alt32=1;
                     }
 
 
-                    switch (alt34) {
+                    switch (alt32) {
                 	case 1 :
-                	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:126:22: listenerBlockDeclaration
+                	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:166:22: listenerBlockDeclaration
                 	    {
-                	    pushFollow(FOLLOW_listenerBlockDeclaration_in_listenerBlock1131);
+                	    pushFollow(FOLLOW_listenerBlockDeclaration_in_listenerBlock1156);
                 	    listenerBlockDeclaration();
 
                 	    state._fsp--;
@@ -2081,7 +2324,7 @@ public class celluloidWalker extends TreeParser {
                 	    break;
 
                 	default :
-                	    break loop34;
+                	    break loop32;
                     }
                 } while (true);
 
@@ -2098,51 +2341,59 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "listenerBlock"
 
+    public static class listenerBlockDeclaration_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "listenerBlockDeclaration"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:128:1: listenerBlockDeclaration : ( constraintFunctionCall | expression | variableDeclaration | functionPredicateCall );
-    public final void listenerBlockDeclaration() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:168:1: listenerBlockDeclaration : ( constraintFunctionCall | expression | variableDeclaration | functionPredicateCall );
+    public final celluloidWalker.listenerBlockDeclaration_return listenerBlockDeclaration() throws RecognitionException {
+        celluloidWalker.listenerBlockDeclaration_return retval = new celluloidWalker.listenerBlockDeclaration_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:129:5: ( constraintFunctionCall | expression | variableDeclaration | functionPredicateCall )
-            int alt35=4;
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:169:5: ( constraintFunctionCall | expression | variableDeclaration | functionPredicateCall )
+            int alt33=4;
             switch ( input.LA(1) ) {
             case OBJCALL:
                 {
-                alt35=1;
+                alt33=1;
                 }
                 break;
             case ASSIGNMENT_OPERATOR:
                 {
-                alt35=2;
+                alt33=2;
                 }
                 break;
             case VARDEF:
             case ARG:
                 {
-                alt35=3;
+                alt33=3;
                 }
                 break;
             case CALL:
                 {
-                alt35=4;
+                alt33=4;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 35, 0, input);
+                    new NoViableAltException("", 33, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt35) {
+            switch (alt33) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:129:10: constraintFunctionCall
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:169:10: constraintFunctionCall
                     {
-                    pushFollow(FOLLOW_constraintFunctionCall_in_listenerBlockDeclaration1152);
+                    pushFollow(FOLLOW_constraintFunctionCall_in_listenerBlockDeclaration1177);
                     constraintFunctionCall();
 
                     state._fsp--;
@@ -2151,9 +2402,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:130:10: expression
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:170:10: expression
                     {
-                    pushFollow(FOLLOW_expression_in_listenerBlockDeclaration1164);
+                    pushFollow(FOLLOW_expression_in_listenerBlockDeclaration1189);
                     expression();
 
                     state._fsp--;
@@ -2162,9 +2413,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:131:10: variableDeclaration
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:171:10: variableDeclaration
                     {
-                    pushFollow(FOLLOW_variableDeclaration_in_listenerBlockDeclaration1176);
+                    pushFollow(FOLLOW_variableDeclaration_in_listenerBlockDeclaration1201);
                     variableDeclaration();
 
                     state._fsp--;
@@ -2173,9 +2424,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 4 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:132:10: functionPredicateCall
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:172:10: functionPredicateCall
                     {
-                    pushFollow(FOLLOW_functionPredicateCall_in_listenerBlockDeclaration1187);
+                    pushFollow(FOLLOW_functionPredicateCall_in_listenerBlockDeclaration1212);
                     functionPredicateCall();
 
                     state._fsp--;
@@ -2192,39 +2443,47 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "listenerBlockDeclaration"
 
+    public static class constraintFunctionCall_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "constraintFunctionCall"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:135:1: constraintFunctionCall : ^( OBJCALL ID ID ^( ARGS ( expressionList )? ) ) ;
-    public final void constraintFunctionCall() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:175:1: constraintFunctionCall : ^( OBJCALL ID ID ^( ARGS ( expressionList )? ) ) ;
+    public final celluloidWalker.constraintFunctionCall_return constraintFunctionCall() throws RecognitionException {
+        celluloidWalker.constraintFunctionCall_return retval = new celluloidWalker.constraintFunctionCall_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:136:5: ( ^( OBJCALL ID ID ^( ARGS ( expressionList )? ) ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:136:10: ^( OBJCALL ID ID ^( ARGS ( expressionList )? ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:176:5: ( ^( OBJCALL ID ID ^( ARGS ( expressionList )? ) ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:176:10: ^( OBJCALL ID ID ^( ARGS ( expressionList )? ) )
             {
-            match(input,OBJCALL,FOLLOW_OBJCALL_in_constraintFunctionCall1213); 
+            match(input,OBJCALL,FOLLOW_OBJCALL_in_constraintFunctionCall1238); 
 
             match(input, Token.DOWN, null); 
-            match(input,ID,FOLLOW_ID_in_constraintFunctionCall1215); 
-            match(input,ID,FOLLOW_ID_in_constraintFunctionCall1217); 
-            match(input,ARGS,FOLLOW_ARGS_in_constraintFunctionCall1220); 
+            match(input,ID,FOLLOW_ID_in_constraintFunctionCall1240); 
+            match(input,ID,FOLLOW_ID_in_constraintFunctionCall1242); 
+            match(input,ARGS,FOLLOW_ARGS_in_constraintFunctionCall1245); 
 
             if ( input.LA(1)==Token.DOWN ) {
                 match(input, Token.DOWN, null); 
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:136:33: ( expressionList )?
-                int alt36=2;
-                int LA36_0 = input.LA(1);
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:176:33: ( expressionList )?
+                int alt34=2;
+                int LA34_0 = input.LA(1);
 
-                if ( (LA36_0==ASSIGNMENT_OPERATOR) ) {
-                    alt36=1;
+                if ( (LA34_0==ASSIGNMENT_OPERATOR) ) {
+                    alt34=1;
                 }
-                switch (alt36) {
+                switch (alt34) {
                     case 1 :
-                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:136:33: expressionList
+                        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:176:33: expressionList
                         {
-                        pushFollow(FOLLOW_expressionList_in_constraintFunctionCall1222);
+                        pushFollow(FOLLOW_expressionList_in_constraintFunctionCall1247);
                         expressionList();
 
                         state._fsp--;
@@ -2250,26 +2509,34 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "constraintFunctionCall"
 
+    public static class functionPredicateCall_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "functionPredicateCall"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:139:1: functionPredicateCall : ^( CALL ID ^( ARGS expressionList ) ) ;
-    public final void functionPredicateCall() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:179:1: functionPredicateCall : ^( CALL ID ^( ARGS expressionList ) ) ;
+    public final celluloidWalker.functionPredicateCall_return functionPredicateCall() throws RecognitionException {
+        celluloidWalker.functionPredicateCall_return retval = new celluloidWalker.functionPredicateCall_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:140:5: ( ^( CALL ID ^( ARGS expressionList ) ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:140:10: ^( CALL ID ^( ARGS expressionList ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:180:5: ( ^( CALL ID ^( ARGS expressionList ) ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:180:10: ^( CALL ID ^( ARGS expressionList ) )
             {
-            match(input,CALL,FOLLOW_CALL_in_functionPredicateCall1258); 
+            match(input,CALL,FOLLOW_CALL_in_functionPredicateCall1283); 
 
             match(input, Token.DOWN, null); 
-            match(input,ID,FOLLOW_ID_in_functionPredicateCall1260); 
-            match(input,ARGS,FOLLOW_ARGS_in_functionPredicateCall1263); 
+            match(input,ID,FOLLOW_ID_in_functionPredicateCall1285); 
+            match(input,ARGS,FOLLOW_ARGS_in_functionPredicateCall1288); 
 
             match(input, Token.DOWN, null); 
-            pushFollow(FOLLOW_expressionList_in_functionPredicateCall1265);
+            pushFollow(FOLLOW_expressionList_in_functionPredicateCall1290);
             expressionList();
 
             state._fsp--;
@@ -2288,35 +2555,186 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "functionPredicateCall"
 
+    public static class idList_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "idList"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:145:1: idList : ( ID )+ ;
-    public final void idList() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:185:1: idList : (ids+= ID )+ -> idList(ids= $ids );
+    public final celluloidWalker.idList_return idList() throws RecognitionException {
+        celluloidWalker.idList_return retval = new celluloidWalker.idList_return();
+        retval.start = input.LT(1);
+
+        CommonTree ids=null;
+        List list_ids=null;
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:146:5: ( ( ID )+ )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:146:10: ( ID )+
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:186:5: ( (ids+= ID )+ -> idList(ids= $ids ))
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:186:10: (ids+= ID )+
             {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:146:10: ( ID )+
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:186:14: (ids+= ID )+
+            int cnt35=0;
+            loop35:
+            do {
+                int alt35=2;
+                int LA35_0 = input.LA(1);
+
+                if ( (LA35_0==ID) ) {
+                    alt35=1;
+                }
+
+
+                switch (alt35) {
+            	case 1 :
+            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:186:14: ids+= ID
+            	    {
+            	    ids=(CommonTree)match(input,ID,FOLLOW_ID_in_idList1329); 
+            	    if (list_ids==null) list_ids=new ArrayList();
+            	    list_ids.add(ids);
+
+
+            	    }
+            	    break;
+
+            	default :
+            	    if ( cnt35 >= 1 ) break loop35;
+                        EarlyExitException eee =
+                            new EarlyExitException(35, input);
+                        throw eee;
+                }
+                cnt35++;
+            } while (true);
+
+
+
+            // TEMPLATE REWRITE
+            // 186:21: -> idList(ids= $ids )
+            {
+                retval.st = templateLib.getInstanceOf("idList",
+              new STAttrMap().put("ids",  list_ids ));
+            }
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+        }
+        return retval;
+    }
+    // $ANTLR end "idList"
+
+    public static class variableList_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
+
+    // $ANTLR start "variableList"
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:189:1: variableList : ( variableDeclaration )+ ;
+    public final celluloidWalker.variableList_return variableList() throws RecognitionException {
+        celluloidWalker.variableList_return retval = new celluloidWalker.variableList_return();
+        retval.start = input.LT(1);
+
+        try {
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:190:5: ( ( variableDeclaration )+ )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:190:10: ( variableDeclaration )+
+            {
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:190:10: ( variableDeclaration )+
+            int cnt36=0;
+            loop36:
+            do {
+                int alt36=2;
+                int LA36_0 = input.LA(1);
+
+                if ( (LA36_0==VARDEF||LA36_0==ARG) ) {
+                    alt36=1;
+                }
+
+
+                switch (alt36) {
+            	case 1 :
+            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:190:10: variableDeclaration
+            	    {
+            	    pushFollow(FOLLOW_variableDeclaration_in_variableList1364);
+            	    variableDeclaration();
+
+            	    state._fsp--;
+
+
+            	    }
+            	    break;
+
+            	default :
+            	    if ( cnt36 >= 1 ) break loop36;
+                        EarlyExitException eee =
+                            new EarlyExitException(36, input);
+                        throw eee;
+                }
+                cnt36++;
+            } while (true);
+
+
+            }
+
+        }
+        catch (RecognitionException re) {
+            reportError(re);
+            recover(input,re);
+        }
+        finally {
+        }
+        return retval;
+    }
+    // $ANTLR end "variableList"
+
+    public static class expressionList_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
+
+    // $ANTLR start "expressionList"
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:193:1: expressionList : ( expression )+ ;
+    public final celluloidWalker.expressionList_return expressionList() throws RecognitionException {
+        celluloidWalker.expressionList_return retval = new celluloidWalker.expressionList_return();
+        retval.start = input.LT(1);
+
+        try {
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:194:5: ( ( expression )+ )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:194:10: ( expression )+
+            {
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:194:10: ( expression )+
             int cnt37=0;
             loop37:
             do {
                 int alt37=2;
                 int LA37_0 = input.LA(1);
 
-                if ( (LA37_0==ID) ) {
+                if ( (LA37_0==ASSIGNMENT_OPERATOR) ) {
                     alt37=1;
                 }
 
 
                 switch (alt37) {
             	case 1 :
-            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:146:10: ID
+            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:194:10: expression
             	    {
-            	    match(input,ID,FOLLOW_ID_in_idList1300); 
+            	    pushFollow(FOLLOW_expression_in_expressionList1386);
+            	    expression();
+
+            	    state._fsp--;
+
 
             	    }
             	    break;
@@ -2340,236 +2758,132 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
-    }
-    // $ANTLR end "idList"
-
-
-    // $ANTLR start "variableList"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:149:1: variableList : ( variableDeclaration )+ ;
-    public final void variableList() throws RecognitionException {
-        try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:150:5: ( ( variableDeclaration )+ )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:150:10: ( variableDeclaration )+
-            {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:150:10: ( variableDeclaration )+
-            int cnt38=0;
-            loop38:
-            do {
-                int alt38=2;
-                int LA38_0 = input.LA(1);
-
-                if ( (LA38_0==VARDEF||LA38_0==ARG) ) {
-                    alt38=1;
-                }
-
-
-                switch (alt38) {
-            	case 1 :
-            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:150:10: variableDeclaration
-            	    {
-            	    pushFollow(FOLLOW_variableDeclaration_in_variableList1323);
-            	    variableDeclaration();
-
-            	    state._fsp--;
-
-
-            	    }
-            	    break;
-
-            	default :
-            	    if ( cnt38 >= 1 ) break loop38;
-                        EarlyExitException eee =
-                            new EarlyExitException(38, input);
-                        throw eee;
-                }
-                cnt38++;
-            } while (true);
-
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-        }
-        return ;
-    }
-    // $ANTLR end "variableList"
-
-
-    // $ANTLR start "expressionList"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:153:1: expressionList : ( expression )+ ;
-    public final void expressionList() throws RecognitionException {
-        try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:154:5: ( ( expression )+ )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:154:10: ( expression )+
-            {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:154:10: ( expression )+
-            int cnt39=0;
-            loop39:
-            do {
-                int alt39=2;
-                int LA39_0 = input.LA(1);
-
-                if ( (LA39_0==ASSIGNMENT_OPERATOR) ) {
-                    alt39=1;
-                }
-
-
-                switch (alt39) {
-            	case 1 :
-            	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:154:10: expression
-            	    {
-            	    pushFollow(FOLLOW_expression_in_expressionList1345);
-            	    expression();
-
-            	    state._fsp--;
-
-
-            	    }
-            	    break;
-
-            	default :
-            	    if ( cnt39 >= 1 ) break loop39;
-                        EarlyExitException eee =
-                            new EarlyExitException(39, input);
-                        throw eee;
-                }
-                cnt39++;
-            } while (true);
-
-
-            }
-
-        }
-        catch (RecognitionException re) {
-            reportError(re);
-            recover(input,re);
-        }
-        finally {
-        }
-        return ;
+        return retval;
     }
     // $ANTLR end "expressionList"
 
+    public static class variableDeclaration_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "variableDeclaration"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:158:1: variableDeclaration : ( ^( VARDEF 'timeline' ID ) | ^( ARG 'timeline' ID ) | ^( VARDEF TYPE ID ( initializer )? ) | ^( ARG TYPE ID ) );
-    public final void variableDeclaration() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:198:1: variableDeclaration : ( ^( VARDEF 'timeline' ID ) | ^( ARG 'timeline' ID ) | ^( VARDEF TYPE ID ( initializer )? ) | ^( ARG TYPE ID ) );
+    public final celluloidWalker.variableDeclaration_return variableDeclaration() throws RecognitionException {
+        celluloidWalker.variableDeclaration_return retval = new celluloidWalker.variableDeclaration_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:159:5: ( ^( VARDEF 'timeline' ID ) | ^( ARG 'timeline' ID ) | ^( VARDEF TYPE ID ( initializer )? ) | ^( ARG TYPE ID ) )
-            int alt41=4;
-            int LA41_0 = input.LA(1);
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:199:5: ( ^( VARDEF 'timeline' ID ) | ^( ARG 'timeline' ID ) | ^( VARDEF TYPE ID ( initializer )? ) | ^( ARG TYPE ID ) )
+            int alt39=4;
+            int LA39_0 = input.LA(1);
 
-            if ( (LA41_0==VARDEF) ) {
-                int LA41_1 = input.LA(2);
+            if ( (LA39_0==VARDEF) ) {
+                int LA39_1 = input.LA(2);
 
-                if ( (LA41_1==DOWN) ) {
-                    int LA41_3 = input.LA(3);
+                if ( (LA39_1==DOWN) ) {
+                    int LA39_3 = input.LA(3);
 
-                    if ( (LA41_3==85) ) {
-                        alt41=1;
+                    if ( (LA39_3==85) ) {
+                        alt39=1;
                     }
-                    else if ( (LA41_3==TYPE) ) {
-                        alt41=3;
+                    else if ( (LA39_3==TYPE) ) {
+                        alt39=3;
                     }
                     else {
                         NoViableAltException nvae =
-                            new NoViableAltException("", 41, 3, input);
+                            new NoViableAltException("", 39, 3, input);
 
                         throw nvae;
                     }
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("", 41, 1, input);
+                        new NoViableAltException("", 39, 1, input);
 
                     throw nvae;
                 }
             }
-            else if ( (LA41_0==ARG) ) {
-                int LA41_2 = input.LA(2);
+            else if ( (LA39_0==ARG) ) {
+                int LA39_2 = input.LA(2);
 
-                if ( (LA41_2==DOWN) ) {
-                    int LA41_4 = input.LA(3);
+                if ( (LA39_2==DOWN) ) {
+                    int LA39_4 = input.LA(3);
 
-                    if ( (LA41_4==85) ) {
-                        alt41=2;
+                    if ( (LA39_4==85) ) {
+                        alt39=2;
                     }
-                    else if ( (LA41_4==TYPE) ) {
-                        alt41=4;
+                    else if ( (LA39_4==TYPE) ) {
+                        alt39=4;
                     }
                     else {
                         NoViableAltException nvae =
-                            new NoViableAltException("", 41, 4, input);
+                            new NoViableAltException("", 39, 4, input);
 
                         throw nvae;
                     }
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("", 41, 2, input);
+                        new NoViableAltException("", 39, 2, input);
 
                     throw nvae;
                 }
             }
             else {
                 NoViableAltException nvae =
-                    new NoViableAltException("", 41, 0, input);
+                    new NoViableAltException("", 39, 0, input);
 
                 throw nvae;
             }
-            switch (alt41) {
+            switch (alt39) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:159:10: ^( VARDEF 'timeline' ID )
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:199:10: ^( VARDEF 'timeline' ID )
                     {
-                    match(input,VARDEF,FOLLOW_VARDEF_in_variableDeclaration1378); 
+                    match(input,VARDEF,FOLLOW_VARDEF_in_variableDeclaration1419); 
 
                     match(input, Token.DOWN, null); 
-                    match(input,85,FOLLOW_85_in_variableDeclaration1380); 
-                    match(input,ID,FOLLOW_ID_in_variableDeclaration1382); 
+                    match(input,85,FOLLOW_85_in_variableDeclaration1421); 
+                    match(input,ID,FOLLOW_ID_in_variableDeclaration1423); 
 
                     match(input, Token.UP, null); 
 
                     }
                     break;
                 case 2 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:160:10: ^( ARG 'timeline' ID )
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:200:10: ^( ARG 'timeline' ID )
                     {
-                    match(input,ARG,FOLLOW_ARG_in_variableDeclaration1395); 
+                    match(input,ARG,FOLLOW_ARG_in_variableDeclaration1436); 
 
                     match(input, Token.DOWN, null); 
-                    match(input,85,FOLLOW_85_in_variableDeclaration1397); 
-                    match(input,ID,FOLLOW_ID_in_variableDeclaration1399); 
+                    match(input,85,FOLLOW_85_in_variableDeclaration1438); 
+                    match(input,ID,FOLLOW_ID_in_variableDeclaration1440); 
 
                     match(input, Token.UP, null); 
 
                     }
                     break;
                 case 3 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:161:10: ^( VARDEF TYPE ID ( initializer )? )
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:201:10: ^( VARDEF TYPE ID ( initializer )? )
                     {
-                    match(input,VARDEF,FOLLOW_VARDEF_in_variableDeclaration1412); 
+                    match(input,VARDEF,FOLLOW_VARDEF_in_variableDeclaration1453); 
 
                     match(input, Token.DOWN, null); 
-                    match(input,TYPE,FOLLOW_TYPE_in_variableDeclaration1414); 
-                    match(input,ID,FOLLOW_ID_in_variableDeclaration1416); 
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:161:27: ( initializer )?
-                    int alt40=2;
-                    int LA40_0 = input.LA(1);
+                    match(input,TYPE,FOLLOW_TYPE_in_variableDeclaration1455); 
+                    match(input,ID,FOLLOW_ID_in_variableDeclaration1457); 
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:201:27: ( initializer )?
+                    int alt38=2;
+                    int LA38_0 = input.LA(1);
 
-                    if ( ((LA40_0>=EQUALITY_OPERATOR && LA40_0<=MULTIPLICATIVE_OPERATOR)||(LA40_0>=88 && LA40_0<=89)) ) {
-                        alt40=1;
+                    if ( ((LA38_0>=EQUALITY_OPERATOR && LA38_0<=MULTIPLICATIVE_OPERATOR)||(LA38_0>=88 && LA38_0<=89)) ) {
+                        alt38=1;
                     }
-                    switch (alt40) {
+                    switch (alt38) {
                         case 1 :
-                            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:161:27: initializer
+                            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:201:27: initializer
                             {
-                            pushFollow(FOLLOW_initializer_in_variableDeclaration1418);
+                            pushFollow(FOLLOW_initializer_in_variableDeclaration1459);
                             initializer();
 
                             state._fsp--;
@@ -2586,13 +2900,13 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 4 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:162:10: ^( ARG TYPE ID )
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:202:10: ^( ARG TYPE ID )
                     {
-                    match(input,ARG,FOLLOW_ARG_in_variableDeclaration1432); 
+                    match(input,ARG,FOLLOW_ARG_in_variableDeclaration1473); 
 
                     match(input, Token.DOWN, null); 
-                    match(input,TYPE,FOLLOW_TYPE_in_variableDeclaration1434); 
-                    match(input,ID,FOLLOW_ID_in_variableDeclaration1436); 
+                    match(input,TYPE,FOLLOW_TYPE_in_variableDeclaration1475); 
+                    match(input,ID,FOLLOW_ID_in_variableDeclaration1477); 
 
                     match(input, Token.UP, null); 
 
@@ -2607,19 +2921,27 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "variableDeclaration"
 
+    public static class initializer_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "initializer"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:165:1: initializer : logicalORExpression ;
-    public final void initializer() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:205:1: initializer : logicalORExpression ;
+    public final celluloidWalker.initializer_return initializer() throws RecognitionException {
+        celluloidWalker.initializer_return retval = new celluloidWalker.initializer_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:166:5: ( logicalORExpression )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:166:10: logicalORExpression
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:206:5: ( logicalORExpression )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:206:10: logicalORExpression
             {
-            pushFollow(FOLLOW_logicalORExpression_in_initializer1467);
+            pushFollow(FOLLOW_logicalORExpression_in_initializer1508);
             logicalORExpression();
 
             state._fsp--;
@@ -2634,27 +2956,35 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "initializer"
 
+    public static class expression_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "expression"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:169:1: expression : ^( ASSIGNMENT_OPERATOR logicalORExpression expression ) ;
-    public final void expression() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:209:1: expression : ^( ASSIGNMENT_OPERATOR logicalORExpression expression ) ;
+    public final celluloidWalker.expression_return expression() throws RecognitionException {
+        celluloidWalker.expression_return retval = new celluloidWalker.expression_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:170:5: ( ^( ASSIGNMENT_OPERATOR logicalORExpression expression ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:170:10: ^( ASSIGNMENT_OPERATOR logicalORExpression expression )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:210:5: ( ^( ASSIGNMENT_OPERATOR logicalORExpression expression ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:210:10: ^( ASSIGNMENT_OPERATOR logicalORExpression expression )
             {
-            match(input,ASSIGNMENT_OPERATOR,FOLLOW_ASSIGNMENT_OPERATOR_in_expression1493); 
+            match(input,ASSIGNMENT_OPERATOR,FOLLOW_ASSIGNMENT_OPERATOR_in_expression1534); 
 
             match(input, Token.DOWN, null); 
-            pushFollow(FOLLOW_logicalORExpression_in_expression1495);
+            pushFollow(FOLLOW_logicalORExpression_in_expression1536);
             logicalORExpression();
 
             state._fsp--;
 
-            pushFollow(FOLLOW_expression_in_expression1497);
+            pushFollow(FOLLOW_expression_in_expression1538);
             expression();
 
             state._fsp--;
@@ -2671,86 +3001,94 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "expression"
 
+    public static class logicalORExpression_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "logicalORExpression"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:172:1: logicalORExpression : ( ^( 'or' ( 'not' )? logicalORExpression logicalORExpression ) | ^( 'and' logicalORExpression logicalORExpression ) | ^( EQUALITY_OPERATOR logicalORExpression logicalORExpression ) | ^( RELATIONAL_OPERATOR logicalORExpression logicalORExpression ) | ^( ADDITIVE_OPERATOR logicalORExpression logicalORExpression ) | ^( MULTIPLICATIVE_OPERATOR primaryExpression logicalORExpression ) );
-    public final void logicalORExpression() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:212:1: logicalORExpression : ( ^( 'or' ( 'not' )? logicalORExpression logicalORExpression ) | ^( 'and' logicalORExpression logicalORExpression ) | ^( EQUALITY_OPERATOR logicalORExpression logicalORExpression ) | ^( RELATIONAL_OPERATOR logicalORExpression logicalORExpression ) | ^( ADDITIVE_OPERATOR logicalORExpression logicalORExpression ) | ^( MULTIPLICATIVE_OPERATOR primaryExpression logicalORExpression ) );
+    public final celluloidWalker.logicalORExpression_return logicalORExpression() throws RecognitionException {
+        celluloidWalker.logicalORExpression_return retval = new celluloidWalker.logicalORExpression_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:173:5: ( ^( 'or' ( 'not' )? logicalORExpression logicalORExpression ) | ^( 'and' logicalORExpression logicalORExpression ) | ^( EQUALITY_OPERATOR logicalORExpression logicalORExpression ) | ^( RELATIONAL_OPERATOR logicalORExpression logicalORExpression ) | ^( ADDITIVE_OPERATOR logicalORExpression logicalORExpression ) | ^( MULTIPLICATIVE_OPERATOR primaryExpression logicalORExpression ) )
-            int alt43=6;
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:213:5: ( ^( 'or' ( 'not' )? logicalORExpression logicalORExpression ) | ^( 'and' logicalORExpression logicalORExpression ) | ^( EQUALITY_OPERATOR logicalORExpression logicalORExpression ) | ^( RELATIONAL_OPERATOR logicalORExpression logicalORExpression ) | ^( ADDITIVE_OPERATOR logicalORExpression logicalORExpression ) | ^( MULTIPLICATIVE_OPERATOR primaryExpression logicalORExpression ) )
+            int alt41=6;
             switch ( input.LA(1) ) {
             case 88:
                 {
-                alt43=1;
+                alt41=1;
                 }
                 break;
             case 89:
                 {
-                alt43=2;
+                alt41=2;
                 }
                 break;
             case EQUALITY_OPERATOR:
                 {
-                alt43=3;
+                alt41=3;
                 }
                 break;
             case RELATIONAL_OPERATOR:
                 {
-                alt43=4;
+                alt41=4;
                 }
                 break;
             case ADDITIVE_OPERATOR:
                 {
-                alt43=5;
+                alt41=5;
                 }
                 break;
             case MULTIPLICATIVE_OPERATOR:
                 {
-                alt43=6;
+                alt41=6;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 43, 0, input);
+                    new NoViableAltException("", 41, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt43) {
+            switch (alt41) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:173:10: ^( 'or' ( 'not' )? logicalORExpression logicalORExpression )
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:213:10: ^( 'or' ( 'not' )? logicalORExpression logicalORExpression )
                     {
-                    match(input,88,FOLLOW_88_in_logicalORExpression1524); 
+                    match(input,88,FOLLOW_88_in_logicalORExpression1565); 
 
                     match(input, Token.DOWN, null); 
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:173:17: ( 'not' )?
-                    int alt42=2;
-                    int LA42_0 = input.LA(1);
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:213:17: ( 'not' )?
+                    int alt40=2;
+                    int LA40_0 = input.LA(1);
 
-                    if ( (LA42_0==87) ) {
-                        alt42=1;
+                    if ( (LA40_0==87) ) {
+                        alt40=1;
                     }
-                    switch (alt42) {
+                    switch (alt40) {
                         case 1 :
-                            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:173:17: 'not'
+                            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:213:17: 'not'
                             {
-                            match(input,87,FOLLOW_87_in_logicalORExpression1526); 
+                            match(input,87,FOLLOW_87_in_logicalORExpression1567); 
 
                             }
                             break;
 
                     }
 
-                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1529);
+                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1570);
                     logicalORExpression();
 
                     state._fsp--;
 
-                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1531);
+                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1572);
                     logicalORExpression();
 
                     state._fsp--;
@@ -2761,17 +3099,17 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 2 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:174:10: ^( 'and' logicalORExpression logicalORExpression )
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:214:10: ^( 'and' logicalORExpression logicalORExpression )
                     {
-                    match(input,89,FOLLOW_89_in_logicalORExpression1544); 
+                    match(input,89,FOLLOW_89_in_logicalORExpression1585); 
 
                     match(input, Token.DOWN, null); 
-                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1546);
+                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1587);
                     logicalORExpression();
 
                     state._fsp--;
 
-                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1548);
+                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1589);
                     logicalORExpression();
 
                     state._fsp--;
@@ -2782,17 +3120,17 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:175:10: ^( EQUALITY_OPERATOR logicalORExpression logicalORExpression )
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:215:10: ^( EQUALITY_OPERATOR logicalORExpression logicalORExpression )
                     {
-                    match(input,EQUALITY_OPERATOR,FOLLOW_EQUALITY_OPERATOR_in_logicalORExpression1561); 
+                    match(input,EQUALITY_OPERATOR,FOLLOW_EQUALITY_OPERATOR_in_logicalORExpression1602); 
 
                     match(input, Token.DOWN, null); 
-                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1563);
+                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1604);
                     logicalORExpression();
 
                     state._fsp--;
 
-                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1565);
+                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1606);
                     logicalORExpression();
 
                     state._fsp--;
@@ -2803,17 +3141,17 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 4 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:176:10: ^( RELATIONAL_OPERATOR logicalORExpression logicalORExpression )
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:216:10: ^( RELATIONAL_OPERATOR logicalORExpression logicalORExpression )
                     {
-                    match(input,RELATIONAL_OPERATOR,FOLLOW_RELATIONAL_OPERATOR_in_logicalORExpression1578); 
+                    match(input,RELATIONAL_OPERATOR,FOLLOW_RELATIONAL_OPERATOR_in_logicalORExpression1619); 
 
                     match(input, Token.DOWN, null); 
-                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1580);
+                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1621);
                     logicalORExpression();
 
                     state._fsp--;
 
-                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1582);
+                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1623);
                     logicalORExpression();
 
                     state._fsp--;
@@ -2824,17 +3162,17 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 5 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:177:10: ^( ADDITIVE_OPERATOR logicalORExpression logicalORExpression )
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:217:10: ^( ADDITIVE_OPERATOR logicalORExpression logicalORExpression )
                     {
-                    match(input,ADDITIVE_OPERATOR,FOLLOW_ADDITIVE_OPERATOR_in_logicalORExpression1595); 
+                    match(input,ADDITIVE_OPERATOR,FOLLOW_ADDITIVE_OPERATOR_in_logicalORExpression1636); 
 
                     match(input, Token.DOWN, null); 
-                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1597);
+                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1638);
                     logicalORExpression();
 
                     state._fsp--;
 
-                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1599);
+                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1640);
                     logicalORExpression();
 
                     state._fsp--;
@@ -2845,17 +3183,17 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 6 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:178:10: ^( MULTIPLICATIVE_OPERATOR primaryExpression logicalORExpression )
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:218:10: ^( MULTIPLICATIVE_OPERATOR primaryExpression logicalORExpression )
                     {
-                    match(input,MULTIPLICATIVE_OPERATOR,FOLLOW_MULTIPLICATIVE_OPERATOR_in_logicalORExpression1612); 
+                    match(input,MULTIPLICATIVE_OPERATOR,FOLLOW_MULTIPLICATIVE_OPERATOR_in_logicalORExpression1653); 
 
                     match(input, Token.DOWN, null); 
-                    pushFollow(FOLLOW_primaryExpression_in_logicalORExpression1614);
+                    pushFollow(FOLLOW_primaryExpression_in_logicalORExpression1655);
                     primaryExpression();
 
                     state._fsp--;
 
-                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1616);
+                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression1657);
                     logicalORExpression();
 
                     state._fsp--;
@@ -2874,31 +3212,39 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "logicalORExpression"
 
+    public static class primaryExpression_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "primaryExpression"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:180:1: primaryExpression : ( ID | ID expressionList | literal | functionPredicateCall );
-    public final void primaryExpression() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:220:1: primaryExpression : ( ID | ID expressionList | literal | functionPredicateCall );
+    public final celluloidWalker.primaryExpression_return primaryExpression() throws RecognitionException {
+        celluloidWalker.primaryExpression_return retval = new celluloidWalker.primaryExpression_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:181:5: ( ID | ID expressionList | literal | functionPredicateCall )
-            int alt44=4;
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:221:5: ( ID | ID expressionList | literal | functionPredicateCall )
+            int alt42=4;
             switch ( input.LA(1) ) {
             case ID:
                 {
-                int LA44_1 = input.LA(2);
+                int LA42_1 = input.LA(2);
 
-                if ( (LA44_1==ASSIGNMENT_OPERATOR) ) {
-                    alt44=2;
+                if ( (LA42_1==ASSIGNMENT_OPERATOR) ) {
+                    alt42=2;
                 }
-                else if ( ((LA44_1>=EQUALITY_OPERATOR && LA44_1<=MULTIPLICATIVE_OPERATOR)||(LA44_1>=88 && LA44_1<=89)) ) {
-                    alt44=1;
+                else if ( ((LA42_1>=EQUALITY_OPERATOR && LA42_1<=MULTIPLICATIVE_OPERATOR)||(LA42_1>=88 && LA42_1<=89)) ) {
+                    alt42=1;
                 }
                 else {
                     NoViableAltException nvae =
-                        new NoViableAltException("", 44, 1, input);
+                        new NoViableAltException("", 42, 1, input);
 
                     throw nvae;
                 }
@@ -2909,34 +3255,34 @@ public class celluloidWalker extends TreeParser {
             case NUMBER:
             case STRING:
                 {
-                alt44=3;
+                alt42=3;
                 }
                 break;
             case CALL:
                 {
-                alt44=4;
+                alt42=4;
                 }
                 break;
             default:
                 NoViableAltException nvae =
-                    new NoViableAltException("", 44, 0, input);
+                    new NoViableAltException("", 42, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt44) {
+            switch (alt42) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:181:8: ID
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:221:8: ID
                     {
-                    match(input,ID,FOLLOW_ID_in_primaryExpression1635); 
+                    match(input,ID,FOLLOW_ID_in_primaryExpression1676); 
 
                     }
                     break;
                 case 2 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:182:8: ID expressionList
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:222:8: ID expressionList
                     {
-                    match(input,ID,FOLLOW_ID_in_primaryExpression1644); 
-                    pushFollow(FOLLOW_expressionList_in_primaryExpression1646);
+                    match(input,ID,FOLLOW_ID_in_primaryExpression1685); 
+                    pushFollow(FOLLOW_expressionList_in_primaryExpression1687);
                     expressionList();
 
                     state._fsp--;
@@ -2945,9 +3291,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 3 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:183:8: literal
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:223:8: literal
                     {
-                    pushFollow(FOLLOW_literal_in_primaryExpression1655);
+                    pushFollow(FOLLOW_literal_in_primaryExpression1696);
                     literal();
 
                     state._fsp--;
@@ -2956,9 +3302,9 @@ public class celluloidWalker extends TreeParser {
                     }
                     break;
                 case 4 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:184:8: functionPredicateCall
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:224:8: functionPredicateCall
                     {
-                    pushFollow(FOLLOW_functionPredicateCall_in_primaryExpression1664);
+                    pushFollow(FOLLOW_functionPredicateCall_in_primaryExpression1705);
                     functionPredicateCall();
 
                     state._fsp--;
@@ -2975,16 +3321,24 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "primaryExpression"
 
+    public static class literal_return extends TreeRuleReturnScope {
+        public StringTemplate st;
+        public Object getTemplate() { return st; }
+        public String toString() { return st==null?null:st.toString(); }
+    };
 
     // $ANTLR start "literal"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:188:1: literal : ( BOOL | NUMBER | STRING | TIME );
-    public final void literal() throws RecognitionException {
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:228:1: literal : ( BOOL | NUMBER | STRING | TIME );
+    public final celluloidWalker.literal_return literal() throws RecognitionException {
+        celluloidWalker.literal_return retval = new celluloidWalker.literal_return();
+        retval.start = input.LT(1);
+
         try {
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:188:9: ( BOOL | NUMBER | STRING | TIME )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:228:9: ( BOOL | NUMBER | STRING | TIME )
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloidWalker.g:
             {
             if ( input.LA(1)==TIME||(input.LA(1)>=BOOL && input.LA(1)<=STRING) ) {
@@ -3006,7 +3360,7 @@ public class celluloidWalker extends TreeParser {
         }
         finally {
         }
-        return ;
+        return retval;
     }
     // $ANTLR end "literal"
 
@@ -3023,7 +3377,7 @@ public class celluloidWalker extends TreeParser {
     static final String DFA20_maxS =
         "\1\23\1\2\1\uffff\1\7\1\2\1\54\1\3\1\24\1\25\2\uffff";
     static final String DFA20_acceptS =
-        "\2\uffff\1\3\6\uffff\1\2\1\1";
+        "\2\uffff\1\3\6\uffff\1\1\1\2";
     static final String DFA20_specialS =
         "\13\uffff}>";
     static final String[] DFA20_transitionS = {
@@ -3035,7 +3389,7 @@ public class celluloidWalker extends TreeParser {
             "\1\7\50\uffff\1\6",
             "\1\7",
             "\1\10",
-            "\1\11\22\uffff\1\12",
+            "\1\12\22\uffff\1\11",
             "",
             ""
     };
@@ -3070,194 +3424,191 @@ public class celluloidWalker extends TreeParser {
             this.transition = DFA20_transition;
         }
         public String getDescription() {
-            return "90:1: inBlockDeclaration : ( whenStatement | everyStatement | constraintFunctionCall );";
+            return "130:1: inBlockDeclaration : ( whenStatement | everyStatement | constraintFunctionCall );";
         }
     }
  
 
-    public static final BitSet FOLLOW_PROGRAM_in_program39 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_EVENTS_in_program56 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_eventDefinition_in_program58 = new BitSet(new long[]{0x0000080000000008L});
-    public static final BitSet FOLLOW_NEWLINE_in_program60 = new BitSet(new long[]{0x0000080000000008L});
-    public static final BitSet FOLLOW_CONSTRAINTS_in_program78 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_constraintDefinition_in_program80 = new BitSet(new long[]{0x0000080000000008L});
-    public static final BitSet FOLLOW_NEWLINE_in_program82 = new BitSet(new long[]{0x0000080000000008L});
-    public static final BitSet FOLLOW_DEVICES_in_program100 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_deviceDefinition_in_program102 = new BitSet(new long[]{0x0000080000000008L});
-    public static final BitSet FOLLOW_NEWLINE_in_program104 = new BitSet(new long[]{0x0000080000000008L});
-    public static final BitSet FOLLOW_FUNCTIONS_in_program122 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_functionDefinition_in_program125 = new BitSet(new long[]{0x0000000000000068L});
-    public static final BitSet FOLLOW_predicateDefinition_in_program129 = new BitSet(new long[]{0x0000000000000068L});
-    public static final BitSet FOLLOW_PROGBLOCK_in_program148 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_functionPredicateBlockDeclaration_in_program150 = new BitSet(new long[]{0x0002000000810498L});
-    public static final BitSet FOLLOW_EVENT_in_eventDefinition176 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ID_in_eventDefinition178 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_ANNOUNCEMENT_in_announcementDeclaration201 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ID_in_announcementDeclaration203 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000008L});
-    public static final BitSet FOLLOW_67_in_announcementDeclaration205 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_ID_in_announcementDeclaration207 = new BitSet(new long[]{0x0000000000000098L});
-    public static final BitSet FOLLOW_variableDeclaration_in_announcementDeclaration209 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_CONSTRAINT_in_constraintDefinition234 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ID_in_constraintDefinition236 = new BitSet(new long[]{0x0000002000000000L});
-    public static final BitSet FOLLOW_REQUIRES_in_constraintDefinition239 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_idList_in_constraintDefinition242 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_ANNOUNCES_in_constraintDefinition247 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_idList_in_constraintDefinition250 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_constraintBlock_in_constraintDefinition254 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_CONBLOCK_in_constraintBlock276 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_constraintBlockDeclaration_in_constraintBlock278 = new BitSet(new long[]{0x0000010600000090L});
-    public static final BitSet FOLLOW_ANNOUNCEMENTS_in_constraintBlock282 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_announcementDeclaration_in_constraintBlock284 = new BitSet(new long[]{0x0000008000000008L});
-    public static final BitSet FOLLOW_variableDeclaration_in_constraintBlockDeclaration309 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_predicateHeader_in_constraintBlockDeclaration321 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_functionHeader_in_constraintBlockDeclaration333 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_DEVICE_in_deviceDefinition365 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ID_in_deviceDefinition367 = new BitSet(new long[]{0x0000040000000000L});
-    public static final BitSet FOLLOW_ACCEPTS_in_deviceDefinition370 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_idList_in_deviceDefinition373 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_deviceBlock_in_deviceDefinition377 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_DEVBLOCK_in_deviceBlock399 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_deviceBlockDeclaration_in_deviceBlock401 = new BitSet(new long[]{0x00000000000000F8L});
-    public static final BitSet FOLLOW_variableDeclaration_in_deviceBlockDeclaration422 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_predicateDefinition_in_deviceBlockDeclaration434 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_functionDefinition_in_deviceBlockDeclaration446 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_FUNHEAD_in_functionHeader473 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ID_in_functionHeader475 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_ARGS_in_functionHeader478 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_variableList_in_functionHeader480 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_FUNC_in_functionDefinition503 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ID_in_functionDefinition505 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_ARGS_in_functionDefinition508 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_variableList_in_functionDefinition510 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_functionBlock_in_functionDefinition513 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_FUNBLOCK_in_functionBlock541 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_RETURN_in_functionBlock543 = new BitSet(new long[]{0x0002000000810498L});
-    public static final BitSet FOLLOW_functionPredicateBlockDeclaration_in_functionBlock545 = new BitSet(new long[]{0x0002000000810498L});
-    public static final BitSet FOLLOW_variableDeclaration_in_functionPredicateBlockDeclaration568 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_functionPredicateBlockDeclaration579 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_inStatement_in_functionPredicateBlockDeclaration590 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ifStatement_in_functionPredicateBlockDeclaration602 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_functionPredicateCall_in_functionPredicateBlockDeclaration613 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_PREDHEAD_in_predicateHeader639 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ID_in_predicateHeader641 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_ARGS_in_predicateHeader644 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_variableList_in_predicateHeader646 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_PRED_in_predicateDefinition673 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ID_in_predicateDefinition675 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_ARGS_in_predicateDefinition678 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_variableList_in_predicateDefinition680 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_predicateBlock_in_predicateDefinition683 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_FUNBLOCK_in_predicateBlock715 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_RETURN_in_predicateBlock718 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_expression_in_predicateBlock720 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_functionPredicateBlockDeclaration_in_predicateBlock723 = new BitSet(new long[]{0x0002000000810498L});
-    public static final BitSet FOLLOW_IN_in_inStatement746 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ID_in_inStatement748 = new BitSet(new long[]{0x0000000004000000L});
-    public static final BitSet FOLLOW_inBlock_in_inStatement750 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_INBLOCK_in_inBlock778 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_inBlockDeclaration_in_inBlock780 = new BitSet(new long[]{0x0000000000080208L});
-    public static final BitSet FOLLOW_whenStatement_in_inBlockDeclaration799 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_everyStatement_in_inBlockDeclaration810 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_constraintFunctionCall_in_inBlockDeclaration821 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_IF_in_ifStatement840 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_logicalORExpression_in_ifStatement842 = new BitSet(new long[]{0x0000000010000000L});
-    public static final BitSet FOLLOW_ifBlock_in_ifStatement844 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_IFBLOCK_in_ifBlock864 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ifBlockDeclaration_in_ifBlock866 = new BitSet(new long[]{0x0002000000810498L});
-    public static final BitSet FOLLOW_ELSEIF_in_ifBlock871 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_elseIfStatement_in_ifBlock873 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
-    public static final BitSet FOLLOW_ELSE_in_ifBlock878 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_elseStatement_in_ifBlock880 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_IFBLOCK_in_elseStatement907 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ifBlockDeclaration_in_elseStatement909 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_logicalORExpression_in_elseIfStatement930 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_IFBLOCK_in_elseIfStatement933 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ifBlockDeclaration_in_elseIfStatement935 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_variableDeclaration_in_ifBlockDeclaration953 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_ifBlockDeclaration963 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_inStatement_in_ifBlockDeclaration974 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ifStatement_in_ifBlockDeclaration985 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_functionPredicateCall_in_ifBlockDeclaration995 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_LISTENER_in_whenStatement1015 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ARG_in_whenStatement1018 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ID_in_whenStatement1020 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_EVERY_in_whenStatement1024 = new BitSet(new long[]{0x0000000000200000L});
-    public static final BitSet FOLLOW_COND_in_whenStatement1027 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_67_in_whenStatement1029 = new BitSet(new long[]{0x0000000000000000L,0x0000000000040000L});
-    public static final BitSet FOLLOW_82_in_whenStatement1032 = new BitSet(new long[]{0x003C100000000008L,0x0000000003000000L});
-    public static final BitSet FOLLOW_logicalORExpression_in_whenStatement1034 = new BitSet(new long[]{0x0000100000000008L});
-    public static final BitSet FOLLOW_ID_in_whenStatement1037 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_listenerBlock_in_whenStatement1041 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_LISTENER_in_everyStatement1070 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ARG_in_everyStatement1073 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ID_in_everyStatement1075 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_EVERY_in_everyStatement1080 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_TIME_in_everyStatement1082 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_COND_in_everyStatement1086 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_67_in_everyStatement1088 = new BitSet(new long[]{0x003C100000000008L,0x0000000003040000L});
-    public static final BitSet FOLLOW_82_in_everyStatement1091 = new BitSet(new long[]{0x003C100000000008L,0x0000000003000000L});
-    public static final BitSet FOLLOW_logicalORExpression_in_everyStatement1094 = new BitSet(new long[]{0x0000100000000008L});
-    public static final BitSet FOLLOW_ID_in_everyStatement1097 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_listenerBlock_in_everyStatement1101 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_LISTENBLOCK_in_listenerBlock1129 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_listenerBlockDeclaration_in_listenerBlock1131 = new BitSet(new long[]{0x0002000000890698L});
-    public static final BitSet FOLLOW_constraintFunctionCall_in_listenerBlockDeclaration1152 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_listenerBlockDeclaration1164 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableDeclaration_in_listenerBlockDeclaration1176 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_functionPredicateCall_in_listenerBlockDeclaration1187 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_OBJCALL_in_constraintFunctionCall1213 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ID_in_constraintFunctionCall1215 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_ID_in_constraintFunctionCall1217 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_ARGS_in_constraintFunctionCall1220 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_expressionList_in_constraintFunctionCall1222 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_CALL_in_functionPredicateCall1258 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_ID_in_functionPredicateCall1260 = new BitSet(new long[]{0x0000000000000100L});
-    public static final BitSet FOLLOW_ARGS_in_functionPredicateCall1263 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_expressionList_in_functionPredicateCall1265 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_ID_in_idList1300 = new BitSet(new long[]{0x0000100000000002L});
-    public static final BitSet FOLLOW_variableDeclaration_in_variableList1323 = new BitSet(new long[]{0x0000000000000092L});
-    public static final BitSet FOLLOW_expression_in_expressionList1345 = new BitSet(new long[]{0x0002000000000002L});
-    public static final BitSet FOLLOW_VARDEF_in_variableDeclaration1378 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_85_in_variableDeclaration1380 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_ID_in_variableDeclaration1382 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_ARG_in_variableDeclaration1395 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_85_in_variableDeclaration1397 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_ID_in_variableDeclaration1399 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_VARDEF_in_variableDeclaration1412 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_TYPE_in_variableDeclaration1414 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_ID_in_variableDeclaration1416 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
-    public static final BitSet FOLLOW_initializer_in_variableDeclaration1418 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_ARG_in_variableDeclaration1432 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_TYPE_in_variableDeclaration1434 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_ID_in_variableDeclaration1436 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_logicalORExpression_in_initializer1467 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ASSIGNMENT_OPERATOR_in_expression1493 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_logicalORExpression_in_expression1495 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_expression_in_expression1497 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_88_in_logicalORExpression1524 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_87_in_logicalORExpression1526 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
-    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1529 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
-    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1531 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_89_in_logicalORExpression1544 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1546 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
-    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1548 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_EQUALITY_OPERATOR_in_logicalORExpression1561 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1563 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
-    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1565 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_RELATIONAL_OPERATOR_in_logicalORExpression1578 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1580 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
-    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1582 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_ADDITIVE_OPERATOR_in_logicalORExpression1595 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1597 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
-    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1599 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_MULTIPLICATIVE_OPERATOR_in_logicalORExpression1612 = new BitSet(new long[]{0x0000000000000004L});
-    public static final BitSet FOLLOW_primaryExpression_in_logicalORExpression1614 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
-    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1616 = new BitSet(new long[]{0x0000000000000008L});
-    public static final BitSet FOLLOW_ID_in_primaryExpression1635 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_primaryExpression1644 = new BitSet(new long[]{0x0002000000000000L});
-    public static final BitSet FOLLOW_expressionList_in_primaryExpression1646 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_literal_in_primaryExpression1655 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_functionPredicateCall_in_primaryExpression1664 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_PROGRAM_in_program63 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_EVENTS_in_program80 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_eventDefinition_in_program82 = new BitSet(new long[]{0x0000080000000008L});
+    public static final BitSet FOLLOW_NEWLINE_in_program84 = new BitSet(new long[]{0x0000080000000008L});
+    public static final BitSet FOLLOW_CONSTRAINTS_in_program102 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_constraintDefinition_in_program104 = new BitSet(new long[]{0x0000080000000008L});
+    public static final BitSet FOLLOW_NEWLINE_in_program106 = new BitSet(new long[]{0x0000080000000008L});
+    public static final BitSet FOLLOW_DEVICES_in_program124 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_deviceDefinition_in_program126 = new BitSet(new long[]{0x0000080000000008L});
+    public static final BitSet FOLLOW_NEWLINE_in_program128 = new BitSet(new long[]{0x0000080000000008L});
+    public static final BitSet FOLLOW_FUNCTIONS_in_program146 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_functionDefinition_in_program149 = new BitSet(new long[]{0x0000000000000068L});
+    public static final BitSet FOLLOW_predicateDefinition_in_program153 = new BitSet(new long[]{0x0000000000000068L});
+    public static final BitSet FOLLOW_PROGBLOCK_in_program172 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_functionPredicateBlockDeclaration_in_program174 = new BitSet(new long[]{0x0002000000810498L});
+    public static final BitSet FOLLOW_EVENT_in_eventDefinition200 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ID_in_eventDefinition202 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_ANNOUNCEMENT_in_announcementDeclaration227 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ID_in_announcementDeclaration229 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_announcementDeclaration231 = new BitSet(new long[]{0x0000000000000098L});
+    public static final BitSet FOLLOW_variableDeclaration_in_announcementDeclaration233 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_CONSTRAINT_in_constraintDefinition257 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ID_in_constraintDefinition259 = new BitSet(new long[]{0x0000002000000000L});
+    public static final BitSet FOLLOW_REQUIRES_in_constraintDefinition262 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_idList_in_constraintDefinition268 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_ANNOUNCES_in_constraintDefinition273 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_idList_in_constraintDefinition279 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_constraintBlock_in_constraintDefinition283 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_CONBLOCK_in_constraintBlock307 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_constraintBlockDeclaration_in_constraintBlock309 = new BitSet(new long[]{0x0000010600000090L});
+    public static final BitSet FOLLOW_ANNOUNCEMENTS_in_constraintBlock313 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_announcementDeclaration_in_constraintBlock315 = new BitSet(new long[]{0x0000008000000008L});
+    public static final BitSet FOLLOW_variableDeclaration_in_constraintBlockDeclaration340 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_predicateHeader_in_constraintBlockDeclaration352 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_functionHeader_in_constraintBlockDeclaration364 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_DEVICE_in_deviceDefinition396 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ID_in_deviceDefinition398 = new BitSet(new long[]{0x0000040000000000L});
+    public static final BitSet FOLLOW_ACCEPTS_in_deviceDefinition401 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_idList_in_deviceDefinition404 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_deviceBlock_in_deviceDefinition408 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_DEVBLOCK_in_deviceBlock430 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_deviceBlockDeclaration_in_deviceBlock432 = new BitSet(new long[]{0x00000000000000F8L});
+    public static final BitSet FOLLOW_variableDeclaration_in_deviceBlockDeclaration453 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_predicateDefinition_in_deviceBlockDeclaration465 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_functionDefinition_in_deviceBlockDeclaration477 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_FUNHEAD_in_functionHeader504 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ID_in_functionHeader506 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_ARGS_in_functionHeader509 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_variableList_in_functionHeader511 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_FUNC_in_functionDefinition534 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ID_in_functionDefinition536 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_ARGS_in_functionDefinition539 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_variableList_in_functionDefinition541 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_functionBlock_in_functionDefinition544 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_FUNBLOCK_in_functionBlock572 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_RETURN_in_functionBlock574 = new BitSet(new long[]{0x0002000000810498L});
+    public static final BitSet FOLLOW_functionPredicateBlockDeclaration_in_functionBlock576 = new BitSet(new long[]{0x0002000000810498L});
+    public static final BitSet FOLLOW_variableDeclaration_in_functionPredicateBlockDeclaration599 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_functionPredicateBlockDeclaration610 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_inStatement_in_functionPredicateBlockDeclaration621 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ifStatement_in_functionPredicateBlockDeclaration633 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_functionPredicateCall_in_functionPredicateBlockDeclaration644 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_PREDHEAD_in_predicateHeader670 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ID_in_predicateHeader672 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_ARGS_in_predicateHeader675 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_variableList_in_predicateHeader677 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_PRED_in_predicateDefinition704 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ID_in_predicateDefinition706 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_ARGS_in_predicateDefinition709 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_variableList_in_predicateDefinition711 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_predicateBlock_in_predicateDefinition714 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_FUNBLOCK_in_predicateBlock746 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_RETURN_in_predicateBlock749 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_expression_in_predicateBlock751 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_functionPredicateBlockDeclaration_in_predicateBlock754 = new BitSet(new long[]{0x0002000000810498L});
+    public static final BitSet FOLLOW_IN_in_inStatement777 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ID_in_inStatement779 = new BitSet(new long[]{0x0000000004000000L});
+    public static final BitSet FOLLOW_inBlock_in_inStatement781 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_INBLOCK_in_inBlock809 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_inBlockDeclaration_in_inBlock811 = new BitSet(new long[]{0x0000000000080208L});
+    public static final BitSet FOLLOW_whenStatement_in_inBlockDeclaration830 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_everyStatement_in_inBlockDeclaration841 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_constraintFunctionCall_in_inBlockDeclaration852 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_IF_in_ifStatement871 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_logicalORExpression_in_ifStatement873 = new BitSet(new long[]{0x0000000010000000L});
+    public static final BitSet FOLLOW_ifBlock_in_ifStatement875 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_IFBLOCK_in_ifBlock895 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ifBlockDeclaration_in_ifBlock897 = new BitSet(new long[]{0x0002000000810498L});
+    public static final BitSet FOLLOW_ELSEIF_in_ifBlock902 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_elseIfStatement_in_ifBlock904 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
+    public static final BitSet FOLLOW_ELSE_in_ifBlock909 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_elseStatement_in_ifBlock911 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_IFBLOCK_in_elseStatement938 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ifBlockDeclaration_in_elseStatement940 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_logicalORExpression_in_elseIfStatement961 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_IFBLOCK_in_elseIfStatement964 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ifBlockDeclaration_in_elseIfStatement966 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_variableDeclaration_in_ifBlockDeclaration984 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_ifBlockDeclaration994 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_inStatement_in_ifBlockDeclaration1005 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ifStatement_in_ifBlockDeclaration1016 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_functionPredicateCall_in_ifBlockDeclaration1026 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_LISTENER_in_whenStatement1046 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ARG_in_whenStatement1049 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ID_in_whenStatement1051 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_EVERY_in_whenStatement1055 = new BitSet(new long[]{0x0000000000200000L});
+    public static final BitSet FOLLOW_COND_in_whenStatement1058 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_67_in_whenStatement1060 = new BitSet(new long[]{0x0000000000000000L,0x0000000000040000L});
+    public static final BitSet FOLLOW_82_in_whenStatement1063 = new BitSet(new long[]{0x0000100000000008L});
+    public static final BitSet FOLLOW_ID_in_whenStatement1065 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_listenerBlock_in_whenStatement1069 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_LISTENER_in_everyStatement1098 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ARG_in_everyStatement1101 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ID_in_everyStatement1103 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_EVERY_in_everyStatement1108 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_TIME_in_everyStatement1110 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_COND_in_everyStatement1114 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_67_in_everyStatement1116 = new BitSet(new long[]{0x0000100000000008L,0x0000000000040000L});
+    public static final BitSet FOLLOW_82_in_everyStatement1119 = new BitSet(new long[]{0x0000100000000008L});
+    public static final BitSet FOLLOW_ID_in_everyStatement1122 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_listenerBlock_in_everyStatement1126 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_LISTENBLOCK_in_listenerBlock1154 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_listenerBlockDeclaration_in_listenerBlock1156 = new BitSet(new long[]{0x0002000000890698L});
+    public static final BitSet FOLLOW_constraintFunctionCall_in_listenerBlockDeclaration1177 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_listenerBlockDeclaration1189 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableDeclaration_in_listenerBlockDeclaration1201 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_functionPredicateCall_in_listenerBlockDeclaration1212 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_OBJCALL_in_constraintFunctionCall1238 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ID_in_constraintFunctionCall1240 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_constraintFunctionCall1242 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_ARGS_in_constraintFunctionCall1245 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_expressionList_in_constraintFunctionCall1247 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_CALL_in_functionPredicateCall1283 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_ID_in_functionPredicateCall1285 = new BitSet(new long[]{0x0000000000000100L});
+    public static final BitSet FOLLOW_ARGS_in_functionPredicateCall1288 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_expressionList_in_functionPredicateCall1290 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_ID_in_idList1329 = new BitSet(new long[]{0x0000100000000002L});
+    public static final BitSet FOLLOW_variableDeclaration_in_variableList1364 = new BitSet(new long[]{0x0000000000000092L});
+    public static final BitSet FOLLOW_expression_in_expressionList1386 = new BitSet(new long[]{0x0002000000000002L});
+    public static final BitSet FOLLOW_VARDEF_in_variableDeclaration1419 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_85_in_variableDeclaration1421 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_variableDeclaration1423 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_ARG_in_variableDeclaration1436 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_85_in_variableDeclaration1438 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_variableDeclaration1440 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_VARDEF_in_variableDeclaration1453 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_TYPE_in_variableDeclaration1455 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_variableDeclaration1457 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
+    public static final BitSet FOLLOW_initializer_in_variableDeclaration1459 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_ARG_in_variableDeclaration1473 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_TYPE_in_variableDeclaration1475 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_variableDeclaration1477 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_logicalORExpression_in_initializer1508 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ASSIGNMENT_OPERATOR_in_expression1534 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_logicalORExpression_in_expression1536 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_expression_in_expression1538 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_88_in_logicalORExpression1565 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_87_in_logicalORExpression1567 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
+    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1570 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
+    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1572 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_89_in_logicalORExpression1585 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1587 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
+    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1589 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_EQUALITY_OPERATOR_in_logicalORExpression1602 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1604 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
+    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1606 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_RELATIONAL_OPERATOR_in_logicalORExpression1619 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1621 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
+    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1623 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_ADDITIVE_OPERATOR_in_logicalORExpression1636 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1638 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
+    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1640 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_MULTIPLICATIVE_OPERATOR_in_logicalORExpression1653 = new BitSet(new long[]{0x0000000000000004L});
+    public static final BitSet FOLLOW_primaryExpression_in_logicalORExpression1655 = new BitSet(new long[]{0x003C000000000008L,0x0000000003000000L});
+    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression1657 = new BitSet(new long[]{0x0000000000000008L});
+    public static final BitSet FOLLOW_ID_in_primaryExpression1676 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ID_in_primaryExpression1685 = new BitSet(new long[]{0x0002000000000000L});
+    public static final BitSet FOLLOW_expressionList_in_primaryExpression1687 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_literal_in_primaryExpression1696 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_functionPredicateCall_in_primaryExpression1705 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_set_in_literal0 = new BitSet(new long[]{0x0000000000000002L});
 
 }

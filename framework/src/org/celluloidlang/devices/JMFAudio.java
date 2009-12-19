@@ -18,7 +18,9 @@ public class JMFAudio extends MediaPlayer implements StaticInput, Output, Runnab
 	/**
 	 * for each ENUM, must document what it does
 	 * 
+	 * AUDIO_GAIN: [0,1,2,3,4,5]
 	 * STATUS: initialized, playing, stopped, paused
+	 * MEDIA_TIME: media time in milliseconds
 	 */
 	public enum Event{
 		AUDIO_GAIN, STATUS, MEDIA_TIME
@@ -124,7 +126,7 @@ public class JMFAudio extends MediaPlayer implements StaticInput, Output, Runnab
 
 	@Override
 	public Component getVisualData() {
-		return super.getVisualComponent();
+		return null;
 	}
 
 	@Override

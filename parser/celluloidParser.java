@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g 2009-12-19 03:06:01
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g 2009-12-19 17:21:25
 
 import org.antlr.runtime.*;
 import java.util.Stack;
@@ -111,7 +111,7 @@ public class celluloidParser extends Parser {
         }
         public celluloidParser(TokenStream input, RecognizerSharedState state) {
             super(input, state);
-            this.state.ruleMemo = new HashMap[131+1];
+            this.state.ruleMemo = new HashMap[129+1];
              
              
         }
@@ -555,7 +555,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: functionsPredicates, devices, block, events, constraints
+            // elements: devices, functionsPredicates, block, events, constraints
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -844,7 +844,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: eventName, predicateExpr, functionName
+            // elements: eventName, functionName, predicateExpr
             // token labels: eventName, functionName
             // rule labels: retval, predicateExpr
             // token list labels: 
@@ -1009,7 +1009,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: announces, requires, constraintBlock, ID
+            // elements: requires, announces, constraintBlock, ID
             // token labels: 
             // rule labels: retval, announces, requires
             // token list labels: 
@@ -1439,7 +1439,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: deviceBlock, ID, accepts
+            // elements: accepts, ID, deviceBlock
             // token labels: 
             // rule labels: retval, accepts
             // token list labels: 
@@ -1804,7 +1804,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: ID, variableList
+            // elements: variableList, ID
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1926,7 +1926,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: functionBlock, variableList, ID
+            // elements: ID, functionBlock, variableList
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2436,7 +2436,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: ID, predicateBlock, variableList
+            // elements: predicateBlock, variableList, ID
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2594,7 +2594,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: block, retexp
+            // elements: retexp, block
             // token labels: 
             // rule labels: retexp, retval
             // token list labels: 
@@ -2701,7 +2701,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: inBlock, ID
+            // elements: ID, inBlock
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -3057,7 +3057,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: ifTest, ifBlock
+            // elements: ifBlock, ifTest
             // token labels: 
             // rule labels: retval, ifTest
             // token list labels: 
@@ -3245,17 +3245,17 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: elseifBlock, block, elseStatement
+            // elements: block, elseStatement, elseifBlock
             // token labels: 
             // rule labels: retval
             // token list labels: 
-            // rule list labels: block, elseifBlock
+            // rule list labels: elseifBlock, block
             // wildcard labels: 
             if ( state.backtracking==0 ) {
             retval.tree = root_0;
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
-            RewriteRuleSubtreeStream stream_block=new RewriteRuleSubtreeStream(adaptor,"token block",list_block);
             RewriteRuleSubtreeStream stream_elseifBlock=new RewriteRuleSubtreeStream(adaptor,"token elseifBlock",list_elseifBlock);
+            RewriteRuleSubtreeStream stream_block=new RewriteRuleSubtreeStream(adaptor,"token block",list_block);
             root_0 = (Object)adaptor.nil();
             // 222:9: -> ^( IFBLOCK $block) ^( ELSEIF ( $elseifBlock)? ) ^( ELSE ( elseStatement )? )
             {
@@ -3713,7 +3713,7 @@ public class celluloidParser extends Parser {
     };
 
     // $ANTLR start "whenStatement"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:241:1: whenStatement : (when= 'when' | unless= 'unless' ) (target= ID )? (exp= logicalORExpression | event= ID ) listenerBlock -> ^( LISTENER ^( ARG ( $target)? ) EVERY ^( COND ( $when)? ( $unless)? ( $exp)? ( $event)? ) listenerBlock ) ;
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:241:1: whenStatement : (when= 'when' | unless= 'unless' ) (target= ID )? (event= ID ) listenerBlock -> ^( LISTENER ^( ARG ( $target)? ) EVERY ^( COND ( $when)? ( $unless)? ( $event)? ) listenerBlock ) ;
     public final celluloidParser.whenStatement_return whenStatement() throws RecognitionException {
         celluloidParser.whenStatement_return retval = new celluloidParser.whenStatement_return();
         retval.start = input.LT(1);
@@ -3724,8 +3724,6 @@ public class celluloidParser extends Parser {
         Token unless=null;
         Token target=null;
         Token event=null;
-        celluloidParser.logicalORExpression_return exp = null;
-
         celluloidParser.listenerBlock_return listenerBlock93 = null;
 
 
@@ -3737,11 +3735,10 @@ public class celluloidParser extends Parser {
         RewriteRuleTokenStream stream_ID=new RewriteRuleTokenStream(adaptor,"token ID");
         RewriteRuleTokenStream stream_82=new RewriteRuleTokenStream(adaptor,"token 82");
         RewriteRuleSubtreeStream stream_listenerBlock=new RewriteRuleSubtreeStream(adaptor,"rule listenerBlock");
-        RewriteRuleSubtreeStream stream_logicalORExpression=new RewriteRuleSubtreeStream(adaptor,"rule logicalORExpression");
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 25) ) { return retval; }
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:242:5: ( (when= 'when' | unless= 'unless' ) (target= ID )? (exp= logicalORExpression | event= ID ) listenerBlock -> ^( LISTENER ^( ARG ( $target)? ) EVERY ^( COND ( $when)? ( $unless)? ( $exp)? ( $event)? ) listenerBlock ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:242:9: (when= 'when' | unless= 'unless' ) (target= ID )? (exp= logicalORExpression | event= ID ) listenerBlock
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:242:5: ( (when= 'when' | unless= 'unless' ) (target= ID )? (event= ID ) listenerBlock -> ^( LISTENER ^( ARG ( $target)? ) EVERY ^( COND ( $when)? ( $unless)? ( $event)? ) listenerBlock ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:242:9: (when= 'when' | unless= 'unless' ) (target= ID )? (event= ID ) listenerBlock
             {
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:242:9: (when= 'when' | unless= 'unless' )
             int alt30=2;
@@ -3789,7 +3786,7 @@ public class celluloidParser extends Parser {
             if ( (LA31_0==ID) ) {
                 int LA31_1 = input.LA(2);
 
-                if ( (LA31_1==ID||LA31_1==TIME||(LA31_1>=BOOL && LA31_1<=STRING)||LA31_1==87||LA31_1==90) ) {
+                if ( (LA31_1==ID) ) {
                     alt31=1;
                 }
             }
@@ -3806,63 +3803,16 @@ public class celluloidParser extends Parser {
 
             }
 
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:242:60: (exp= logicalORExpression | event= ID )
-            int alt32=2;
-            int LA32_0 = input.LA(1);
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:242:60: (event= ID )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:242:61: event= ID
+            {
+            event=(Token)match(input,ID,FOLLOW_ID_in_whenStatement2340); if (state.failed) return retval; 
+            if ( state.backtracking==0 ) stream_ID.add(event);
 
-            if ( (LA32_0==TIME||(LA32_0>=BOOL && LA32_0<=STRING)||LA32_0==87||LA32_0==90) ) {
-                alt32=1;
-            }
-            else if ( (LA32_0==ID) ) {
-                int LA32_2 = input.LA(2);
-
-                if ( (synpred47_celluloid()) ) {
-                    alt32=1;
-                }
-                else if ( (true) ) {
-                    alt32=2;
-                }
-                else {
-                    if (state.backtracking>0) {state.failed=true; return retval;}
-                    NoViableAltException nvae =
-                        new NoViableAltException("", 32, 2, input);
-
-                    throw nvae;
-                }
-            }
-            else {
-                if (state.backtracking>0) {state.failed=true; return retval;}
-                NoViableAltException nvae =
-                    new NoViableAltException("", 32, 0, input);
-
-                throw nvae;
-            }
-            switch (alt32) {
-                case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:242:61: exp= logicalORExpression
-                    {
-                    pushFollow(FOLLOW_logicalORExpression_in_whenStatement2340);
-                    exp=logicalORExpression();
-
-                    state._fsp--;
-                    if (state.failed) return retval;
-                    if ( state.backtracking==0 ) stream_logicalORExpression.add(exp.getTree());
-
-                    }
-                    break;
-                case 2 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:242:89: event= ID
-                    {
-                    event=(Token)match(input,ID,FOLLOW_ID_in_whenStatement2348); if (state.failed) return retval; 
-                    if ( state.backtracking==0 ) stream_ID.add(event);
-
-
-                    }
-                    break;
 
             }
 
-            pushFollow(FOLLOW_listenerBlock_in_whenStatement2362);
+            pushFollow(FOLLOW_listenerBlock_in_whenStatement2354);
             listenerBlock93=listenerBlock();
 
             state._fsp--;
@@ -3871,9 +3821,9 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: target, listenerBlock, when, exp, unless, event
+            // elements: event, target, when, listenerBlock, unless
             // token labels: unless, event, when, target
-            // rule labels: exp, retval
+            // rule labels: retval
             // token list labels: 
             // rule list labels: 
             // wildcard labels: 
@@ -3883,13 +3833,12 @@ public class celluloidParser extends Parser {
             RewriteRuleTokenStream stream_event=new RewriteRuleTokenStream(adaptor,"token event",event);
             RewriteRuleTokenStream stream_when=new RewriteRuleTokenStream(adaptor,"token when",when);
             RewriteRuleTokenStream stream_target=new RewriteRuleTokenStream(adaptor,"token target",target);
-            RewriteRuleSubtreeStream stream_exp=new RewriteRuleSubtreeStream(adaptor,"rule exp",exp!=null?exp.tree:null);
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (Object)adaptor.nil();
-            // 244:9: -> ^( LISTENER ^( ARG ( $target)? ) EVERY ^( COND ( $when)? ( $unless)? ( $exp)? ( $event)? ) listenerBlock )
+            // 244:9: -> ^( LISTENER ^( ARG ( $target)? ) EVERY ^( COND ( $when)? ( $unless)? ( $event)? ) listenerBlock )
             {
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:244:12: ^( LISTENER ^( ARG ( $target)? ) EVERY ^( COND ( $when)? ( $unless)? ( $exp)? ( $event)? ) listenerBlock )
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:244:12: ^( LISTENER ^( ARG ( $target)? ) EVERY ^( COND ( $when)? ( $unless)? ( $event)? ) listenerBlock )
                 {
                 Object root_1 = (Object)adaptor.nil();
                 root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(LISTENER, "LISTENER"), root_1);
@@ -3909,7 +3858,7 @@ public class celluloidParser extends Parser {
                 adaptor.addChild(root_1, root_2);
                 }
                 adaptor.addChild(root_1, (Object)adaptor.create(EVERY, "EVERY"));
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:244:45: ^( COND ( $when)? ( $unless)? ( $exp)? ( $event)? )
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:244:45: ^( COND ( $when)? ( $unless)? ( $event)? )
                 {
                 Object root_2 = (Object)adaptor.nil();
                 root_2 = (Object)adaptor.becomeRoot((Object)adaptor.create(COND, "COND"), root_2);
@@ -3926,13 +3875,7 @@ public class celluloidParser extends Parser {
 
                 }
                 stream_unless.reset();
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:244:68: ( $exp)?
-                if ( stream_exp.hasNext() ) {
-                    adaptor.addChild(root_2, stream_exp.nextTree());
-
-                }
-                stream_exp.reset();
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:244:74: ( $event)?
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:244:68: ( $event)?
                 if ( stream_event.hasNext() ) {
                     adaptor.addChild(root_2, stream_event.nextNode());
 
@@ -3978,7 +3921,7 @@ public class celluloidParser extends Parser {
     };
 
     // $ANTLR start "everyStatement"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:247:1: everyStatement : 'every' TIME ( (when= 'when' | unless= 'unless' ) (target= ID )? (exp= logicalORExpression | event= ID ) )? listenerBlock -> ^( LISTENER ^( ARG ( $target)? ) ^( EVERY TIME ) ^( COND ( $when)? ( $unless)? ( $exp)? ( $event)? ) listenerBlock ) ;
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:247:1: everyStatement : 'every' TIME ( (when= 'when' | unless= 'unless' ) (target= ID )? (event= ID ) )? listenerBlock -> ^( LISTENER ^( ARG ( $target)? ) ^( EVERY TIME ) ^( COND ( $when)? ( $unless)? ( $event)? ) listenerBlock ) ;
     public final celluloidParser.everyStatement_return everyStatement() throws RecognitionException {
         celluloidParser.everyStatement_return retval = new celluloidParser.everyStatement_return();
         retval.start = input.LT(1);
@@ -3991,8 +3934,6 @@ public class celluloidParser extends Parser {
         Token event=null;
         Token string_literal94=null;
         Token TIME95=null;
-        celluloidParser.logicalORExpression_return exp = null;
-
         celluloidParser.listenerBlock_return listenerBlock96 = null;
 
 
@@ -4008,51 +3949,50 @@ public class celluloidParser extends Parser {
         RewriteRuleTokenStream stream_82=new RewriteRuleTokenStream(adaptor,"token 82");
         RewriteRuleTokenStream stream_83=new RewriteRuleTokenStream(adaptor,"token 83");
         RewriteRuleSubtreeStream stream_listenerBlock=new RewriteRuleSubtreeStream(adaptor,"rule listenerBlock");
-        RewriteRuleSubtreeStream stream_logicalORExpression=new RewriteRuleSubtreeStream(adaptor,"rule logicalORExpression");
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 26) ) { return retval; }
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:248:5: ( 'every' TIME ( (when= 'when' | unless= 'unless' ) (target= ID )? (exp= logicalORExpression | event= ID ) )? listenerBlock -> ^( LISTENER ^( ARG ( $target)? ) ^( EVERY TIME ) ^( COND ( $when)? ( $unless)? ( $exp)? ( $event)? ) listenerBlock ) )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:248:9: 'every' TIME ( (when= 'when' | unless= 'unless' ) (target= ID )? (exp= logicalORExpression | event= ID ) )? listenerBlock
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:248:5: ( 'every' TIME ( (when= 'when' | unless= 'unless' ) (target= ID )? (event= ID ) )? listenerBlock -> ^( LISTENER ^( ARG ( $target)? ) ^( EVERY TIME ) ^( COND ( $when)? ( $unless)? ( $event)? ) listenerBlock ) )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:248:9: 'every' TIME ( (when= 'when' | unless= 'unless' ) (target= ID )? (event= ID ) )? listenerBlock
             {
-            string_literal94=(Token)match(input,83,FOLLOW_83_in_everyStatement2435); if (state.failed) return retval; 
+            string_literal94=(Token)match(input,83,FOLLOW_83_in_everyStatement2423); if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_83.add(string_literal94);
 
-            TIME95=(Token)match(input,TIME,FOLLOW_TIME_in_everyStatement2437); if (state.failed) return retval; 
+            TIME95=(Token)match(input,TIME,FOLLOW_TIME_in_everyStatement2425); if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_TIME.add(TIME95);
 
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:249:9: ( (when= 'when' | unless= 'unless' ) (target= ID )? (exp= logicalORExpression | event= ID ) )?
-            int alt36=2;
-            int LA36_0 = input.LA(1);
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:249:9: ( (when= 'when' | unless= 'unless' ) (target= ID )? (event= ID ) )?
+            int alt34=2;
+            int LA34_0 = input.LA(1);
 
-            if ( (LA36_0==67||LA36_0==82) ) {
-                alt36=1;
+            if ( (LA34_0==67||LA34_0==82) ) {
+                alt34=1;
             }
-            switch (alt36) {
+            switch (alt34) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:249:10: (when= 'when' | unless= 'unless' ) (target= ID )? (exp= logicalORExpression | event= ID )
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:249:10: (when= 'when' | unless= 'unless' ) (target= ID )? (event= ID )
                     {
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:249:10: (when= 'when' | unless= 'unless' )
-                    int alt33=2;
-                    int LA33_0 = input.LA(1);
+                    int alt32=2;
+                    int LA32_0 = input.LA(1);
 
-                    if ( (LA33_0==67) ) {
-                        alt33=1;
+                    if ( (LA32_0==67) ) {
+                        alt32=1;
                     }
-                    else if ( (LA33_0==82) ) {
-                        alt33=2;
+                    else if ( (LA32_0==82) ) {
+                        alt32=2;
                     }
                     else {
                         if (state.backtracking>0) {state.failed=true; return retval;}
                         NoViableAltException nvae =
-                            new NoViableAltException("", 33, 0, input);
+                            new NoViableAltException("", 32, 0, input);
 
                         throw nvae;
                     }
-                    switch (alt33) {
+                    switch (alt32) {
                         case 1 :
                             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:249:11: when= 'when'
                             {
-                            when=(Token)match(input,67,FOLLOW_67_in_everyStatement2454); if (state.failed) return retval; 
+                            when=(Token)match(input,67,FOLLOW_67_in_everyStatement2442); if (state.failed) return retval; 
                             if ( state.backtracking==0 ) stream_67.add(when);
 
 
@@ -4061,7 +4001,7 @@ public class celluloidParser extends Parser {
                         case 2 :
                             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:249:27: unless= 'unless'
                             {
-                            unless=(Token)match(input,82,FOLLOW_82_in_everyStatement2462); if (state.failed) return retval; 
+                            unless=(Token)match(input,82,FOLLOW_82_in_everyStatement2450); if (state.failed) return retval; 
                             if ( state.backtracking==0 ) stream_82.add(unless);
 
 
@@ -4071,21 +4011,21 @@ public class celluloidParser extends Parser {
                     }
 
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:249:46: (target= ID )?
-                    int alt34=2;
-                    int LA34_0 = input.LA(1);
+                    int alt33=2;
+                    int LA33_0 = input.LA(1);
 
-                    if ( (LA34_0==ID) ) {
-                        int LA34_1 = input.LA(2);
+                    if ( (LA33_0==ID) ) {
+                        int LA33_1 = input.LA(2);
 
-                        if ( (LA34_1==ID||LA34_1==TIME||(LA34_1>=BOOL && LA34_1<=STRING)||LA34_1==87||LA34_1==90) ) {
-                            alt34=1;
+                        if ( (LA33_1==ID) ) {
+                            alt33=1;
                         }
                     }
-                    switch (alt34) {
+                    switch (alt33) {
                         case 1 :
                             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:249:47: target= ID
                             {
-                            target=(Token)match(input,ID,FOLLOW_ID_in_everyStatement2470); if (state.failed) return retval; 
+                            target=(Token)match(input,ID,FOLLOW_ID_in_everyStatement2458); if (state.failed) return retval; 
                             if ( state.backtracking==0 ) stream_ID.add(target);
 
 
@@ -4094,59 +4034,12 @@ public class celluloidParser extends Parser {
 
                     }
 
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:249:61: (exp= logicalORExpression | event= ID )
-                    int alt35=2;
-                    int LA35_0 = input.LA(1);
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:249:61: (event= ID )
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:249:62: event= ID
+                    {
+                    event=(Token)match(input,ID,FOLLOW_ID_in_everyStatement2467); if (state.failed) return retval; 
+                    if ( state.backtracking==0 ) stream_ID.add(event);
 
-                    if ( (LA35_0==TIME||(LA35_0>=BOOL && LA35_0<=STRING)||LA35_0==87||LA35_0==90) ) {
-                        alt35=1;
-                    }
-                    else if ( (LA35_0==ID) ) {
-                        int LA35_2 = input.LA(2);
-
-                        if ( (synpred50_celluloid()) ) {
-                            alt35=1;
-                        }
-                        else if ( (true) ) {
-                            alt35=2;
-                        }
-                        else {
-                            if (state.backtracking>0) {state.failed=true; return retval;}
-                            NoViableAltException nvae =
-                                new NoViableAltException("", 35, 2, input);
-
-                            throw nvae;
-                        }
-                    }
-                    else {
-                        if (state.backtracking>0) {state.failed=true; return retval;}
-                        NoViableAltException nvae =
-                            new NoViableAltException("", 35, 0, input);
-
-                        throw nvae;
-                    }
-                    switch (alt35) {
-                        case 1 :
-                            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:249:62: exp= logicalORExpression
-                            {
-                            pushFollow(FOLLOW_logicalORExpression_in_everyStatement2479);
-                            exp=logicalORExpression();
-
-                            state._fsp--;
-                            if (state.failed) return retval;
-                            if ( state.backtracking==0 ) stream_logicalORExpression.add(exp.getTree());
-
-                            }
-                            break;
-                        case 2 :
-                            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:249:90: event= ID
-                            {
-                            event=(Token)match(input,ID,FOLLOW_ID_in_everyStatement2487); if (state.failed) return retval; 
-                            if ( state.backtracking==0 ) stream_ID.add(event);
-
-
-                            }
-                            break;
 
                     }
 
@@ -4156,7 +4049,7 @@ public class celluloidParser extends Parser {
 
             }
 
-            pushFollow(FOLLOW_listenerBlock_in_everyStatement2503);
+            pushFollow(FOLLOW_listenerBlock_in_everyStatement2483);
             listenerBlock96=listenerBlock();
 
             state._fsp--;
@@ -4165,9 +4058,9 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: when, exp, unless, listenerBlock, event, TIME, target
+            // elements: unless, TIME, listenerBlock, event, when, target
             // token labels: unless, event, when, target
-            // rule labels: exp, retval
+            // rule labels: retval
             // token list labels: 
             // rule list labels: 
             // wildcard labels: 
@@ -4177,13 +4070,12 @@ public class celluloidParser extends Parser {
             RewriteRuleTokenStream stream_event=new RewriteRuleTokenStream(adaptor,"token event",event);
             RewriteRuleTokenStream stream_when=new RewriteRuleTokenStream(adaptor,"token when",when);
             RewriteRuleTokenStream stream_target=new RewriteRuleTokenStream(adaptor,"token target",target);
-            RewriteRuleSubtreeStream stream_exp=new RewriteRuleSubtreeStream(adaptor,"rule exp",exp!=null?exp.tree:null);
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (Object)adaptor.nil();
-            // 251:9: -> ^( LISTENER ^( ARG ( $target)? ) ^( EVERY TIME ) ^( COND ( $when)? ( $unless)? ( $exp)? ( $event)? ) listenerBlock )
+            // 251:9: -> ^( LISTENER ^( ARG ( $target)? ) ^( EVERY TIME ) ^( COND ( $when)? ( $unless)? ( $event)? ) listenerBlock )
             {
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:251:12: ^( LISTENER ^( ARG ( $target)? ) ^( EVERY TIME ) ^( COND ( $when)? ( $unless)? ( $exp)? ( $event)? ) listenerBlock )
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:251:12: ^( LISTENER ^( ARG ( $target)? ) ^( EVERY TIME ) ^( COND ( $when)? ( $unless)? ( $event)? ) listenerBlock )
                 {
                 Object root_1 = (Object)adaptor.nil();
                 root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(LISTENER, "LISTENER"), root_1);
@@ -4211,7 +4103,7 @@ public class celluloidParser extends Parser {
 
                 adaptor.addChild(root_1, root_2);
                 }
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:251:53: ^( COND ( $when)? ( $unless)? ( $exp)? ( $event)? )
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:251:53: ^( COND ( $when)? ( $unless)? ( $event)? )
                 {
                 Object root_2 = (Object)adaptor.nil();
                 root_2 = (Object)adaptor.becomeRoot((Object)adaptor.create(COND, "COND"), root_2);
@@ -4228,13 +4120,7 @@ public class celluloidParser extends Parser {
 
                 }
                 stream_unless.reset();
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:251:76: ( $exp)?
-                if ( stream_exp.hasNext() ) {
-                    adaptor.addChild(root_2, stream_exp.nextTree());
-
-                }
-                stream_exp.reset();
-                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:251:82: ( $event)?
+                // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:251:76: ( $event)?
                 if ( stream_event.hasNext() ) {
                     adaptor.addChild(root_2, stream_event.nextNode());
 
@@ -4301,25 +4187,25 @@ public class celluloidParser extends Parser {
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:255:5: ( START (block+= listenerBlockDeclaration )* END -> ^( LISTENBLOCK ( $block)* ) )
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:255:8: START (block+= listenerBlockDeclaration )* END
             {
-            START97=(Token)match(input,START,FOLLOW_START_in_listenerBlock2579); if (state.failed) return retval; 
+            START97=(Token)match(input,START,FOLLOW_START_in_listenerBlock2555); if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_START.add(START97);
 
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:256:12: (block+= listenerBlockDeclaration )*
-            loop37:
+            loop35:
             do {
-                int alt37=2;
-                int LA37_0 = input.LA(1);
+                int alt35=2;
+                int LA35_0 = input.LA(1);
 
-                if ( (LA37_0==ID||(LA37_0>=TIME && LA37_0<=TYPE)||(LA37_0>=BOOL && LA37_0<=STRING)||LA37_0==85||LA37_0==87||LA37_0==90) ) {
-                    alt37=1;
+                if ( (LA35_0==ID||(LA35_0>=TIME && LA35_0<=TYPE)||(LA35_0>=BOOL && LA35_0<=STRING)||LA35_0==85||LA35_0==87||LA35_0==90) ) {
+                    alt35=1;
                 }
 
 
-                switch (alt37) {
+                switch (alt35) {
             	case 1 :
             	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:256:13: block+= listenerBlockDeclaration
             	    {
-            	    pushFollow(FOLLOW_listenerBlockDeclaration_in_listenerBlock2597);
+            	    pushFollow(FOLLOW_listenerBlockDeclaration_in_listenerBlock2573);
             	    block=listenerBlockDeclaration();
 
             	    state._fsp--;
@@ -4333,11 +4219,11 @@ public class celluloidParser extends Parser {
             	    break;
 
             	default :
-            	    break loop37;
+            	    break loop35;
                 }
             } while (true);
 
-            END98=(Token)match(input,END,FOLLOW_END_in_listenerBlock2608); if (state.failed) return retval; 
+            END98=(Token)match(input,END,FOLLOW_END_in_listenerBlock2584); if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_END.add(END98);
 
 
@@ -4423,25 +4309,25 @@ public class celluloidParser extends Parser {
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 28) ) { return retval; }
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:261:5: ( constraintFunctionCall | expression | variableDeclaration | functionPredicateCall )
-            int alt38=4;
+            int alt36=4;
             switch ( input.LA(1) ) {
             case ID:
                 {
-                int LA38_1 = input.LA(2);
+                int LA36_1 = input.LA(2);
 
-                if ( (synpred53_celluloid()) ) {
-                    alt38=1;
+                if ( (synpred51_celluloid()) ) {
+                    alt36=1;
                 }
-                else if ( (synpred54_celluloid()) ) {
-                    alt38=2;
+                else if ( (synpred52_celluloid()) ) {
+                    alt36=2;
                 }
                 else if ( (true) ) {
-                    alt38=4;
+                    alt36=4;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return retval;}
                     NoViableAltException nvae =
-                        new NoViableAltException("", 38, 1, input);
+                        new NoViableAltException("", 36, 1, input);
 
                     throw nvae;
                 }
@@ -4454,30 +4340,30 @@ public class celluloidParser extends Parser {
             case 87:
             case 90:
                 {
-                alt38=2;
+                alt36=2;
                 }
                 break;
             case TYPE:
             case 85:
                 {
-                alt38=3;
+                alt36=3;
                 }
                 break;
             default:
                 if (state.backtracking>0) {state.failed=true; return retval;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 38, 0, input);
+                    new NoViableAltException("", 36, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt38) {
+            switch (alt36) {
                 case 1 :
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:261:10: constraintFunctionCall
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_constraintFunctionCall_in_listenerBlockDeclaration2645);
+                    pushFollow(FOLLOW_constraintFunctionCall_in_listenerBlockDeclaration2621);
                     constraintFunctionCall99=constraintFunctionCall();
 
                     state._fsp--;
@@ -4491,7 +4377,7 @@ public class celluloidParser extends Parser {
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_expression_in_listenerBlockDeclaration2657);
+                    pushFollow(FOLLOW_expression_in_listenerBlockDeclaration2633);
                     expression100=expression();
 
                     state._fsp--;
@@ -4505,7 +4391,7 @@ public class celluloidParser extends Parser {
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_variableDeclaration_in_listenerBlockDeclaration2669);
+                    pushFollow(FOLLOW_variableDeclaration_in_listenerBlockDeclaration2645);
                     variableDeclaration101=variableDeclaration();
 
                     state._fsp--;
@@ -4519,7 +4405,7 @@ public class celluloidParser extends Parser {
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_functionPredicateCall_in_listenerBlockDeclaration2680);
+                    pushFollow(FOLLOW_functionPredicateCall_in_listenerBlockDeclaration2656);
                     functionPredicateCall102=functionPredicateCall();
 
                     state._fsp--;
@@ -4585,34 +4471,34 @@ public class celluloidParser extends Parser {
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:268:5: (function= ID id+= ID ( ',' id+= ID )* ( expressionList )? ( NEWLINE )? -> ( ^( OBJCALL $id $function ^( ARGS ( expressionList )? ) ) )* )
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:268:10: function= ID id+= ID ( ',' id+= ID )* ( expressionList )? ( NEWLINE )?
             {
-            function=(Token)match(input,ID,FOLLOW_ID_in_constraintFunctionCall2709); if (state.failed) return retval; 
+            function=(Token)match(input,ID,FOLLOW_ID_in_constraintFunctionCall2685); if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_ID.add(function);
 
-            id=(Token)match(input,ID,FOLLOW_ID_in_constraintFunctionCall2715); if (state.failed) return retval; 
+            id=(Token)match(input,ID,FOLLOW_ID_in_constraintFunctionCall2691); if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_ID.add(id);
 
             if (list_id==null) list_id=new ArrayList();
             list_id.add(id);
 
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:268:33: ( ',' id+= ID )*
-            loop39:
+            loop37:
             do {
-                int alt39=2;
-                int LA39_0 = input.LA(1);
+                int alt37=2;
+                int LA37_0 = input.LA(1);
 
-                if ( (LA39_0==84) ) {
-                    alt39=1;
+                if ( (LA37_0==84) ) {
+                    alt37=1;
                 }
 
 
-                switch (alt39) {
+                switch (alt37) {
             	case 1 :
             	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:268:34: ',' id+= ID
             	    {
-            	    char_literal103=(Token)match(input,84,FOLLOW_84_in_constraintFunctionCall2718); if (state.failed) return retval; 
+            	    char_literal103=(Token)match(input,84,FOLLOW_84_in_constraintFunctionCall2694); if (state.failed) return retval; 
             	    if ( state.backtracking==0 ) stream_84.add(char_literal103);
 
-            	    id=(Token)match(input,ID,FOLLOW_ID_in_constraintFunctionCall2724); if (state.failed) return retval; 
+            	    id=(Token)match(input,ID,FOLLOW_ID_in_constraintFunctionCall2700); if (state.failed) return retval; 
             	    if ( state.backtracking==0 ) stream_ID.add(id);
 
             	    if (list_id==null) list_id=new ArrayList();
@@ -4623,18 +4509,18 @@ public class celluloidParser extends Parser {
             	    break;
 
             	default :
-            	    break loop39;
+            	    break loop37;
                 }
             } while (true);
 
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:268:49: ( expressionList )?
-            int alt40=2;
-            alt40 = dfa40.predict(input);
-            switch (alt40) {
+            int alt38=2;
+            alt38 = dfa38.predict(input);
+            switch (alt38) {
                 case 1 :
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:0:0: expressionList
                     {
-                    pushFollow(FOLLOW_expressionList_in_constraintFunctionCall2728);
+                    pushFollow(FOLLOW_expressionList_in_constraintFunctionCall2704);
                     expressionList104=expressionList();
 
                     state._fsp--;
@@ -4647,21 +4533,21 @@ public class celluloidParser extends Parser {
             }
 
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:268:65: ( NEWLINE )?
-            int alt41=2;
-            int LA41_0 = input.LA(1);
+            int alt39=2;
+            int LA39_0 = input.LA(1);
 
-            if ( (LA41_0==NEWLINE) ) {
-                int LA41_1 = input.LA(2);
+            if ( (LA39_0==NEWLINE) ) {
+                int LA39_1 = input.LA(2);
 
-                if ( (synpred58_celluloid()) ) {
-                    alt41=1;
+                if ( (synpred56_celluloid()) ) {
+                    alt39=1;
                 }
             }
-            switch (alt41) {
+            switch (alt39) {
                 case 1 :
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:0:0: NEWLINE
                     {
-                    NEWLINE105=(Token)match(input,NEWLINE,FOLLOW_NEWLINE_in_constraintFunctionCall2731); if (state.failed) return retval; 
+                    NEWLINE105=(Token)match(input,NEWLINE,FOLLOW_NEWLINE_in_constraintFunctionCall2707); if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_NEWLINE.add(NEWLINE105);
 
 
@@ -4673,7 +4559,7 @@ public class celluloidParser extends Parser {
 
 
             // AST REWRITE
-            // elements: expressionList, id, function
+            // elements: expressionList, function, id
             // token labels: function
             // rule labels: retval
             // token list labels: id
@@ -4689,7 +4575,7 @@ public class celluloidParser extends Parser {
             // 269:10: -> ( ^( OBJCALL $id $function ^( ARGS ( expressionList )? ) ) )*
             {
                 // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:269:13: ( ^( OBJCALL $id $function ^( ARGS ( expressionList )? ) ) )*
-                while ( stream_id.hasNext()||stream_function.hasNext() ) {
+                while ( stream_function.hasNext()||stream_id.hasNext() ) {
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:269:13: ^( OBJCALL $id $function ^( ARGS ( expressionList )? ) )
                     {
                     Object root_1 = (Object)adaptor.nil();
@@ -4716,8 +4602,8 @@ public class celluloidParser extends Parser {
                     }
 
                 }
-                stream_id.reset();
                 stream_function.reset();
+                stream_id.reset();
 
             }
 
@@ -4779,37 +4665,37 @@ public class celluloidParser extends Parser {
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:273:5: ( ID '(' expressionList ')' ( NEWLINE )? -> ^( CALL ID ^( ARGS expressionList ) ) )
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:273:10: ID '(' expressionList ')' ( NEWLINE )?
             {
-            ID106=(Token)match(input,ID,FOLLOW_ID_in_functionPredicateCall2793); if (state.failed) return retval; 
+            ID106=(Token)match(input,ID,FOLLOW_ID_in_functionPredicateCall2769); if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_ID.add(ID106);
 
-            char_literal107=(Token)match(input,74,FOLLOW_74_in_functionPredicateCall2795); if (state.failed) return retval; 
+            char_literal107=(Token)match(input,74,FOLLOW_74_in_functionPredicateCall2771); if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_74.add(char_literal107);
 
-            pushFollow(FOLLOW_expressionList_in_functionPredicateCall2797);
+            pushFollow(FOLLOW_expressionList_in_functionPredicateCall2773);
             expressionList108=expressionList();
 
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) stream_expressionList.add(expressionList108.getTree());
-            char_literal109=(Token)match(input,75,FOLLOW_75_in_functionPredicateCall2799); if (state.failed) return retval; 
+            char_literal109=(Token)match(input,75,FOLLOW_75_in_functionPredicateCall2775); if (state.failed) return retval; 
             if ( state.backtracking==0 ) stream_75.add(char_literal109);
 
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:273:36: ( NEWLINE )?
-            int alt42=2;
-            int LA42_0 = input.LA(1);
+            int alt40=2;
+            int LA40_0 = input.LA(1);
 
-            if ( (LA42_0==NEWLINE) ) {
-                int LA42_1 = input.LA(2);
+            if ( (LA40_0==NEWLINE) ) {
+                int LA40_1 = input.LA(2);
 
-                if ( (synpred59_celluloid()) ) {
-                    alt42=1;
+                if ( (synpred57_celluloid()) ) {
+                    alt40=1;
                 }
             }
-            switch (alt42) {
+            switch (alt40) {
                 case 1 :
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:0:0: NEWLINE
                     {
-                    NEWLINE110=(Token)match(input,NEWLINE,FOLLOW_NEWLINE_in_functionPredicateCall2801); if (state.failed) return retval; 
+                    NEWLINE110=(Token)match(input,NEWLINE,FOLLOW_NEWLINE_in_functionPredicateCall2777); if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_NEWLINE.add(NEWLINE110);
 
 
@@ -4912,51 +4798,51 @@ public class celluloidParser extends Parser {
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 31) ) { return retval; }
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:281:5: (ids+= ID ( ',' ids+= ID )* -> ( ID )+ | '(' ids+= ID ( ',' ids+= ID )* ')' -> ( ID )+ )
-            int alt45=2;
-            int LA45_0 = input.LA(1);
+            int alt43=2;
+            int LA43_0 = input.LA(1);
 
-            if ( (LA45_0==ID) ) {
-                alt45=1;
+            if ( (LA43_0==ID) ) {
+                alt43=1;
             }
-            else if ( (LA45_0==74) ) {
-                alt45=2;
+            else if ( (LA43_0==74) ) {
+                alt43=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return retval;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 45, 0, input);
+                    new NoViableAltException("", 43, 0, input);
 
                 throw nvae;
             }
-            switch (alt45) {
+            switch (alt43) {
                 case 1 :
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:281:10: ids+= ID ( ',' ids+= ID )*
                     {
-                    ids=(Token)match(input,ID,FOLLOW_ID_in_idList2863); if (state.failed) return retval; 
+                    ids=(Token)match(input,ID,FOLLOW_ID_in_idList2839); if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_ID.add(ids);
 
                     if (list_ids==null) list_ids=new ArrayList();
                     list_ids.add(ids);
 
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:281:20: ( ',' ids+= ID )*
-                    loop43:
+                    loop41:
                     do {
-                        int alt43=2;
-                        int LA43_0 = input.LA(1);
+                        int alt41=2;
+                        int LA41_0 = input.LA(1);
 
-                        if ( (LA43_0==84) ) {
-                            alt43=1;
+                        if ( (LA41_0==84) ) {
+                            alt41=1;
                         }
 
 
-                        switch (alt43) {
+                        switch (alt41) {
                     	case 1 :
                     	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:281:21: ',' ids+= ID
                     	    {
-                    	    char_literal111=(Token)match(input,84,FOLLOW_84_in_idList2866); if (state.failed) return retval; 
+                    	    char_literal111=(Token)match(input,84,FOLLOW_84_in_idList2842); if (state.failed) return retval; 
                     	    if ( state.backtracking==0 ) stream_84.add(char_literal111);
 
-                    	    ids=(Token)match(input,ID,FOLLOW_ID_in_idList2872); if (state.failed) return retval; 
+                    	    ids=(Token)match(input,ID,FOLLOW_ID_in_idList2848); if (state.failed) return retval; 
                     	    if ( state.backtracking==0 ) stream_ID.add(ids);
 
                     	    if (list_ids==null) list_ids=new ArrayList();
@@ -4967,7 +4853,7 @@ public class celluloidParser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop43;
+                    	    break loop41;
                         }
                     } while (true);
 
@@ -5004,34 +4890,34 @@ public class celluloidParser extends Parser {
                 case 2 :
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:283:10: '(' ids+= ID ( ',' ids+= ID )* ')'
                     {
-                    char_literal112=(Token)match(input,74,FOLLOW_74_in_idList2900); if (state.failed) return retval; 
+                    char_literal112=(Token)match(input,74,FOLLOW_74_in_idList2876); if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_74.add(char_literal112);
 
-                    ids=(Token)match(input,ID,FOLLOW_ID_in_idList2906); if (state.failed) return retval; 
+                    ids=(Token)match(input,ID,FOLLOW_ID_in_idList2882); if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_ID.add(ids);
 
                     if (list_ids==null) list_ids=new ArrayList();
                     list_ids.add(ids);
 
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:283:24: ( ',' ids+= ID )*
-                    loop44:
+                    loop42:
                     do {
-                        int alt44=2;
-                        int LA44_0 = input.LA(1);
+                        int alt42=2;
+                        int LA42_0 = input.LA(1);
 
-                        if ( (LA44_0==84) ) {
-                            alt44=1;
+                        if ( (LA42_0==84) ) {
+                            alt42=1;
                         }
 
 
-                        switch (alt44) {
+                        switch (alt42) {
                     	case 1 :
                     	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:283:25: ',' ids+= ID
                     	    {
-                    	    char_literal113=(Token)match(input,84,FOLLOW_84_in_idList2909); if (state.failed) return retval; 
+                    	    char_literal113=(Token)match(input,84,FOLLOW_84_in_idList2885); if (state.failed) return retval; 
                     	    if ( state.backtracking==0 ) stream_84.add(char_literal113);
 
-                    	    ids=(Token)match(input,ID,FOLLOW_ID_in_idList2915); if (state.failed) return retval; 
+                    	    ids=(Token)match(input,ID,FOLLOW_ID_in_idList2891); if (state.failed) return retval; 
                     	    if ( state.backtracking==0 ) stream_ID.add(ids);
 
                     	    if (list_ids==null) list_ids=new ArrayList();
@@ -5042,11 +4928,11 @@ public class celluloidParser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop44;
+                    	    break loop42;
                         }
                     } while (true);
 
-                    char_literal114=(Token)match(input,75,FOLLOW_75_in_idList2919); if (state.failed) return retval; 
+                    char_literal114=(Token)match(input,75,FOLLOW_75_in_idList2895); if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_75.add(char_literal114);
 
 
@@ -5132,27 +5018,27 @@ public class celluloidParser extends Parser {
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 32) ) { return retval; }
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:288:5: (vars+= variableDeclaration ( ',' vars+= variableDeclaration )* -> ( variableDeclaration )+ | '(' vars+= variableDeclaration ( ',' vars+= variableDeclaration )* ')' -> ( variableDeclaration )+ )
-            int alt48=2;
-            int LA48_0 = input.LA(1);
+            int alt46=2;
+            int LA46_0 = input.LA(1);
 
-            if ( (LA48_0==TYPE||LA48_0==85) ) {
-                alt48=1;
+            if ( (LA46_0==TYPE||LA46_0==85) ) {
+                alt46=1;
             }
-            else if ( (LA48_0==74) ) {
-                alt48=2;
+            else if ( (LA46_0==74) ) {
+                alt46=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return retval;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 48, 0, input);
+                    new NoViableAltException("", 46, 0, input);
 
                 throw nvae;
             }
-            switch (alt48) {
+            switch (alt46) {
                 case 1 :
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:288:10: vars+= variableDeclaration ( ',' vars+= variableDeclaration )*
                     {
-                    pushFollow(FOLLOW_variableDeclaration_in_variableList2960);
+                    pushFollow(FOLLOW_variableDeclaration_in_variableList2936);
                     vars=variableDeclaration();
 
                     state._fsp--;
@@ -5162,24 +5048,24 @@ public class celluloidParser extends Parser {
                     list_vars.add(vars.getTree());
 
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:288:38: ( ',' vars+= variableDeclaration )*
-                    loop46:
+                    loop44:
                     do {
-                        int alt46=2;
-                        int LA46_0 = input.LA(1);
+                        int alt44=2;
+                        int LA44_0 = input.LA(1);
 
-                        if ( (LA46_0==84) ) {
-                            alt46=1;
+                        if ( (LA44_0==84) ) {
+                            alt44=1;
                         }
 
 
-                        switch (alt46) {
+                        switch (alt44) {
                     	case 1 :
                     	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:288:39: ',' vars+= variableDeclaration
                     	    {
-                    	    char_literal115=(Token)match(input,84,FOLLOW_84_in_variableList2963); if (state.failed) return retval; 
+                    	    char_literal115=(Token)match(input,84,FOLLOW_84_in_variableList2939); if (state.failed) return retval; 
                     	    if ( state.backtracking==0 ) stream_84.add(char_literal115);
 
-                    	    pushFollow(FOLLOW_variableDeclaration_in_variableList2969);
+                    	    pushFollow(FOLLOW_variableDeclaration_in_variableList2945);
                     	    vars=variableDeclaration();
 
                     	    state._fsp--;
@@ -5193,7 +5079,7 @@ public class celluloidParser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop46;
+                    	    break loop44;
                         }
                     } while (true);
 
@@ -5230,10 +5116,10 @@ public class celluloidParser extends Parser {
                 case 2 :
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:291:10: '(' vars+= variableDeclaration ( ',' vars+= variableDeclaration )* ')'
                     {
-                    char_literal116=(Token)match(input,74,FOLLOW_74_in_variableList3007); if (state.failed) return retval; 
+                    char_literal116=(Token)match(input,74,FOLLOW_74_in_variableList2983); if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_74.add(char_literal116);
 
-                    pushFollow(FOLLOW_variableDeclaration_in_variableList3013);
+                    pushFollow(FOLLOW_variableDeclaration_in_variableList2989);
                     vars=variableDeclaration();
 
                     state._fsp--;
@@ -5243,24 +5129,24 @@ public class celluloidParser extends Parser {
                     list_vars.add(vars.getTree());
 
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:291:42: ( ',' vars+= variableDeclaration )*
-                    loop47:
+                    loop45:
                     do {
-                        int alt47=2;
-                        int LA47_0 = input.LA(1);
+                        int alt45=2;
+                        int LA45_0 = input.LA(1);
 
-                        if ( (LA47_0==84) ) {
-                            alt47=1;
+                        if ( (LA45_0==84) ) {
+                            alt45=1;
                         }
 
 
-                        switch (alt47) {
+                        switch (alt45) {
                     	case 1 :
                     	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:291:43: ',' vars+= variableDeclaration
                     	    {
-                    	    char_literal117=(Token)match(input,84,FOLLOW_84_in_variableList3016); if (state.failed) return retval; 
+                    	    char_literal117=(Token)match(input,84,FOLLOW_84_in_variableList2992); if (state.failed) return retval; 
                     	    if ( state.backtracking==0 ) stream_84.add(char_literal117);
 
-                    	    pushFollow(FOLLOW_variableDeclaration_in_variableList3022);
+                    	    pushFollow(FOLLOW_variableDeclaration_in_variableList2998);
                     	    vars=variableDeclaration();
 
                     	    state._fsp--;
@@ -5274,11 +5160,11 @@ public class celluloidParser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop47;
+                    	    break loop45;
                         }
                     } while (true);
 
-                    char_literal118=(Token)match(input,75,FOLLOW_75_in_variableList3026); if (state.failed) return retval; 
+                    char_literal118=(Token)match(input,75,FOLLOW_75_in_variableList3002); if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_75.add(char_literal118);
 
 
@@ -5364,27 +5250,27 @@ public class celluloidParser extends Parser {
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 33) ) { return retval; }
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:297:5: (exps+= expression ( ',' exps+= expression )* -> ( expression )+ | '(' exps+= expression ( ',' exps+= expression )* ')' -> ( expression )+ )
-            int alt51=2;
-            int LA51_0 = input.LA(1);
+            int alt49=2;
+            int LA49_0 = input.LA(1);
 
-            if ( (LA51_0==ID||LA51_0==TIME||(LA51_0>=BOOL && LA51_0<=STRING)||LA51_0==87||LA51_0==90) ) {
-                alt51=1;
+            if ( (LA49_0==ID||LA49_0==TIME||(LA49_0>=BOOL && LA49_0<=STRING)||LA49_0==87||LA49_0==90) ) {
+                alt49=1;
             }
-            else if ( (LA51_0==74) ) {
-                alt51=2;
+            else if ( (LA49_0==74) ) {
+                alt49=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return retval;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 51, 0, input);
+                    new NoViableAltException("", 49, 0, input);
 
                 throw nvae;
             }
-            switch (alt51) {
+            switch (alt49) {
                 case 1 :
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:297:10: exps+= expression ( ',' exps+= expression )*
                     {
-                    pushFollow(FOLLOW_expression_in_expressionList3075);
+                    pushFollow(FOLLOW_expression_in_expressionList3051);
                     exps=expression();
 
                     state._fsp--;
@@ -5394,24 +5280,24 @@ public class celluloidParser extends Parser {
                     list_exps.add(exps.getTree());
 
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:297:29: ( ',' exps+= expression )*
-                    loop49:
+                    loop47:
                     do {
-                        int alt49=2;
-                        int LA49_0 = input.LA(1);
+                        int alt47=2;
+                        int LA47_0 = input.LA(1);
 
-                        if ( (LA49_0==84) ) {
-                            alt49=1;
+                        if ( (LA47_0==84) ) {
+                            alt47=1;
                         }
 
 
-                        switch (alt49) {
+                        switch (alt47) {
                     	case 1 :
                     	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:297:30: ',' exps+= expression
                     	    {
-                    	    char_literal119=(Token)match(input,84,FOLLOW_84_in_expressionList3078); if (state.failed) return retval; 
+                    	    char_literal119=(Token)match(input,84,FOLLOW_84_in_expressionList3054); if (state.failed) return retval; 
                     	    if ( state.backtracking==0 ) stream_84.add(char_literal119);
 
-                    	    pushFollow(FOLLOW_expression_in_expressionList3084);
+                    	    pushFollow(FOLLOW_expression_in_expressionList3060);
                     	    exps=expression();
 
                     	    state._fsp--;
@@ -5425,7 +5311,7 @@ public class celluloidParser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop49;
+                    	    break loop47;
                         }
                     } while (true);
 
@@ -5462,10 +5348,10 @@ public class celluloidParser extends Parser {
                 case 2 :
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:300:10: '(' exps+= expression ( ',' exps+= expression )* ')'
                     {
-                    char_literal120=(Token)match(input,74,FOLLOW_74_in_expressionList3121); if (state.failed) return retval; 
+                    char_literal120=(Token)match(input,74,FOLLOW_74_in_expressionList3097); if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_74.add(char_literal120);
 
-                    pushFollow(FOLLOW_expression_in_expressionList3127);
+                    pushFollow(FOLLOW_expression_in_expressionList3103);
                     exps=expression();
 
                     state._fsp--;
@@ -5475,24 +5361,24 @@ public class celluloidParser extends Parser {
                     list_exps.add(exps.getTree());
 
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:300:33: ( ',' exps+= expression )*
-                    loop50:
+                    loop48:
                     do {
-                        int alt50=2;
-                        int LA50_0 = input.LA(1);
+                        int alt48=2;
+                        int LA48_0 = input.LA(1);
 
-                        if ( (LA50_0==84) ) {
-                            alt50=1;
+                        if ( (LA48_0==84) ) {
+                            alt48=1;
                         }
 
 
-                        switch (alt50) {
+                        switch (alt48) {
                     	case 1 :
                     	    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:300:34: ',' exps+= expression
                     	    {
-                    	    char_literal121=(Token)match(input,84,FOLLOW_84_in_expressionList3130); if (state.failed) return retval; 
+                    	    char_literal121=(Token)match(input,84,FOLLOW_84_in_expressionList3106); if (state.failed) return retval; 
                     	    if ( state.backtracking==0 ) stream_84.add(char_literal121);
 
-                    	    pushFollow(FOLLOW_expression_in_expressionList3136);
+                    	    pushFollow(FOLLOW_expression_in_expressionList3112);
                     	    exps=expression();
 
                     	    state._fsp--;
@@ -5506,11 +5392,11 @@ public class celluloidParser extends Parser {
                     	    break;
 
                     	default :
-                    	    break loop50;
+                    	    break loop48;
                         }
                     } while (true);
 
-                    char_literal122=(Token)match(input,75,FOLLOW_75_in_expressionList3140); if (state.failed) return retval; 
+                    char_literal122=(Token)match(input,75,FOLLOW_75_in_expressionList3116); if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_75.add(char_literal122);
 
 
@@ -5602,68 +5488,68 @@ public class celluloidParser extends Parser {
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 34) ) { return retval; }
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:311:5: ( 'timeline' ID ( NEWLINE -> ^( VARDEF 'timeline' ID ) | -> ^( ARG 'timeline' ID ) ) | TYPE ID ( initializer )? ( NEWLINE -> ^( VARDEF TYPE ID ( initializer )? ) | -> ^( ARG TYPE ID ) ) )
-            int alt55=2;
-            int LA55_0 = input.LA(1);
+            int alt53=2;
+            int LA53_0 = input.LA(1);
 
-            if ( (LA55_0==85) ) {
-                alt55=1;
+            if ( (LA53_0==85) ) {
+                alt53=1;
             }
-            else if ( (LA55_0==TYPE) ) {
-                alt55=2;
+            else if ( (LA53_0==TYPE) ) {
+                alt53=2;
             }
             else {
                 if (state.backtracking>0) {state.failed=true; return retval;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 55, 0, input);
+                    new NoViableAltException("", 53, 0, input);
 
                 throw nvae;
             }
-            switch (alt55) {
+            switch (alt53) {
                 case 1 :
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:311:10: 'timeline' ID ( NEWLINE -> ^( VARDEF 'timeline' ID ) | -> ^( ARG 'timeline' ID ) )
                     {
-                    string_literal123=(Token)match(input,85,FOLLOW_85_in_variableDeclaration3190); if (state.failed) return retval; 
+                    string_literal123=(Token)match(input,85,FOLLOW_85_in_variableDeclaration3166); if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_85.add(string_literal123);
 
-                    ID124=(Token)match(input,ID,FOLLOW_ID_in_variableDeclaration3192); if (state.failed) return retval; 
+                    ID124=(Token)match(input,ID,FOLLOW_ID_in_variableDeclaration3168); if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_ID.add(ID124);
 
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:312:10: ( NEWLINE -> ^( VARDEF 'timeline' ID ) | -> ^( ARG 'timeline' ID ) )
-                    int alt52=2;
-                    int LA52_0 = input.LA(1);
+                    int alt50=2;
+                    int LA50_0 = input.LA(1);
 
-                    if ( (LA52_0==NEWLINE) ) {
-                        int LA52_1 = input.LA(2);
+                    if ( (LA50_0==NEWLINE) ) {
+                        int LA50_1 = input.LA(2);
 
-                        if ( (synpred69_celluloid()) ) {
-                            alt52=1;
+                        if ( (synpred67_celluloid()) ) {
+                            alt50=1;
                         }
                         else if ( (true) ) {
-                            alt52=2;
+                            alt50=2;
                         }
                         else {
                             if (state.backtracking>0) {state.failed=true; return retval;}
                             NoViableAltException nvae =
-                                new NoViableAltException("", 52, 1, input);
+                                new NoViableAltException("", 50, 1, input);
 
                             throw nvae;
                         }
                     }
-                    else if ( (LA52_0==EOF||LA52_0==ID||(LA52_0>=END && LA52_0<=TYPE)||(LA52_0>=BOOL && LA52_0<=STRING)||LA52_0==66||LA52_0==73||(LA52_0>=75 && LA52_0<=81)||(LA52_0>=84 && LA52_0<=85)||LA52_0==87||LA52_0==90) ) {
-                        alt52=2;
+                    else if ( (LA50_0==EOF||LA50_0==ID||(LA50_0>=END && LA50_0<=TYPE)||(LA50_0>=BOOL && LA50_0<=STRING)||LA50_0==66||LA50_0==73||(LA50_0>=75 && LA50_0<=81)||(LA50_0>=84 && LA50_0<=85)||LA50_0==87||LA50_0==90) ) {
+                        alt50=2;
                     }
                     else {
                         if (state.backtracking>0) {state.failed=true; return retval;}
                         NoViableAltException nvae =
-                            new NoViableAltException("", 52, 0, input);
+                            new NoViableAltException("", 50, 0, input);
 
                         throw nvae;
                     }
-                    switch (alt52) {
+                    switch (alt50) {
                         case 1 :
                             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:312:11: NEWLINE
                             {
-                            NEWLINE125=(Token)match(input,NEWLINE,FOLLOW_NEWLINE_in_variableDeclaration3205); if (state.failed) return retval; 
+                            NEWLINE125=(Token)match(input,NEWLINE,FOLLOW_NEWLINE_in_variableDeclaration3181); if (state.failed) return retval; 
                             if ( state.backtracking==0 ) stream_NEWLINE.add(NEWLINE125);
 
 
@@ -5703,7 +5589,7 @@ public class celluloidParser extends Parser {
                             {
 
                             // AST REWRITE
-                            // elements: ID, 85
+                            // elements: 85, ID
                             // token labels: 
                             // rule labels: retval
                             // token list labels: 
@@ -5741,24 +5627,24 @@ public class celluloidParser extends Parser {
                 case 2 :
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:316:10: TYPE ID ( initializer )? ( NEWLINE -> ^( VARDEF TYPE ID ( initializer )? ) | -> ^( ARG TYPE ID ) )
                     {
-                    TYPE126=(Token)match(input,TYPE,FOLLOW_TYPE_in_variableDeclaration3275); if (state.failed) return retval; 
+                    TYPE126=(Token)match(input,TYPE,FOLLOW_TYPE_in_variableDeclaration3251); if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_TYPE.add(TYPE126);
 
-                    ID127=(Token)match(input,ID,FOLLOW_ID_in_variableDeclaration3277); if (state.failed) return retval; 
+                    ID127=(Token)match(input,ID,FOLLOW_ID_in_variableDeclaration3253); if (state.failed) return retval; 
                     if ( state.backtracking==0 ) stream_ID.add(ID127);
 
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:316:18: ( initializer )?
-                    int alt53=2;
-                    int LA53_0 = input.LA(1);
+                    int alt51=2;
+                    int LA51_0 = input.LA(1);
 
-                    if ( (LA53_0==86) ) {
-                        alt53=1;
+                    if ( (LA51_0==86) ) {
+                        alt51=1;
                     }
-                    switch (alt53) {
+                    switch (alt51) {
                         case 1 :
                             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:0:0: initializer
                             {
-                            pushFollow(FOLLOW_initializer_in_variableDeclaration3279);
+                            pushFollow(FOLLOW_initializer_in_variableDeclaration3255);
                             initializer128=initializer();
 
                             state._fsp--;
@@ -5771,47 +5657,47 @@ public class celluloidParser extends Parser {
                     }
 
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:317:10: ( NEWLINE -> ^( VARDEF TYPE ID ( initializer )? ) | -> ^( ARG TYPE ID ) )
-                    int alt54=2;
-                    int LA54_0 = input.LA(1);
+                    int alt52=2;
+                    int LA52_0 = input.LA(1);
 
-                    if ( (LA54_0==NEWLINE) ) {
-                        int LA54_1 = input.LA(2);
+                    if ( (LA52_0==NEWLINE) ) {
+                        int LA52_1 = input.LA(2);
 
-                        if ( (synpred72_celluloid()) ) {
-                            alt54=1;
+                        if ( (synpred70_celluloid()) ) {
+                            alt52=1;
                         }
                         else if ( (true) ) {
-                            alt54=2;
+                            alt52=2;
                         }
                         else {
                             if (state.backtracking>0) {state.failed=true; return retval;}
                             NoViableAltException nvae =
-                                new NoViableAltException("", 54, 1, input);
+                                new NoViableAltException("", 52, 1, input);
 
                             throw nvae;
                         }
                     }
-                    else if ( (LA54_0==EOF||LA54_0==ID||(LA54_0>=END && LA54_0<=TYPE)||(LA54_0>=BOOL && LA54_0<=STRING)||LA54_0==66||LA54_0==73||(LA54_0>=75 && LA54_0<=81)||(LA54_0>=84 && LA54_0<=85)||LA54_0==87||LA54_0==90) ) {
-                        alt54=2;
+                    else if ( (LA52_0==EOF||LA52_0==ID||(LA52_0>=END && LA52_0<=TYPE)||(LA52_0>=BOOL && LA52_0<=STRING)||LA52_0==66||LA52_0==73||(LA52_0>=75 && LA52_0<=81)||(LA52_0>=84 && LA52_0<=85)||LA52_0==87||LA52_0==90) ) {
+                        alt52=2;
                     }
                     else {
                         if (state.backtracking>0) {state.failed=true; return retval;}
                         NoViableAltException nvae =
-                            new NoViableAltException("", 54, 0, input);
+                            new NoViableAltException("", 52, 0, input);
 
                         throw nvae;
                     }
-                    switch (alt54) {
+                    switch (alt52) {
                         case 1 :
                             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:317:11: NEWLINE
                             {
-                            NEWLINE129=(Token)match(input,NEWLINE,FOLLOW_NEWLINE_in_variableDeclaration3293); if (state.failed) return retval; 
+                            NEWLINE129=(Token)match(input,NEWLINE,FOLLOW_NEWLINE_in_variableDeclaration3269); if (state.failed) return retval; 
                             if ( state.backtracking==0 ) stream_NEWLINE.add(NEWLINE129);
 
 
 
                             // AST REWRITE
-                            // elements: initializer, TYPE, ID
+                            // elements: TYPE, initializer, ID
                             // token labels: 
                             // rule labels: retval
                             // token list labels: 
@@ -5851,7 +5737,7 @@ public class celluloidParser extends Parser {
                             {
 
                             // AST REWRITE
-                            // elements: ID, TYPE
+                            // elements: TYPE, ID
                             // token labels: 
                             // rule labels: retval
                             // token list labels: 
@@ -5935,8 +5821,8 @@ public class celluloidParser extends Parser {
             {
             root_0 = (Object)adaptor.nil();
 
-            char_literal130=(Token)match(input,86,FOLLOW_86_in_initializer3375); if (state.failed) return retval;
-            pushFollow(FOLLOW_logicalORExpression_in_initializer3378);
+            char_literal130=(Token)match(input,86,FOLLOW_86_in_initializer3351); if (state.failed) return retval;
+            pushFollow(FOLLOW_logicalORExpression_in_initializer3354);
             logicalORExpression131=logicalORExpression();
 
             state._fsp--;
@@ -5996,29 +5882,29 @@ public class celluloidParser extends Parser {
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_logicalORExpression_in_expression3433);
+            pushFollow(FOLLOW_logicalORExpression_in_expression3409);
             logicalORExpression132=logicalORExpression();
 
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, logicalORExpression132.getTree());
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:328:30: ( ASSIGNMENT_OPERATOR expression )?
-            int alt56=2;
-            int LA56_0 = input.LA(1);
+            int alt54=2;
+            int LA54_0 = input.LA(1);
 
-            if ( (LA56_0==ASSIGNMENT_OPERATOR) ) {
-                alt56=1;
+            if ( (LA54_0==ASSIGNMENT_OPERATOR) ) {
+                alt54=1;
             }
-            switch (alt56) {
+            switch (alt54) {
                 case 1 :
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:328:31: ASSIGNMENT_OPERATOR expression
                     {
-                    ASSIGNMENT_OPERATOR133=(Token)match(input,ASSIGNMENT_OPERATOR,FOLLOW_ASSIGNMENT_OPERATOR_in_expression3436); if (state.failed) return retval;
+                    ASSIGNMENT_OPERATOR133=(Token)match(input,ASSIGNMENT_OPERATOR,FOLLOW_ASSIGNMENT_OPERATOR_in_expression3412); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     ASSIGNMENT_OPERATOR133_tree = (Object)adaptor.create(ASSIGNMENT_OPERATOR133);
                     root_0 = (Object)adaptor.becomeRoot(ASSIGNMENT_OPERATOR133_tree, root_0);
                     }
-                    pushFollow(FOLLOW_expression_in_expression3439);
+                    pushFollow(FOLLOW_expression_in_expression3415);
                     expression134=expression();
 
                     state._fsp--;
@@ -6031,21 +5917,21 @@ public class celluloidParser extends Parser {
             }
 
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:328:72: ( NEWLINE )?
-            int alt57=2;
-            int LA57_0 = input.LA(1);
+            int alt55=2;
+            int LA55_0 = input.LA(1);
 
-            if ( (LA57_0==NEWLINE) ) {
-                int LA57_1 = input.LA(2);
+            if ( (LA55_0==NEWLINE) ) {
+                int LA55_1 = input.LA(2);
 
-                if ( (synpred74_celluloid()) ) {
-                    alt57=1;
+                if ( (synpred72_celluloid()) ) {
+                    alt55=1;
                 }
             }
-            switch (alt57) {
+            switch (alt55) {
                 case 1 :
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:0:0: NEWLINE
                     {
-                    NEWLINE135=(Token)match(input,NEWLINE,FOLLOW_NEWLINE_in_expression3443); if (state.failed) return retval;
+                    NEWLINE135=(Token)match(input,NEWLINE,FOLLOW_NEWLINE_in_expression3419); if (state.failed) return retval;
 
                     }
                     break;
@@ -6082,7 +5968,7 @@ public class celluloidParser extends Parser {
     };
 
     // $ANTLR start "logicalORExpression"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:331:1: logicalORExpression : ( 'not' )? logicalANDExpression ( 'or' logicalORExpression )? ;
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:330:1: logicalORExpression : ( 'not' )? logicalANDExpression ( 'or' logicalORExpression )? ;
     public final celluloidParser.logicalORExpression_return logicalORExpression() throws RecognitionException {
         celluloidParser.logicalORExpression_return retval = new celluloidParser.logicalORExpression_return();
         retval.start = input.LT(1);
@@ -6101,23 +5987,23 @@ public class celluloidParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 37) ) { return retval; }
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:332:5: ( ( 'not' )? logicalANDExpression ( 'or' logicalORExpression )? )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:332:10: ( 'not' )? logicalANDExpression ( 'or' logicalORExpression )?
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:331:5: ( ( 'not' )? logicalANDExpression ( 'or' logicalORExpression )? )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:331:10: ( 'not' )? logicalANDExpression ( 'or' logicalORExpression )?
             {
             root_0 = (Object)adaptor.nil();
 
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:332:10: ( 'not' )?
-            int alt58=2;
-            int LA58_0 = input.LA(1);
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:331:10: ( 'not' )?
+            int alt56=2;
+            int LA56_0 = input.LA(1);
 
-            if ( (LA58_0==87) ) {
-                alt58=1;
+            if ( (LA56_0==87) ) {
+                alt56=1;
             }
-            switch (alt58) {
+            switch (alt56) {
                 case 1 :
                     // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:0:0: 'not'
                     {
-                    string_literal136=(Token)match(input,87,FOLLOW_87_in_logicalORExpression3500); if (state.failed) return retval;
+                    string_literal136=(Token)match(input,87,FOLLOW_87_in_logicalORExpression3474); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     string_literal136_tree = (Object)adaptor.create(string_literal136);
                     adaptor.addChild(root_0, string_literal136_tree);
@@ -6128,29 +6014,29 @@ public class celluloidParser extends Parser {
 
             }
 
-            pushFollow(FOLLOW_logicalANDExpression_in_logicalORExpression3503);
+            pushFollow(FOLLOW_logicalANDExpression_in_logicalORExpression3477);
             logicalANDExpression137=logicalANDExpression();
 
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, logicalANDExpression137.getTree());
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:332:38: ( 'or' logicalORExpression )?
-            int alt59=2;
-            int LA59_0 = input.LA(1);
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:331:38: ( 'or' logicalORExpression )?
+            int alt57=2;
+            int LA57_0 = input.LA(1);
 
-            if ( (LA59_0==88) ) {
-                alt59=1;
+            if ( (LA57_0==88) ) {
+                alt57=1;
             }
-            switch (alt59) {
+            switch (alt57) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:332:39: 'or' logicalORExpression
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:331:39: 'or' logicalORExpression
                     {
-                    string_literal138=(Token)match(input,88,FOLLOW_88_in_logicalORExpression3506); if (state.failed) return retval;
+                    string_literal138=(Token)match(input,88,FOLLOW_88_in_logicalORExpression3480); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     string_literal138_tree = (Object)adaptor.create(string_literal138);
                     root_0 = (Object)adaptor.becomeRoot(string_literal138_tree, root_0);
                     }
-                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression3509);
+                    pushFollow(FOLLOW_logicalORExpression_in_logicalORExpression3483);
                     logicalORExpression139=logicalORExpression();
 
                     state._fsp--;
@@ -6192,7 +6078,7 @@ public class celluloidParser extends Parser {
     };
 
     // $ANTLR start "logicalANDExpression"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:335:1: logicalANDExpression : equalityExpression ( 'and' logicalANDExpression )? ;
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:333:1: logicalANDExpression : equalityExpression ( 'and' logicalANDExpression )? ;
     public final celluloidParser.logicalANDExpression_return logicalANDExpression() throws RecognitionException {
         celluloidParser.logicalANDExpression_return retval = new celluloidParser.logicalANDExpression_return();
         retval.start = input.LT(1);
@@ -6209,34 +6095,34 @@ public class celluloidParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 38) ) { return retval; }
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:336:5: ( equalityExpression ( 'and' logicalANDExpression )? )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:336:10: equalityExpression ( 'and' logicalANDExpression )?
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:334:5: ( equalityExpression ( 'and' logicalANDExpression )? )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:334:10: equalityExpression ( 'and' logicalANDExpression )?
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_equalityExpression_in_logicalANDExpression3534);
+            pushFollow(FOLLOW_equalityExpression_in_logicalANDExpression3506);
             equalityExpression140=equalityExpression();
 
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, equalityExpression140.getTree());
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:336:29: ( 'and' logicalANDExpression )?
-            int alt60=2;
-            int LA60_0 = input.LA(1);
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:334:29: ( 'and' logicalANDExpression )?
+            int alt58=2;
+            int LA58_0 = input.LA(1);
 
-            if ( (LA60_0==89) ) {
-                alt60=1;
+            if ( (LA58_0==89) ) {
+                alt58=1;
             }
-            switch (alt60) {
+            switch (alt58) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:336:30: 'and' logicalANDExpression
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:334:30: 'and' logicalANDExpression
                     {
-                    string_literal141=(Token)match(input,89,FOLLOW_89_in_logicalANDExpression3537); if (state.failed) return retval;
+                    string_literal141=(Token)match(input,89,FOLLOW_89_in_logicalANDExpression3509); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     string_literal141_tree = (Object)adaptor.create(string_literal141);
                     root_0 = (Object)adaptor.becomeRoot(string_literal141_tree, root_0);
                     }
-                    pushFollow(FOLLOW_logicalANDExpression_in_logicalANDExpression3540);
+                    pushFollow(FOLLOW_logicalANDExpression_in_logicalANDExpression3512);
                     logicalANDExpression142=logicalANDExpression();
 
                     state._fsp--;
@@ -6278,7 +6164,7 @@ public class celluloidParser extends Parser {
     };
 
     // $ANTLR start "equalityExpression"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:339:1: equalityExpression : relationalExpression ( EQUALITY_OPERATOR equalityExpression )? ;
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:336:1: equalityExpression : relationalExpression ( EQUALITY_OPERATOR equalityExpression )? ;
     public final celluloidParser.equalityExpression_return equalityExpression() throws RecognitionException {
         celluloidParser.equalityExpression_return retval = new celluloidParser.equalityExpression_return();
         retval.start = input.LT(1);
@@ -6295,34 +6181,34 @@ public class celluloidParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 39) ) { return retval; }
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:340:5: ( relationalExpression ( EQUALITY_OPERATOR equalityExpression )? )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:340:10: relationalExpression ( EQUALITY_OPERATOR equalityExpression )?
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:337:5: ( relationalExpression ( EQUALITY_OPERATOR equalityExpression )? )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:337:10: relationalExpression ( EQUALITY_OPERATOR equalityExpression )?
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_relationalExpression_in_equalityExpression3569);
+            pushFollow(FOLLOW_relationalExpression_in_equalityExpression3540);
             relationalExpression143=relationalExpression();
 
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, relationalExpression143.getTree());
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:340:31: ( EQUALITY_OPERATOR equalityExpression )?
-            int alt61=2;
-            int LA61_0 = input.LA(1);
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:337:31: ( EQUALITY_OPERATOR equalityExpression )?
+            int alt59=2;
+            int LA59_0 = input.LA(1);
 
-            if ( (LA61_0==EQUALITY_OPERATOR) ) {
-                alt61=1;
+            if ( (LA59_0==EQUALITY_OPERATOR) ) {
+                alt59=1;
             }
-            switch (alt61) {
+            switch (alt59) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:340:32: EQUALITY_OPERATOR equalityExpression
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:337:32: EQUALITY_OPERATOR equalityExpression
                     {
-                    EQUALITY_OPERATOR144=(Token)match(input,EQUALITY_OPERATOR,FOLLOW_EQUALITY_OPERATOR_in_equalityExpression3572); if (state.failed) return retval;
+                    EQUALITY_OPERATOR144=(Token)match(input,EQUALITY_OPERATOR,FOLLOW_EQUALITY_OPERATOR_in_equalityExpression3543); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     EQUALITY_OPERATOR144_tree = (Object)adaptor.create(EQUALITY_OPERATOR144);
                     root_0 = (Object)adaptor.becomeRoot(EQUALITY_OPERATOR144_tree, root_0);
                     }
-                    pushFollow(FOLLOW_equalityExpression_in_equalityExpression3575);
+                    pushFollow(FOLLOW_equalityExpression_in_equalityExpression3546);
                     equalityExpression145=equalityExpression();
 
                     state._fsp--;
@@ -6364,7 +6250,7 @@ public class celluloidParser extends Parser {
     };
 
     // $ANTLR start "relationalExpression"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:343:1: relationalExpression : additiveExpression ( RELATIONAL_OPERATOR relationalExpression )? ;
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:339:1: relationalExpression : additiveExpression ( RELATIONAL_OPERATOR relationalExpression )? ;
     public final celluloidParser.relationalExpression_return relationalExpression() throws RecognitionException {
         celluloidParser.relationalExpression_return retval = new celluloidParser.relationalExpression_return();
         retval.start = input.LT(1);
@@ -6381,34 +6267,34 @@ public class celluloidParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 40) ) { return retval; }
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:344:5: ( additiveExpression ( RELATIONAL_OPERATOR relationalExpression )? )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:344:10: additiveExpression ( RELATIONAL_OPERATOR relationalExpression )?
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:340:5: ( additiveExpression ( RELATIONAL_OPERATOR relationalExpression )? )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:340:10: additiveExpression ( RELATIONAL_OPERATOR relationalExpression )?
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_additiveExpression_in_relationalExpression3602);
+            pushFollow(FOLLOW_additiveExpression_in_relationalExpression3572);
             additiveExpression146=additiveExpression();
 
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, additiveExpression146.getTree());
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:344:29: ( RELATIONAL_OPERATOR relationalExpression )?
-            int alt62=2;
-            int LA62_0 = input.LA(1);
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:340:29: ( RELATIONAL_OPERATOR relationalExpression )?
+            int alt60=2;
+            int LA60_0 = input.LA(1);
 
-            if ( (LA62_0==RELATIONAL_OPERATOR) ) {
-                alt62=1;
+            if ( (LA60_0==RELATIONAL_OPERATOR) ) {
+                alt60=1;
             }
-            switch (alt62) {
+            switch (alt60) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:344:30: RELATIONAL_OPERATOR relationalExpression
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:340:30: RELATIONAL_OPERATOR relationalExpression
                     {
-                    RELATIONAL_OPERATOR147=(Token)match(input,RELATIONAL_OPERATOR,FOLLOW_RELATIONAL_OPERATOR_in_relationalExpression3605); if (state.failed) return retval;
+                    RELATIONAL_OPERATOR147=(Token)match(input,RELATIONAL_OPERATOR,FOLLOW_RELATIONAL_OPERATOR_in_relationalExpression3575); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     RELATIONAL_OPERATOR147_tree = (Object)adaptor.create(RELATIONAL_OPERATOR147);
                     root_0 = (Object)adaptor.becomeRoot(RELATIONAL_OPERATOR147_tree, root_0);
                     }
-                    pushFollow(FOLLOW_relationalExpression_in_relationalExpression3608);
+                    pushFollow(FOLLOW_relationalExpression_in_relationalExpression3578);
                     relationalExpression148=relationalExpression();
 
                     state._fsp--;
@@ -6450,7 +6336,7 @@ public class celluloidParser extends Parser {
     };
 
     // $ANTLR start "additiveExpression"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:347:1: additiveExpression : multiplicativeExpression ( ADDITIVE_OPERATOR additiveExpression )? ;
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:342:1: additiveExpression : multiplicativeExpression ( ADDITIVE_OPERATOR additiveExpression )? ;
     public final celluloidParser.additiveExpression_return additiveExpression() throws RecognitionException {
         celluloidParser.additiveExpression_return retval = new celluloidParser.additiveExpression_return();
         retval.start = input.LT(1);
@@ -6467,34 +6353,34 @@ public class celluloidParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 41) ) { return retval; }
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:348:5: ( multiplicativeExpression ( ADDITIVE_OPERATOR additiveExpression )? )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:348:10: multiplicativeExpression ( ADDITIVE_OPERATOR additiveExpression )?
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:343:5: ( multiplicativeExpression ( ADDITIVE_OPERATOR additiveExpression )? )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:343:10: multiplicativeExpression ( ADDITIVE_OPERATOR additiveExpression )?
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression3636);
+            pushFollow(FOLLOW_multiplicativeExpression_in_additiveExpression3605);
             multiplicativeExpression149=multiplicativeExpression();
 
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, multiplicativeExpression149.getTree());
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:348:35: ( ADDITIVE_OPERATOR additiveExpression )?
-            int alt63=2;
-            int LA63_0 = input.LA(1);
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:343:35: ( ADDITIVE_OPERATOR additiveExpression )?
+            int alt61=2;
+            int LA61_0 = input.LA(1);
 
-            if ( (LA63_0==ADDITIVE_OPERATOR) ) {
-                alt63=1;
+            if ( (LA61_0==ADDITIVE_OPERATOR) ) {
+                alt61=1;
             }
-            switch (alt63) {
+            switch (alt61) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:348:36: ADDITIVE_OPERATOR additiveExpression
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:343:36: ADDITIVE_OPERATOR additiveExpression
                     {
-                    ADDITIVE_OPERATOR150=(Token)match(input,ADDITIVE_OPERATOR,FOLLOW_ADDITIVE_OPERATOR_in_additiveExpression3639); if (state.failed) return retval;
+                    ADDITIVE_OPERATOR150=(Token)match(input,ADDITIVE_OPERATOR,FOLLOW_ADDITIVE_OPERATOR_in_additiveExpression3608); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     ADDITIVE_OPERATOR150_tree = (Object)adaptor.create(ADDITIVE_OPERATOR150);
                     root_0 = (Object)adaptor.becomeRoot(ADDITIVE_OPERATOR150_tree, root_0);
                     }
-                    pushFollow(FOLLOW_additiveExpression_in_additiveExpression3642);
+                    pushFollow(FOLLOW_additiveExpression_in_additiveExpression3611);
                     additiveExpression151=additiveExpression();
 
                     state._fsp--;
@@ -6536,7 +6422,7 @@ public class celluloidParser extends Parser {
     };
 
     // $ANTLR start "multiplicativeExpression"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:351:1: multiplicativeExpression : primaryExpression ( MULTIPLICATIVE_OPERATOR multiplicativeExpression )? ;
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:345:1: multiplicativeExpression : primaryExpression ( MULTIPLICATIVE_OPERATOR multiplicativeExpression )? ;
     public final celluloidParser.multiplicativeExpression_return multiplicativeExpression() throws RecognitionException {
         celluloidParser.multiplicativeExpression_return retval = new celluloidParser.multiplicativeExpression_return();
         retval.start = input.LT(1);
@@ -6553,34 +6439,34 @@ public class celluloidParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 42) ) { return retval; }
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:352:5: ( primaryExpression ( MULTIPLICATIVE_OPERATOR multiplicativeExpression )? )
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:352:7: primaryExpression ( MULTIPLICATIVE_OPERATOR multiplicativeExpression )?
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:346:5: ( primaryExpression ( MULTIPLICATIVE_OPERATOR multiplicativeExpression )? )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:346:7: primaryExpression ( MULTIPLICATIVE_OPERATOR multiplicativeExpression )?
             {
             root_0 = (Object)adaptor.nil();
 
-            pushFollow(FOLLOW_primaryExpression_in_multiplicativeExpression3662);
+            pushFollow(FOLLOW_primaryExpression_in_multiplicativeExpression3630);
             primaryExpression152=primaryExpression();
 
             state._fsp--;
             if (state.failed) return retval;
             if ( state.backtracking==0 ) adaptor.addChild(root_0, primaryExpression152.getTree());
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:352:25: ( MULTIPLICATIVE_OPERATOR multiplicativeExpression )?
-            int alt64=2;
-            int LA64_0 = input.LA(1);
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:346:25: ( MULTIPLICATIVE_OPERATOR multiplicativeExpression )?
+            int alt62=2;
+            int LA62_0 = input.LA(1);
 
-            if ( (LA64_0==MULTIPLICATIVE_OPERATOR) ) {
-                alt64=1;
+            if ( (LA62_0==MULTIPLICATIVE_OPERATOR) ) {
+                alt62=1;
             }
-            switch (alt64) {
+            switch (alt62) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:352:26: MULTIPLICATIVE_OPERATOR multiplicativeExpression
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:346:26: MULTIPLICATIVE_OPERATOR multiplicativeExpression
                     {
-                    MULTIPLICATIVE_OPERATOR153=(Token)match(input,MULTIPLICATIVE_OPERATOR,FOLLOW_MULTIPLICATIVE_OPERATOR_in_multiplicativeExpression3665); if (state.failed) return retval;
+                    MULTIPLICATIVE_OPERATOR153=(Token)match(input,MULTIPLICATIVE_OPERATOR,FOLLOW_MULTIPLICATIVE_OPERATOR_in_multiplicativeExpression3633); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     MULTIPLICATIVE_OPERATOR153_tree = (Object)adaptor.create(MULTIPLICATIVE_OPERATOR153);
                     root_0 = (Object)adaptor.becomeRoot(MULTIPLICATIVE_OPERATOR153_tree, root_0);
                     }
-                    pushFollow(FOLLOW_multiplicativeExpression_in_multiplicativeExpression3668);
+                    pushFollow(FOLLOW_multiplicativeExpression_in_multiplicativeExpression3636);
                     multiplicativeExpression154=multiplicativeExpression();
 
                     state._fsp--;
@@ -6622,7 +6508,7 @@ public class celluloidParser extends Parser {
     };
 
     // $ANTLR start "primaryExpression"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:355:1: primaryExpression : ( literal | ID | 'new' ID '(' expressionList ')' | functionPredicateCall );
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:348:1: primaryExpression : ( literal | ID | 'new' ID '(' expressionList ')' | functionPredicateCall );
     public final celluloidParser.primaryExpression_return primaryExpression() throws RecognitionException {
         celluloidParser.primaryExpression_return retval = new celluloidParser.primaryExpression_return();
         retval.start = input.LT(1);
@@ -6649,31 +6535,31 @@ public class celluloidParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 43) ) { return retval; }
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:356:5: ( literal | ID | 'new' ID '(' expressionList ')' | functionPredicateCall )
-            int alt65=4;
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:349:5: ( literal | ID | 'new' ID '(' expressionList ')' | functionPredicateCall )
+            int alt63=4;
             switch ( input.LA(1) ) {
             case TIME:
             case BOOL:
             case NUMBER:
             case STRING:
                 {
-                alt65=1;
+                alt63=1;
                 }
                 break;
             case ID:
                 {
-                int LA65_2 = input.LA(2);
+                int LA63_2 = input.LA(2);
 
-                if ( (LA65_2==74) ) {
-                    alt65=4;
+                if ( (LA63_2==74) ) {
+                    alt63=4;
                 }
-                else if ( (LA65_2==EOF||(LA65_2>=NEWLINE && LA65_2<=STRING)||(LA65_2>=66 && LA65_2<=67)||LA65_2==73||(LA65_2>=75 && LA65_2<=85)||(LA65_2>=87 && LA65_2<=90)) ) {
-                    alt65=2;
+                else if ( (LA63_2==EOF||(LA63_2>=NEWLINE && LA63_2<=STRING)||(LA63_2>=66 && LA63_2<=67)||LA63_2==73||(LA63_2>=75 && LA63_2<=85)||(LA63_2>=87 && LA63_2<=90)) ) {
+                    alt63=2;
                 }
                 else {
                     if (state.backtracking>0) {state.failed=true; return retval;}
                     NoViableAltException nvae =
-                        new NoViableAltException("", 65, 2, input);
+                        new NoViableAltException("", 63, 2, input);
 
                     throw nvae;
                 }
@@ -6681,24 +6567,24 @@ public class celluloidParser extends Parser {
                 break;
             case 90:
                 {
-                alt65=3;
+                alt63=3;
                 }
                 break;
             default:
                 if (state.backtracking>0) {state.failed=true; return retval;}
                 NoViableAltException nvae =
-                    new NoViableAltException("", 65, 0, input);
+                    new NoViableAltException("", 63, 0, input);
 
                 throw nvae;
             }
 
-            switch (alt65) {
+            switch (alt63) {
                 case 1 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:356:10: literal
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:349:10: literal
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_literal_in_primaryExpression3691);
+                    pushFollow(FOLLOW_literal_in_primaryExpression3658);
                     literal155=literal();
 
                     state._fsp--;
@@ -6708,11 +6594,11 @@ public class celluloidParser extends Parser {
                     }
                     break;
                 case 2 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:357:10: ID
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:350:10: ID
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    ID156=(Token)match(input,ID,FOLLOW_ID_in_primaryExpression3702); if (state.failed) return retval;
+                    ID156=(Token)match(input,ID,FOLLOW_ID_in_primaryExpression3669); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     ID156_tree = (Object)adaptor.create(ID156);
                     adaptor.addChild(root_0, ID156_tree);
@@ -6721,45 +6607,33 @@ public class celluloidParser extends Parser {
                     }
                     break;
                 case 3 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:358:10: 'new' ID '(' expressionList ')'
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:351:10: 'new' ID '(' expressionList ')'
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    string_literal157=(Token)match(input,90,FOLLOW_90_in_primaryExpression3713); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    string_literal157_tree = (Object)adaptor.create(string_literal157);
-                    adaptor.addChild(root_0, string_literal157_tree);
-                    }
-                    ID158=(Token)match(input,ID,FOLLOW_ID_in_primaryExpression3715); if (state.failed) return retval;
+                    string_literal157=(Token)match(input,90,FOLLOW_90_in_primaryExpression3680); if (state.failed) return retval;
+                    ID158=(Token)match(input,ID,FOLLOW_ID_in_primaryExpression3683); if (state.failed) return retval;
                     if ( state.backtracking==0 ) {
                     ID158_tree = (Object)adaptor.create(ID158);
                     adaptor.addChild(root_0, ID158_tree);
                     }
-                    char_literal159=(Token)match(input,74,FOLLOW_74_in_primaryExpression3717); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    char_literal159_tree = (Object)adaptor.create(char_literal159);
-                    adaptor.addChild(root_0, char_literal159_tree);
-                    }
-                    pushFollow(FOLLOW_expressionList_in_primaryExpression3719);
+                    char_literal159=(Token)match(input,74,FOLLOW_74_in_primaryExpression3685); if (state.failed) return retval;
+                    pushFollow(FOLLOW_expressionList_in_primaryExpression3688);
                     expressionList160=expressionList();
 
                     state._fsp--;
                     if (state.failed) return retval;
                     if ( state.backtracking==0 ) adaptor.addChild(root_0, expressionList160.getTree());
-                    char_literal161=(Token)match(input,75,FOLLOW_75_in_primaryExpression3721); if (state.failed) return retval;
-                    if ( state.backtracking==0 ) {
-                    char_literal161_tree = (Object)adaptor.create(char_literal161);
-                    adaptor.addChild(root_0, char_literal161_tree);
-                    }
+                    char_literal161=(Token)match(input,75,FOLLOW_75_in_primaryExpression3690); if (state.failed) return retval;
 
                     }
                     break;
                 case 4 :
-                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:359:10: functionPredicateCall
+                    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:352:10: functionPredicateCall
                     {
                     root_0 = (Object)adaptor.nil();
 
-                    pushFollow(FOLLOW_functionPredicateCall_in_primaryExpression3732);
+                    pushFollow(FOLLOW_functionPredicateCall_in_primaryExpression3702);
                     functionPredicateCall162=functionPredicateCall();
 
                     state._fsp--;
@@ -6797,7 +6671,7 @@ public class celluloidParser extends Parser {
     };
 
     // $ANTLR start "literal"
-    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:376:1: literal : ( BOOL | NUMBER | STRING | TIME );
+    // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:366:1: literal : ( BOOL | NUMBER | STRING | TIME );
     public final celluloidParser.literal_return literal() throws RecognitionException {
         celluloidParser.literal_return retval = new celluloidParser.literal_return();
         retval.start = input.LT(1);
@@ -6810,7 +6684,7 @@ public class celluloidParser extends Parser {
 
         try {
             if ( state.backtracking>0 && alreadyParsedRule(input, 44) ) { return retval; }
-            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:376:9: ( BOOL | NUMBER | STRING | TIME )
+            // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:366:9: ( BOOL | NUMBER | STRING | TIME )
             // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:
             {
             root_0 = (Object)adaptor.nil();
@@ -6936,48 +6810,12 @@ public class celluloidParser extends Parser {
     }
     // $ANTLR end synpred42_celluloid
 
-    // $ANTLR start synpred47_celluloid
-    public final void synpred47_celluloid_fragment() throws RecognitionException {   
-        celluloidParser.logicalORExpression_return exp = null;
-
-
-        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:242:61: (exp= logicalORExpression )
-        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:242:61: exp= logicalORExpression
-        {
-        pushFollow(FOLLOW_logicalORExpression_in_synpred47_celluloid2340);
-        exp=logicalORExpression();
-
-        state._fsp--;
-        if (state.failed) return ;
-
-        }
-    }
-    // $ANTLR end synpred47_celluloid
-
-    // $ANTLR start synpred50_celluloid
-    public final void synpred50_celluloid_fragment() throws RecognitionException {   
-        celluloidParser.logicalORExpression_return exp = null;
-
-
-        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:249:62: (exp= logicalORExpression )
-        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:249:62: exp= logicalORExpression
-        {
-        pushFollow(FOLLOW_logicalORExpression_in_synpred50_celluloid2479);
-        exp=logicalORExpression();
-
-        state._fsp--;
-        if (state.failed) return ;
-
-        }
-    }
-    // $ANTLR end synpred50_celluloid
-
-    // $ANTLR start synpred53_celluloid
-    public final void synpred53_celluloid_fragment() throws RecognitionException {   
+    // $ANTLR start synpred51_celluloid
+    public final void synpred51_celluloid_fragment() throws RecognitionException {   
         // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:261:10: ( constraintFunctionCall )
         // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:261:10: constraintFunctionCall
         {
-        pushFollow(FOLLOW_constraintFunctionCall_in_synpred53_celluloid2645);
+        pushFollow(FOLLOW_constraintFunctionCall_in_synpred51_celluloid2621);
         constraintFunctionCall();
 
         state._fsp--;
@@ -6985,14 +6823,14 @@ public class celluloidParser extends Parser {
 
         }
     }
-    // $ANTLR end synpred53_celluloid
+    // $ANTLR end synpred51_celluloid
 
-    // $ANTLR start synpred54_celluloid
-    public final void synpred54_celluloid_fragment() throws RecognitionException {   
+    // $ANTLR start synpred52_celluloid
+    public final void synpred52_celluloid_fragment() throws RecognitionException {   
         // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:262:10: ( expression )
         // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:262:10: expression
         {
-        pushFollow(FOLLOW_expression_in_synpred54_celluloid2657);
+        pushFollow(FOLLOW_expression_in_synpred52_celluloid2633);
         expression();
 
         state._fsp--;
@@ -7000,14 +6838,14 @@ public class celluloidParser extends Parser {
 
         }
     }
-    // $ANTLR end synpred54_celluloid
+    // $ANTLR end synpred52_celluloid
 
-    // $ANTLR start synpred57_celluloid
-    public final void synpred57_celluloid_fragment() throws RecognitionException {   
+    // $ANTLR start synpred55_celluloid
+    public final void synpred55_celluloid_fragment() throws RecognitionException {   
         // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:268:49: ( expressionList )
         // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:268:49: expressionList
         {
-        pushFollow(FOLLOW_expressionList_in_synpred57_celluloid2728);
+        pushFollow(FOLLOW_expressionList_in_synpred55_celluloid2704);
         expressionList();
 
         state._fsp--;
@@ -7015,79 +6853,65 @@ public class celluloidParser extends Parser {
 
         }
     }
-    // $ANTLR end synpred57_celluloid
+    // $ANTLR end synpred55_celluloid
 
-    // $ANTLR start synpred58_celluloid
-    public final void synpred58_celluloid_fragment() throws RecognitionException {   
+    // $ANTLR start synpred56_celluloid
+    public final void synpred56_celluloid_fragment() throws RecognitionException {   
         // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:268:65: ( NEWLINE )
         // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:268:65: NEWLINE
         {
-        match(input,NEWLINE,FOLLOW_NEWLINE_in_synpred58_celluloid2731); if (state.failed) return ;
+        match(input,NEWLINE,FOLLOW_NEWLINE_in_synpred56_celluloid2707); if (state.failed) return ;
 
         }
     }
-    // $ANTLR end synpred58_celluloid
+    // $ANTLR end synpred56_celluloid
 
-    // $ANTLR start synpred59_celluloid
-    public final void synpred59_celluloid_fragment() throws RecognitionException {   
+    // $ANTLR start synpred57_celluloid
+    public final void synpred57_celluloid_fragment() throws RecognitionException {   
         // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:273:36: ( NEWLINE )
         // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:273:36: NEWLINE
         {
-        match(input,NEWLINE,FOLLOW_NEWLINE_in_synpred59_celluloid2801); if (state.failed) return ;
+        match(input,NEWLINE,FOLLOW_NEWLINE_in_synpred57_celluloid2777); if (state.failed) return ;
 
         }
     }
-    // $ANTLR end synpred59_celluloid
+    // $ANTLR end synpred57_celluloid
 
-    // $ANTLR start synpred69_celluloid
-    public final void synpred69_celluloid_fragment() throws RecognitionException {   
+    // $ANTLR start synpred67_celluloid
+    public final void synpred67_celluloid_fragment() throws RecognitionException {   
         // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:312:11: ( NEWLINE )
         // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:312:11: NEWLINE
         {
-        match(input,NEWLINE,FOLLOW_NEWLINE_in_synpred69_celluloid3205); if (state.failed) return ;
+        match(input,NEWLINE,FOLLOW_NEWLINE_in_synpred67_celluloid3181); if (state.failed) return ;
 
         }
     }
-    // $ANTLR end synpred69_celluloid
+    // $ANTLR end synpred67_celluloid
 
-    // $ANTLR start synpred72_celluloid
-    public final void synpred72_celluloid_fragment() throws RecognitionException {   
+    // $ANTLR start synpred70_celluloid
+    public final void synpred70_celluloid_fragment() throws RecognitionException {   
         // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:317:11: ( NEWLINE )
         // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:317:11: NEWLINE
         {
-        match(input,NEWLINE,FOLLOW_NEWLINE_in_synpred72_celluloid3293); if (state.failed) return ;
+        match(input,NEWLINE,FOLLOW_NEWLINE_in_synpred70_celluloid3269); if (state.failed) return ;
+
+        }
+    }
+    // $ANTLR end synpred70_celluloid
+
+    // $ANTLR start synpred72_celluloid
+    public final void synpred72_celluloid_fragment() throws RecognitionException {   
+        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:328:65: ( NEWLINE )
+        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:328:65: NEWLINE
+        {
+        match(input,NEWLINE,FOLLOW_NEWLINE_in_synpred72_celluloid3419); if (state.failed) return ;
 
         }
     }
     // $ANTLR end synpred72_celluloid
 
-    // $ANTLR start synpred74_celluloid
-    public final void synpred74_celluloid_fragment() throws RecognitionException {   
-        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:328:65: ( NEWLINE )
-        // C:\\Users\\Charlie\\Self\\GitHub\\celluloid\\parser\\celluloid.g:328:65: NEWLINE
-        {
-        match(input,NEWLINE,FOLLOW_NEWLINE_in_synpred74_celluloid3443); if (state.failed) return ;
-
-        }
-    }
-    // $ANTLR end synpred74_celluloid
-
     // Delegated rules
 
-    public final boolean synpred47_celluloid() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred47_celluloid_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
     public final boolean synpred72_celluloid() {
         state.backtracking++;
         int start = input.mark();
@@ -7102,11 +6926,11 @@ public class celluloidParser extends Parser {
         state.failed=false;
         return success;
     }
-    public final boolean synpred53_celluloid() {
+    public final boolean synpred55_celluloid() {
         state.backtracking++;
         int start = input.mark();
         try {
-            synpred53_celluloid_fragment(); // can never throw exception
+            synpred55_celluloid_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -7186,11 +7010,11 @@ public class celluloidParser extends Parser {
         state.failed=false;
         return success;
     }
-    public final boolean synpred69_celluloid() {
+    public final boolean synpred52_celluloid() {
         state.backtracking++;
         int start = input.mark();
         try {
-            synpred69_celluloid_fragment(); // can never throw exception
+            synpred52_celluloid_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -7228,11 +7052,11 @@ public class celluloidParser extends Parser {
         state.failed=false;
         return success;
     }
-    public final boolean synpred50_celluloid() {
+    public final boolean synpred67_celluloid() {
         state.backtracking++;
         int start = input.mark();
         try {
-            synpred50_celluloid_fragment(); // can never throw exception
+            synpred67_celluloid_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -7242,11 +7066,11 @@ public class celluloidParser extends Parser {
         state.failed=false;
         return success;
     }
-    public final boolean synpred74_celluloid() {
+    public final boolean synpred70_celluloid() {
         state.backtracking++;
         int start = input.mark();
         try {
-            synpred74_celluloid_fragment(); // can never throw exception
+            synpred70_celluloid_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -7256,25 +7080,11 @@ public class celluloidParser extends Parser {
         state.failed=false;
         return success;
     }
-    public final boolean synpred59_celluloid() {
+    public final boolean synpred56_celluloid() {
         state.backtracking++;
         int start = input.mark();
         try {
-            synpred59_celluloid_fragment(); // can never throw exception
-        } catch (RecognitionException re) {
-            System.err.println("impossible: "+re);
-        }
-        boolean success = !state.failed;
-        input.rewind(start);
-        state.backtracking--;
-        state.failed=false;
-        return success;
-    }
-    public final boolean synpred54_celluloid() {
-        state.backtracking++;
-        int start = input.mark();
-        try {
-            synpred54_celluloid_fragment(); // can never throw exception
+            synpred56_celluloid_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -7298,11 +7108,11 @@ public class celluloidParser extends Parser {
         state.failed=false;
         return success;
     }
-    public final boolean synpred58_celluloid() {
+    public final boolean synpred51_celluloid() {
         state.backtracking++;
         int start = input.mark();
         try {
-            synpred58_celluloid_fragment(); // can never throw exception
+            synpred51_celluloid_fragment(); // can never throw exception
         } catch (RecognitionException re) {
             System.err.println("impossible: "+re);
         }
@@ -7316,7 +7126,7 @@ public class celluloidParser extends Parser {
 
     protected DFA20 dfa20 = new DFA20(this);
     protected DFA29 dfa29 = new DFA29(this);
-    protected DFA40 dfa40 = new DFA40(this);
+    protected DFA38 dfa38 = new DFA38(this);
     static final String DFA20_eotS =
         "\12\uffff";
     static final String DFA20_eofS =
@@ -7487,19 +7297,19 @@ public class celluloidParser extends Parser {
             throw nvae;
         }
     }
-    static final String DFA40_eotS =
+    static final String DFA38_eotS =
         "\16\uffff";
-    static final String DFA40_eofS =
+    static final String DFA38_eofS =
         "\1\6\15\uffff";
-    static final String DFA40_minS =
+    static final String DFA38_minS =
         "\1\53\4\0\11\uffff";
-    static final String DFA40_maxS =
+    static final String DFA38_maxS =
         "\1\132\4\0\11\uffff";
-    static final String DFA40_acceptS =
+    static final String DFA38_acceptS =
         "\5\uffff\1\1\1\2\7\uffff";
-    static final String DFA40_specialS =
+    static final String DFA38_specialS =
         "\1\uffff\1\0\1\1\1\2\1\3\11\uffff}>";
-    static final String[] DFA40_transitionS = {
+    static final String[] DFA38_transitionS = {
             "\1\6\1\3\1\uffff\1\6\1\2\1\6\5\uffff\3\2\12\uffff\1\6\6\uffff"+
             "\1\5\7\uffff\2\6\1\uffff\1\6\1\uffff\1\1\2\uffff\1\4",
             "\1\uffff",
@@ -7517,34 +7327,34 @@ public class celluloidParser extends Parser {
             ""
     };
 
-    static final short[] DFA40_eot = DFA.unpackEncodedString(DFA40_eotS);
-    static final short[] DFA40_eof = DFA.unpackEncodedString(DFA40_eofS);
-    static final char[] DFA40_min = DFA.unpackEncodedStringToUnsignedChars(DFA40_minS);
-    static final char[] DFA40_max = DFA.unpackEncodedStringToUnsignedChars(DFA40_maxS);
-    static final short[] DFA40_accept = DFA.unpackEncodedString(DFA40_acceptS);
-    static final short[] DFA40_special = DFA.unpackEncodedString(DFA40_specialS);
-    static final short[][] DFA40_transition;
+    static final short[] DFA38_eot = DFA.unpackEncodedString(DFA38_eotS);
+    static final short[] DFA38_eof = DFA.unpackEncodedString(DFA38_eofS);
+    static final char[] DFA38_min = DFA.unpackEncodedStringToUnsignedChars(DFA38_minS);
+    static final char[] DFA38_max = DFA.unpackEncodedStringToUnsignedChars(DFA38_maxS);
+    static final short[] DFA38_accept = DFA.unpackEncodedString(DFA38_acceptS);
+    static final short[] DFA38_special = DFA.unpackEncodedString(DFA38_specialS);
+    static final short[][] DFA38_transition;
 
     static {
-        int numStates = DFA40_transitionS.length;
-        DFA40_transition = new short[numStates][];
+        int numStates = DFA38_transitionS.length;
+        DFA38_transition = new short[numStates][];
         for (int i=0; i<numStates; i++) {
-            DFA40_transition[i] = DFA.unpackEncodedString(DFA40_transitionS[i]);
+            DFA38_transition[i] = DFA.unpackEncodedString(DFA38_transitionS[i]);
         }
     }
 
-    class DFA40 extends DFA {
+    class DFA38 extends DFA {
 
-        public DFA40(BaseRecognizer recognizer) {
+        public DFA38(BaseRecognizer recognizer) {
             this.recognizer = recognizer;
-            this.decisionNumber = 40;
-            this.eot = DFA40_eot;
-            this.eof = DFA40_eof;
-            this.min = DFA40_min;
-            this.max = DFA40_max;
-            this.accept = DFA40_accept;
-            this.special = DFA40_special;
-            this.transition = DFA40_transition;
+            this.decisionNumber = 38;
+            this.eot = DFA38_eot;
+            this.eof = DFA38_eof;
+            this.min = DFA38_min;
+            this.max = DFA38_max;
+            this.accept = DFA38_accept;
+            this.special = DFA38_special;
+            this.transition = DFA38_transition;
         }
         public String getDescription() {
             return "268:49: ( expressionList )?";
@@ -7554,69 +7364,69 @@ public class celluloidParser extends Parser {
         	int _s = s;
             switch ( s ) {
                     case 0 : 
-                        int LA40_1 = input.LA(1);
+                        int LA38_1 = input.LA(1);
 
                          
-                        int index40_1 = input.index();
+                        int index38_1 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (synpred57_celluloid()) ) {s = 5;}
+                        if ( (synpred55_celluloid()) ) {s = 5;}
 
                         else if ( (true) ) {s = 6;}
 
                          
-                        input.seek(index40_1);
+                        input.seek(index38_1);
                         if ( s>=0 ) return s;
                         break;
                     case 1 : 
-                        int LA40_2 = input.LA(1);
+                        int LA38_2 = input.LA(1);
 
                          
-                        int index40_2 = input.index();
+                        int index38_2 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (synpred57_celluloid()) ) {s = 5;}
+                        if ( (synpred55_celluloid()) ) {s = 5;}
 
                         else if ( (true) ) {s = 6;}
 
                          
-                        input.seek(index40_2);
+                        input.seek(index38_2);
                         if ( s>=0 ) return s;
                         break;
                     case 2 : 
-                        int LA40_3 = input.LA(1);
+                        int LA38_3 = input.LA(1);
 
                          
-                        int index40_3 = input.index();
+                        int index38_3 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (synpred57_celluloid()) ) {s = 5;}
+                        if ( (synpred55_celluloid()) ) {s = 5;}
 
                         else if ( (true) ) {s = 6;}
 
                          
-                        input.seek(index40_3);
+                        input.seek(index38_3);
                         if ( s>=0 ) return s;
                         break;
                     case 3 : 
-                        int LA40_4 = input.LA(1);
+                        int LA38_4 = input.LA(1);
 
                          
-                        int index40_4 = input.index();
+                        int index38_4 = input.index();
                         input.rewind();
                         s = -1;
-                        if ( (synpred57_celluloid()) ) {s = 5;}
+                        if ( (synpred55_celluloid()) ) {s = 5;}
 
                         else if ( (true) ) {s = 6;}
 
                          
-                        input.seek(index40_4);
+                        input.seek(index38_4);
                         if ( s>=0 ) return s;
                         break;
             }
             if (state.backtracking>0) {state.failed=true; return -1;}
             NoViableAltException nvae =
-                new NoViableAltException(getDescription(), 40, _s, input);
+                new NoViableAltException(getDescription(), 38, _s, input);
             error(nvae);
             throw nvae;
         }
@@ -7740,102 +7550,100 @@ public class celluloidParser extends Parser {
     public static final BitSet FOLLOW_inStatement_in_ifBlockDeclaration2270 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_ifStatement_in_ifBlockDeclaration2281 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_functionPredicateCall_in_ifBlockDeclaration2291 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_67_in_whenStatement2315 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_82_in_whenStatement2323 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_ID_in_whenStatement2331 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_logicalORExpression_in_whenStatement2340 = new BitSet(new long[]{0x0000200000000000L});
-    public static final BitSet FOLLOW_ID_in_whenStatement2348 = new BitSet(new long[]{0x0000200000000000L});
-    public static final BitSet FOLLOW_listenerBlock_in_whenStatement2362 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_83_in_everyStatement2435 = new BitSet(new long[]{0x0000800000000000L});
-    public static final BitSet FOLLOW_TIME_in_everyStatement2437 = new BitSet(new long[]{0x0000200000000000L,0x0000000000040008L});
-    public static final BitSet FOLLOW_67_in_everyStatement2454 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_82_in_everyStatement2462 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_ID_in_everyStatement2470 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_logicalORExpression_in_everyStatement2479 = new BitSet(new long[]{0x0000200000000000L});
-    public static final BitSet FOLLOW_ID_in_everyStatement2487 = new BitSet(new long[]{0x0000200000000000L});
-    public static final BitSet FOLLOW_listenerBlock_in_everyStatement2503 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_START_in_listenerBlock2579 = new BitSet(new long[]{0x01C1D00000000000L,0x0000000004AC0008L});
-    public static final BitSet FOLLOW_listenerBlockDeclaration_in_listenerBlock2597 = new BitSet(new long[]{0x01C1D00000000000L,0x0000000004AC0008L});
-    public static final BitSet FOLLOW_END_in_listenerBlock2608 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_constraintFunctionCall_in_listenerBlockDeclaration2645 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_listenerBlockDeclaration2657 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableDeclaration_in_listenerBlockDeclaration2669 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_functionPredicateCall_in_listenerBlockDeclaration2680 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_constraintFunctionCall2709 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_ID_in_constraintFunctionCall2715 = new BitSet(new long[]{0x01C0980000000002L,0x0000000004900400L});
-    public static final BitSet FOLLOW_84_in_constraintFunctionCall2718 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_ID_in_constraintFunctionCall2724 = new BitSet(new long[]{0x01C0980000000002L,0x0000000004900400L});
-    public static final BitSet FOLLOW_expressionList_in_constraintFunctionCall2728 = new BitSet(new long[]{0x0000080000000002L});
-    public static final BitSet FOLLOW_NEWLINE_in_constraintFunctionCall2731 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_functionPredicateCall2793 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000400L});
-    public static final BitSet FOLLOW_74_in_functionPredicateCall2795 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800400L});
-    public static final BitSet FOLLOW_expressionList_in_functionPredicateCall2797 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_75_in_functionPredicateCall2799 = new BitSet(new long[]{0x0000080000000002L});
-    public static final BitSet FOLLOW_NEWLINE_in_functionPredicateCall2801 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_idList2863 = new BitSet(new long[]{0x0000000000000002L,0x0000000000100000L});
-    public static final BitSet FOLLOW_84_in_idList2866 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_ID_in_idList2872 = new BitSet(new long[]{0x0000000000000002L,0x0000000000100000L});
-    public static final BitSet FOLLOW_74_in_idList2900 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_ID_in_idList2906 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100800L});
-    public static final BitSet FOLLOW_84_in_idList2909 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_ID_in_idList2915 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100800L});
-    public static final BitSet FOLLOW_75_in_idList2919 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_variableDeclaration_in_variableList2960 = new BitSet(new long[]{0x0000000000000002L,0x0000000000100000L});
-    public static final BitSet FOLLOW_84_in_variableList2963 = new BitSet(new long[]{0x0001000000000000L,0x0000000000200000L});
-    public static final BitSet FOLLOW_variableDeclaration_in_variableList2969 = new BitSet(new long[]{0x0000000000000002L,0x0000000000100000L});
-    public static final BitSet FOLLOW_74_in_variableList3007 = new BitSet(new long[]{0x0001000000000000L,0x0000000000200000L});
-    public static final BitSet FOLLOW_variableDeclaration_in_variableList3013 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100800L});
-    public static final BitSet FOLLOW_84_in_variableList3016 = new BitSet(new long[]{0x0001000000000000L,0x0000000000200000L});
-    public static final BitSet FOLLOW_variableDeclaration_in_variableList3022 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100800L});
-    public static final BitSet FOLLOW_75_in_variableList3026 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_expressionList3075 = new BitSet(new long[]{0x0000000000000002L,0x0000000000100000L});
-    public static final BitSet FOLLOW_84_in_expressionList3078 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_expression_in_expressionList3084 = new BitSet(new long[]{0x0000000000000002L,0x0000000000100000L});
-    public static final BitSet FOLLOW_74_in_expressionList3121 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_expression_in_expressionList3127 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100800L});
-    public static final BitSet FOLLOW_84_in_expressionList3130 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_expression_in_expressionList3136 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100800L});
-    public static final BitSet FOLLOW_75_in_expressionList3140 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_85_in_variableDeclaration3190 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_ID_in_variableDeclaration3192 = new BitSet(new long[]{0x0000080000000002L});
-    public static final BitSet FOLLOW_NEWLINE_in_variableDeclaration3205 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_TYPE_in_variableDeclaration3275 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_ID_in_variableDeclaration3277 = new BitSet(new long[]{0x0000080000000002L,0x0000000000400000L});
-    public static final BitSet FOLLOW_initializer_in_variableDeclaration3279 = new BitSet(new long[]{0x0000080000000002L});
-    public static final BitSet FOLLOW_NEWLINE_in_variableDeclaration3293 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_86_in_initializer3375 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_logicalORExpression_in_initializer3378 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_logicalORExpression_in_expression3433 = new BitSet(new long[]{0x0002080000000002L});
-    public static final BitSet FOLLOW_ASSIGNMENT_OPERATOR_in_expression3436 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_expression_in_expression3439 = new BitSet(new long[]{0x0000080000000002L});
-    public static final BitSet FOLLOW_NEWLINE_in_expression3443 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_87_in_logicalORExpression3500 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_logicalANDExpression_in_logicalORExpression3503 = new BitSet(new long[]{0x0000000000000002L,0x0000000001000000L});
-    public static final BitSet FOLLOW_88_in_logicalORExpression3506 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression3509 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_equalityExpression_in_logicalANDExpression3534 = new BitSet(new long[]{0x0000000000000002L,0x0000000002000000L});
-    public static final BitSet FOLLOW_89_in_logicalANDExpression3537 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_logicalANDExpression_in_logicalANDExpression3540 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_relationalExpression_in_equalityExpression3569 = new BitSet(new long[]{0x0004000000000002L});
-    public static final BitSet FOLLOW_EQUALITY_OPERATOR_in_equalityExpression3572 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_equalityExpression_in_equalityExpression3575 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_additiveExpression_in_relationalExpression3602 = new BitSet(new long[]{0x0008000000000002L});
-    public static final BitSet FOLLOW_RELATIONAL_OPERATOR_in_relationalExpression3605 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_relationalExpression_in_relationalExpression3608 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression3636 = new BitSet(new long[]{0x0010000000000002L});
-    public static final BitSet FOLLOW_ADDITIVE_OPERATOR_in_additiveExpression3639 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_additiveExpression_in_additiveExpression3642 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_primaryExpression_in_multiplicativeExpression3662 = new BitSet(new long[]{0x0020000000000002L});
-    public static final BitSet FOLLOW_MULTIPLICATIVE_OPERATOR_in_multiplicativeExpression3665 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
-    public static final BitSet FOLLOW_multiplicativeExpression_in_multiplicativeExpression3668 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_literal_in_primaryExpression3691 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ID_in_primaryExpression3702 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_90_in_primaryExpression3713 = new BitSet(new long[]{0x0000100000000000L});
-    public static final BitSet FOLLOW_ID_in_primaryExpression3715 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000400L});
-    public static final BitSet FOLLOW_74_in_primaryExpression3717 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800400L});
-    public static final BitSet FOLLOW_expressionList_in_primaryExpression3719 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_75_in_primaryExpression3721 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_functionPredicateCall_in_primaryExpression3732 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_67_in_whenStatement2315 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_82_in_whenStatement2323 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_whenStatement2331 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_whenStatement2340 = new BitSet(new long[]{0x0000200000000000L});
+    public static final BitSet FOLLOW_listenerBlock_in_whenStatement2354 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_83_in_everyStatement2423 = new BitSet(new long[]{0x0000800000000000L});
+    public static final BitSet FOLLOW_TIME_in_everyStatement2425 = new BitSet(new long[]{0x0000200000000000L,0x0000000000040008L});
+    public static final BitSet FOLLOW_67_in_everyStatement2442 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_82_in_everyStatement2450 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_everyStatement2458 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_everyStatement2467 = new BitSet(new long[]{0x0000200000000000L});
+    public static final BitSet FOLLOW_listenerBlock_in_everyStatement2483 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_START_in_listenerBlock2555 = new BitSet(new long[]{0x01C1D00000000000L,0x0000000004AC0008L});
+    public static final BitSet FOLLOW_listenerBlockDeclaration_in_listenerBlock2573 = new BitSet(new long[]{0x01C1D00000000000L,0x0000000004AC0008L});
+    public static final BitSet FOLLOW_END_in_listenerBlock2584 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_constraintFunctionCall_in_listenerBlockDeclaration2621 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_listenerBlockDeclaration2633 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableDeclaration_in_listenerBlockDeclaration2645 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_functionPredicateCall_in_listenerBlockDeclaration2656 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ID_in_constraintFunctionCall2685 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_constraintFunctionCall2691 = new BitSet(new long[]{0x01C0980000000002L,0x0000000004900400L});
+    public static final BitSet FOLLOW_84_in_constraintFunctionCall2694 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_constraintFunctionCall2700 = new BitSet(new long[]{0x01C0980000000002L,0x0000000004900400L});
+    public static final BitSet FOLLOW_expressionList_in_constraintFunctionCall2704 = new BitSet(new long[]{0x0000080000000002L});
+    public static final BitSet FOLLOW_NEWLINE_in_constraintFunctionCall2707 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ID_in_functionPredicateCall2769 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000400L});
+    public static final BitSet FOLLOW_74_in_functionPredicateCall2771 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800400L});
+    public static final BitSet FOLLOW_expressionList_in_functionPredicateCall2773 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_75_in_functionPredicateCall2775 = new BitSet(new long[]{0x0000080000000002L});
+    public static final BitSet FOLLOW_NEWLINE_in_functionPredicateCall2777 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ID_in_idList2839 = new BitSet(new long[]{0x0000000000000002L,0x0000000000100000L});
+    public static final BitSet FOLLOW_84_in_idList2842 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_idList2848 = new BitSet(new long[]{0x0000000000000002L,0x0000000000100000L});
+    public static final BitSet FOLLOW_74_in_idList2876 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_idList2882 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100800L});
+    public static final BitSet FOLLOW_84_in_idList2885 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_idList2891 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100800L});
+    public static final BitSet FOLLOW_75_in_idList2895 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_variableDeclaration_in_variableList2936 = new BitSet(new long[]{0x0000000000000002L,0x0000000000100000L});
+    public static final BitSet FOLLOW_84_in_variableList2939 = new BitSet(new long[]{0x0001000000000000L,0x0000000000200000L});
+    public static final BitSet FOLLOW_variableDeclaration_in_variableList2945 = new BitSet(new long[]{0x0000000000000002L,0x0000000000100000L});
+    public static final BitSet FOLLOW_74_in_variableList2983 = new BitSet(new long[]{0x0001000000000000L,0x0000000000200000L});
+    public static final BitSet FOLLOW_variableDeclaration_in_variableList2989 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100800L});
+    public static final BitSet FOLLOW_84_in_variableList2992 = new BitSet(new long[]{0x0001000000000000L,0x0000000000200000L});
+    public static final BitSet FOLLOW_variableDeclaration_in_variableList2998 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100800L});
+    public static final BitSet FOLLOW_75_in_variableList3002 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_expressionList3051 = new BitSet(new long[]{0x0000000000000002L,0x0000000000100000L});
+    public static final BitSet FOLLOW_84_in_expressionList3054 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
+    public static final BitSet FOLLOW_expression_in_expressionList3060 = new BitSet(new long[]{0x0000000000000002L,0x0000000000100000L});
+    public static final BitSet FOLLOW_74_in_expressionList3097 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
+    public static final BitSet FOLLOW_expression_in_expressionList3103 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100800L});
+    public static final BitSet FOLLOW_84_in_expressionList3106 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
+    public static final BitSet FOLLOW_expression_in_expressionList3112 = new BitSet(new long[]{0x0000000000000000L,0x0000000000100800L});
+    public static final BitSet FOLLOW_75_in_expressionList3116 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_85_in_variableDeclaration3166 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_variableDeclaration3168 = new BitSet(new long[]{0x0000080000000002L});
+    public static final BitSet FOLLOW_NEWLINE_in_variableDeclaration3181 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_TYPE_in_variableDeclaration3251 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_variableDeclaration3253 = new BitSet(new long[]{0x0000080000000002L,0x0000000000400000L});
+    public static final BitSet FOLLOW_initializer_in_variableDeclaration3255 = new BitSet(new long[]{0x0000080000000002L});
+    public static final BitSet FOLLOW_NEWLINE_in_variableDeclaration3269 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_86_in_initializer3351 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
+    public static final BitSet FOLLOW_logicalORExpression_in_initializer3354 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_logicalORExpression_in_expression3409 = new BitSet(new long[]{0x0002080000000002L});
+    public static final BitSet FOLLOW_ASSIGNMENT_OPERATOR_in_expression3412 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
+    public static final BitSet FOLLOW_expression_in_expression3415 = new BitSet(new long[]{0x0000080000000002L});
+    public static final BitSet FOLLOW_NEWLINE_in_expression3419 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_87_in_logicalORExpression3474 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
+    public static final BitSet FOLLOW_logicalANDExpression_in_logicalORExpression3477 = new BitSet(new long[]{0x0000000000000002L,0x0000000001000000L});
+    public static final BitSet FOLLOW_88_in_logicalORExpression3480 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
+    public static final BitSet FOLLOW_logicalORExpression_in_logicalORExpression3483 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_equalityExpression_in_logicalANDExpression3506 = new BitSet(new long[]{0x0000000000000002L,0x0000000002000000L});
+    public static final BitSet FOLLOW_89_in_logicalANDExpression3509 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
+    public static final BitSet FOLLOW_logicalANDExpression_in_logicalANDExpression3512 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_relationalExpression_in_equalityExpression3540 = new BitSet(new long[]{0x0004000000000002L});
+    public static final BitSet FOLLOW_EQUALITY_OPERATOR_in_equalityExpression3543 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
+    public static final BitSet FOLLOW_equalityExpression_in_equalityExpression3546 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_additiveExpression_in_relationalExpression3572 = new BitSet(new long[]{0x0008000000000002L});
+    public static final BitSet FOLLOW_RELATIONAL_OPERATOR_in_relationalExpression3575 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
+    public static final BitSet FOLLOW_relationalExpression_in_relationalExpression3578 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression3605 = new BitSet(new long[]{0x0010000000000002L});
+    public static final BitSet FOLLOW_ADDITIVE_OPERATOR_in_additiveExpression3608 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
+    public static final BitSet FOLLOW_additiveExpression_in_additiveExpression3611 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_primaryExpression_in_multiplicativeExpression3630 = new BitSet(new long[]{0x0020000000000002L});
+    public static final BitSet FOLLOW_MULTIPLICATIVE_OPERATOR_in_multiplicativeExpression3633 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800000L});
+    public static final BitSet FOLLOW_multiplicativeExpression_in_multiplicativeExpression3636 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_literal_in_primaryExpression3658 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_ID_in_primaryExpression3669 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_90_in_primaryExpression3680 = new BitSet(new long[]{0x0000100000000000L});
+    public static final BitSet FOLLOW_ID_in_primaryExpression3683 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000400L});
+    public static final BitSet FOLLOW_74_in_primaryExpression3685 = new BitSet(new long[]{0x01C0900000000000L,0x0000000004800400L});
+    public static final BitSet FOLLOW_expressionList_in_primaryExpression3688 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000800L});
+    public static final BitSet FOLLOW_75_in_primaryExpression3690 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_functionPredicateCall_in_primaryExpression3702 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_set_in_literal0 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_NEWLINE_in_synpred2_celluloid301 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_NEWLINE_in_synpred4_celluloid333 = new BitSet(new long[]{0x0000000000000002L});
@@ -7844,15 +7652,13 @@ public class celluloidParser extends Parser {
     public static final BitSet FOLLOW_NEWLINE_in_synpred10_celluloid429 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_expression_in_synpred27_celluloid1472 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_expression_in_synpred42_celluloid2259 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_logicalORExpression_in_synpred47_celluloid2340 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_logicalORExpression_in_synpred50_celluloid2479 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_constraintFunctionCall_in_synpred53_celluloid2645 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expression_in_synpred54_celluloid2657 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_expressionList_in_synpred57_celluloid2728 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEWLINE_in_synpred58_celluloid2731 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEWLINE_in_synpred59_celluloid2801 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEWLINE_in_synpred69_celluloid3205 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEWLINE_in_synpred72_celluloid3293 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_NEWLINE_in_synpred74_celluloid3443 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_constraintFunctionCall_in_synpred51_celluloid2621 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expression_in_synpred52_celluloid2633 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_expressionList_in_synpred55_celluloid2704 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEWLINE_in_synpred56_celluloid2707 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEWLINE_in_synpred57_celluloid2777 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEWLINE_in_synpred67_celluloid3181 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEWLINE_in_synpred70_celluloid3269 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_NEWLINE_in_synpred72_celluloid3419 = new BitSet(new long[]{0x0000000000000002L});
 
 }
