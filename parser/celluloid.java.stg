@@ -161,7 +161,12 @@ statementList(statements)             ::=
 
 variableArgument(type, name)          ::= "<type> <name>"
 timelineArgument(name)                ::= "Timeline <name>"
-deviceDeclaration(type, name, args)   ::= "<type> <name> = new <type>(<args>);"
+deviceDeclaration(type, name, args)   ::=
+<<
+try {
+  <type> <name> = new <type>(<args>);
+} catch (MalformedURLException e) { System.err.println(e); return; }
+>>
 variableDeclaration(type, name, init) ::= "<type> <name> <init>;"
 timelineDeclaration(name)             ::= "Timeline <name> = new Timeline();"
 initializer(exp)                      ::= " = <exp>"
