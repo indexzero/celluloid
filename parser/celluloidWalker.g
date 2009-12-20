@@ -58,6 +58,36 @@ options {
   HashMap<String, String> typeMap = new HashMap<String, String>();
   HashMap<String, SymbolEntry> symbolTable = new HashMap<String, SymbolEntry>();
   HashMap<String, FunctionEntry> functionTable = new HashMap<String, FunctionEntry>();
+  
+  public static String parseTime(String time) {
+      time = time.substring(1, time.length());
+    	   //@start, @now,
+    	     switch(time.charAt(time.length()-1)) {
+    	     case 't':
+    	       time = "0l";
+    	       break;
+    	     case 'w':
+    	       //@TODO support 'now'
+    	       time = "0l";
+    	       break;
+    	     case 'd':
+    	       time = 86400000*(new Integer(time.substring(0, time.length()-1)))+"l";
+    	       break;
+    	     case 'h':
+    	       time = 3600000*(new Integer(time.substring(0, time.length()-1)))+"l";
+    	       break;
+    	     case 'm':
+    	       time = 60000*(new Integer(time.substring(0, time.length()-1)))+"l";
+    	       break;
+    	     case 's':
+    	       if(time.length()>1 && time.charAt(time.length()-1) != 'm') //s
+    	         time = 1000*(new Integer(time.substring(0, time.length()-1)))+"l";
+    	       else //ms
+    	         time = time.substring(0, time.length()-2)+"l";
+    	       break;
+    	   }
+    	   return time;
+    }
 }
 
 
@@ -297,7 +327,7 @@ constraintFunctionCall[String with]
            
            %{$st}.type = targetSymbol.getType(); 
            %{$st}.function = $function.text;
-           %{$st}.time = $time.text != "@start" ? $time.text : 0; // TODO: @start should be parsed in logical or expression...
+           %{$st}.time = parseTime(new String($time.text));; // TODO: @start should be parsed in logical or expression...
            %{$st}.args = $expressionList.st;
          }
     ;
@@ -406,7 +436,10 @@ expression
     |	 BOOL   -> passThrough(text = { $BOOL.text } ) // Needs Template
     |	 NUMBER -> passThrough(text = { $NUMBER.text } ) // Needs Template
     |	 STRING -> passThrough(text = { $STRING.text } ) // Needs Template
-    |	 TIME   -> passThrough(text = { $TIME.text } )  // Needs Action; Needs to be parsed into Milliseconds
+    |	 TIME  {
+    	   $st = %passThrough();
+    	   %{$st}.text = parseTime(new String($TIME.text));
+    	 }  // Needs Action; Needs to be parsed into Milliseconds
     |    functionPredicateCall       -> passThrough(text = { $functionPredicateCall.st })
     ;	
     
