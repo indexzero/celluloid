@@ -42,7 +42,7 @@ public class STGrammarRulesTestCase extends TestCase {
         this.shouldGenerateFunctionHeader();
         this.shouldGenerateFunctionDefinition();
 
-        this.shouldGenerateInStatement();
+        //this.shouldGenerateInStatement();
 
         this.shouldGenerateVariableList();
         this.shouldGenerateIdList();
