@@ -27,6 +27,7 @@ import org.celluloidlang.reactive.ReactiveNumber;
  */
 public class HelloCh1 {
 	public static void main(String[] args) {
+		Timeline globalTimeline = new Timeline();
 
 		//timeline timeline1
 		Timeline timeline1 = new Timeline();
@@ -52,10 +53,11 @@ public class HelloCh1 {
 				}
 			}
 		);
+
+		//in output1 do 
+		//	play timeline1 @start 
+		//end
 		
-		
-		//output size
-		Timeline globalTimeline = new Timeline();
 		globalTimeline.addConstraintFunction(
 				new ConstraintFunction(timeline1, new ReactiveNumber(0.0)) {
 					public void execute() {
