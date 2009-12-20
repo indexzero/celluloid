@@ -15,16 +15,16 @@ program(
   import org.celluloidlang.devices.SwingOutput;
   import org.celluloidlang.reactive.ReactiveNumber;
 
-  <constraints:{ constraint | <constraint>}; separator="\r\n">>
-  <devices>
+  <constraints:{ constraint | <constraint>}; separator="\r\n">
+  <devices:{ device | <device> }; separator="\r\n">
 
   public class CelluloidProgram {
-  	<events>
-  	<functions>
-  	<predicates>
+  	<events:{ event | <event> }; separator="\r\n">
+  	<functions:{ function | <function> }; separator="\r\n">
+  	<predicates:{ predicate | <predicates> }; separator="\r\n">
 
   	public static void main(String[] args) {
-  	  <code>
+  	  <code:{ code | <code>}; separator="\r\n">
   	}
   }
 
