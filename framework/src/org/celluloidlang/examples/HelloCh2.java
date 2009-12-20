@@ -61,6 +61,7 @@ public class HelloCh2 {
 			new ConstraintFunction(audio1, new ReactiveNumber(0.0)) {
 				public void execute() {
 					((JMFAudio) input).play();
+					System.out.println("Testing nararation");
 				}
 			}
 		);
@@ -96,17 +97,15 @@ public class HelloCh2 {
 					public void execute() {
 						((JMFVideo) input).play();
 					}
-				}
-			);
-		//output size
+				});
+
 		
 		globalTimeline.addConstraintFunction(
 				new ConstraintFunction(timeline1, new ReactiveNumber(0.0)) {
 					public void execute() {
 						((Timeline) input).play();
 					}
-				}
-		);
+				});
 		globalTimeline.addConstraintFunction(
 				 new OutputConstraintFunction(
 						timeline1, 
@@ -115,15 +114,15 @@ public class HelloCh2 {
 							public void execute() {
 								((Timeline) input).attachOutput(output);
 							}
-				}
-				);
+				});
+		globalTimeline.play();
 		
 		
 
 		} catch (MalformedURLException e) {
 			System.err.println("Could not generate URL");
 			System.exit(1);
-		};
+		}
 	}
 
 }
