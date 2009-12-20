@@ -83,16 +83,19 @@ constraintBlockDeclaration
    	
 // Device definition
 deviceDefinition     
-    :    ^(DEVICE ID ^(ACCEPTS  idList?) deviceBlock) {
+    :    ^(DEVICE ID ^(ACCEPTS accepts = idList?) deviceBlock) {
            $st = %deviceDefinition();
            %{$st}.name = $ID.text;
-           %{$st}.accepts = idList != null ? "implements" : "";
-           %{$st}.accpets = $idList.st;
+           %{$st}.accept = accepts != null ? "implements" : "";
+           %{$st}.accpets = $accepts.st;
            %{$st}.block = $deviceBlock.st;
          }
     ;
 deviceBlock 
-    :    ^(DEVBLOCK deviceBlockDeclaration*)
+    :    ^(DEVBLOCK (block += deviceBlockDeclaration)*) {
+           $st = %statementList();
+           %{$st}.statements = $block;
+         }
     ;
 deviceBlockDeclaration
     :    variableDeclaration 
@@ -102,17 +105,25 @@ deviceBlockDeclaration
     	
 // Function / Predicate definitions
 functionHeader
-    :    ^(FUNHEAD ID ^(ARGS variableList)) {
+    :    ^(FUNHEAD ID ^(ARGS args = variableList?)) {
            $st = %functionHeader();
            %{$st}.name = $ID.text;
-           %{$st}.args = $variableList.st;
+           %{$st}.args = args != null ? $args.st : "";
          } 
     ;
 functionDefinition 
-    :    ^(FUNC ID ^(ARGS variableList) functionBlock?)
+    :    ^(FUNC ID ^(ARGS args = variableList?) block = functionBlock?) {
+           $st = %functionDefinition();
+           %{$st}.name = $ID.text;
+           %{$st}.args = args != null ? $args.st : "";
+           %{$st}.block = block != null ? $block.st : "";
+         }
     ;
 functionBlock      
-    :    ^(FUNBLOCK RETURN functionPredicateBlockDeclaration*) 
+    :    ^(FUNBLOCK RETURN (block += functionPredicateBlockDeclaration)*) {
+           $st = %statementList();
+           %{$st}.statements = $block;
+         } 
     ;
 functionPredicateBlockDeclaration 
     :    variableDeclaration
@@ -123,10 +134,10 @@ functionPredicateBlockDeclaration
     ;
 
 predicateHeader     
-    :    ^(PREDHEAD ID ^(ARGS variableList))
+    :    ^(PREDHEAD ID ^(ARGS variableList?))
     ;    
 predicateDefinition 
-    :    ^(PRED ID ^(ARGS variableList) predicateBlock)
+    :    ^(PRED ID ^(ARGS variableList?) predicateBlock) 
     ;	    
 predicateBlock      
     :    ^(FUNBLOCK ^(RETURN expression) functionPredicateBlockDeclaration*) 
@@ -134,18 +145,13 @@ predicateBlock
 
 // Timline and procedural blocks
 inStatement
-scope {
-  String timeline;
-}
-    :  ^(IN ID inBlock) {
-       $inStatement::timeline = $ID.text;
-    }
-        //-> inStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
+    :  ^(IN ID inBlock) 
     ;
+    
 inBlock 
     :	^(INBLOCK (block += inBlockDeclaration)*) {
-                  $st = %statementList();
-                  %{$st}.statements = $block;
+           $st = %statementList();
+           %{$st}.statements = $block;
     }
     ;
 inBlockDeclaration
@@ -196,11 +202,11 @@ listenerBlockDeclaration
 constraintFunctionCall 
     :    ^(OBJCALL function = ID target = ID ^(AT (time = TIME)?) ^(ARGS expressionList?)) {
          $st = %constraintFunctionCall();
-         %{$st}.timeline = $inStatement::timeline;
+         %{$st}.timeline = "";
          %{$st}.target = $target.text;
          %{$st}.type = ""; // TODO: inter timeline through semantic analysis
          %{$st}.function = $function.text;
-         %{$st}.time = time != null ? $time.st : 0;
+         %{$st}.time = time != null ? $time.text : 0;
          %{$st}.args = $expressionList.st;
     }
     ;
