@@ -22,13 +22,23 @@ public class <name> <accept> <accepts> {
 functionHeader(name, args)            ::= "<name>(<args>)"
 functionDefintion(name, args, block)  ::=
 <<
-public void <name> (<args>) "{"
+public void <name> (<args>) {
   <block>
-"}"
+}
 >>
 
 predicateHeader(name, args)           ::= "public bool <name> (<args>)"
-predicateDefinition (header, block)   ::= << <header> "{" <block> "}" >>
+predicateDefintion(name, args, block) ::=
+<<
+public void <name> (<args>) {
+  <block>
+}
+>>
+predicateBlock(statements, returns) ::=
+<<
+  <statements:{ statement | <statement.st> }; separator=\"\\n\">
+  return <returns>;
+>>
 
 inStatement(name, block)              ::= ""
 ifStatement()                         ::= ""

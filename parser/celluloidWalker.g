@@ -134,18 +134,33 @@ functionPredicateBlockDeclaration
     ;
 
 predicateHeader     
-    :    ^(PREDHEAD ID ^(ARGS variableList?))
+    :    ^(PREDHEAD ID ^(ARGS args = variableList?)) {
+           $st = %predicateHeader();
+           %{$st}.name = $ID.text;
+           %{$st}.args = args != null ? $args.st : "";
+         } 
     ;    
 predicateDefinition 
-    :    ^(PRED ID ^(ARGS variableList?) predicateBlock) 
+    :    ^(PRED ID ^(ARGS args = variableList?) block = predicateBlock) {
+           $st = %predicateDefinition();
+           %{$st}.name = $ID.text;
+           %{$st}.args = args != null ? $args.st : "";
+           %{$st}.block = block != null ? $block.st : "";
+         } 
     ;	    
 predicateBlock      
-    :    ^(FUNBLOCK ^(RETURN expression) functionPredicateBlockDeclaration*) 
+    :    ^(FUNBLOCK ^(RETURN retexp = expression) (block += functionPredicateBlockDeclaration)*) {
+           $st = %predicateBlock();
+           %{$st}.statements = $block;
+           %{$st}.returns = $retexp.st;
+         }  
     ;
 
 // Timline and procedural blocks
 inStatement
-    :  ^(IN ID inBlock) 
+scope {
+  String timeline;
+}   :  ^(IN ID inBlock) 
     ;
     
 inBlock 
@@ -202,7 +217,7 @@ listenerBlockDeclaration
 constraintFunctionCall 
     :    ^(OBJCALL function = ID target = ID ^(AT (time = TIME)?) ^(ARGS expressionList?)) {
          $st = %constraintFunctionCall();
-         %{$st}.timeline = "";
+         %{$st}.timeline = $inStatement::timeline;
          %{$st}.target = $target.text;
          %{$st}.type = ""; // TODO: inter timeline through semantic analysis
          %{$st}.function = $function.text;
