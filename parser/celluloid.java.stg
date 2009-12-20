@@ -40,7 +40,15 @@ predicateBlock(statements, returns) ::=
   return <returns>;
 >>
 
-inStatement(name, block)              ::= ""
+passThrough(text)  ::= "<text>"
+
+inStatement(block)              ::=
+<<
+in inStatement
+<block>
+
+>>
+
 ifStatement(exp, block)               ::=
 <<
 if (<exp>)
@@ -50,10 +58,10 @@ if (<exp>)
 ifBlock(block, elifStmt, elseStmt)    ::=
 <<
 {
-  block
+  <block>
 }
-elifStmt
-elseStmt
+<elifStmt>
+<elseStmt>
 >>
 elseIfStatement(exp, block)           ::=
 <<
@@ -77,6 +85,8 @@ constraintFunctionCall(
  type, function,
  time, args)                          ::=
 <<
+
+in cfc
 <timeline>.addConstraintFunction(
   new ConstraintFunction(<target>, new ReactiveNumber(<time>)) {
                 public void execute() {
@@ -89,9 +99,14 @@ constraintFunctionCall(
 functionPredicateCall()               ::= ""
 
 idList(ids)                           ::= "<ids:{ id | <id.text> }; separator=\", \">"
-variableList(vars)                    ::= "<vars:{ var | <var> }; separator=\", \">"
-expressionList(exps)                  ::= "<exps:{ exp | <exp> }; separator=\", \">"
-statementList(statements)             ::= "<statements>"
+variableList(vars)                    ::= "<vars:{ var | <var.st> }; separator=\", \">"
+expressionList(exps)                  ::= "<exps:{ exp | <exp.st> }; separator=\", \">"
+statementList(statements)             ::=
+<<
+in statementList
+<statements>
+
+>>
 
 variableArgument(type, name)          ::= "<type> <name>"
 variableDeclaration(type, name, init) ::= "<type> <name> <init>;"

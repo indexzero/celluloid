@@ -157,13 +157,14 @@ predicateBlock
     ;
 
 // Timline and procedural blocks
+
 inStatement
 scope {
   String timeline;
 }   :  ^(IN ID block = inBlock) {
-	  $st = %inStatement();
-	  %{$st}.name = $ID.text;
-	  %{$st}.block = block.st;
+	$inStatement::timeline = $ID.text;
+	$st = %inStatement();
+	%{$st}.block = $block.st;
 	}
     ;
     
@@ -174,9 +175,9 @@ inBlock
    	 }
     ;
 inBlockDeclaration
-    :	whenStatement 
-    |   everyStatement 
-    |   constraintFunctionCall
+    :    whenStatement -> passThrough(text = { $whenStatement.st } )
+    |   everyStatement -> passThrough(text = { $everyStatement.st } )
+    |   constraintFunctionCall -> passThrough(text = { $constraintFunctionCall.st } )
     ;
 
 ifStatement
