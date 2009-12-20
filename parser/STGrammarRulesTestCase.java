@@ -35,8 +35,21 @@ public class STGrammarRulesTestCase extends TestCase {
     }
 
     public void runAllTests() throws IOException, RecognitionException {
+        this.shouldGenerateEventDefinition();
+        this.shouldGenerateConstraintDefinition();
+        this.shouldGenerateDeviceDefinition();
+
+        this.shouldGenerateFunctionHeader();
+        this.shouldGenerateFunctionDefinition();
+
+        //this.shouldGenerateInStatement();
+
+        this.shouldGenerateVariableList();
+        this.shouldGenerateIdList();
+        this.shouldGenerateTimelineDeclaration();
+        this.shouldGenerateNumberDeclaration();
         //this.shouldGenerateConstraintDefinition();
-        this.shouldGenerateInStatement();
+        this.shouldGenerateIfStatement();
     }
 
     @Test
@@ -56,6 +69,22 @@ public class STGrammarRulesTestCase extends TestCase {
     }
 
     @Test
+    public void shouldGenerateEventDefinition() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "eventDefinition.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.eventDefinition().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.eventDefinition_return r = walker.eventDefinition();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
+    }
+
+    @Test
     public void shouldGenerateConstraintDefinition() throws IOException, RecognitionException {
         STTestRunner testRunner = new STTestRunner(this.testPath + "constraintDefinition.cld", this.templatePath) {
             public CommonTree getTree(celluloidParser parser) throws RecognitionException {
@@ -64,6 +93,131 @@ public class STGrammarRulesTestCase extends TestCase {
 
             public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
                 celluloidWalker.constraintDefinition_return r = walker.constraintDefinition();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
+    }
+
+    @Test
+    public void shouldGenerateDeviceDefinition() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "deviceDefinition.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.deviceDefinition().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.deviceDefinition_return r = walker.deviceDefinition();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
+    }
+
+    @Test
+    public void shouldGenerateFunctionHeader() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "functionHeader.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.functionHeader().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.functionHeader_return r = walker.functionHeader();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
+    }
+
+    @Test
+    public void shouldGenerateFunctionDefinition() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "functionDefinition.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.functionDefinition().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.functionDefinition_return r = walker.functionDefinition();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
+    }
+
+    @Test
+    public void shouldGenerateIdList() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "idList.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.idList().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.idList_return r = walker.idList();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
+    }
+
+    @Test
+    public void shouldGenerateVariableList() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "variableList.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.variableList().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.variableList_return r = walker.variableList();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
+    }
+
+    @Test
+    public void shouldGenerateTimelineDeclaration() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "timelineDeclaration.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.variableDeclaration().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.variableDeclaration_return r = walker.variableDeclaration();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
+    }
+
+    @Test
+    public void shouldGenerateNumberDeclaration() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "numberDeclaration.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.variableDeclaration().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.variableDeclaration_return r = walker.variableDeclaration();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+    }
+
+    public void shouldGenerateIfStatement() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "ifStatement.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.constraintDefinition().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.ifStatement_return r = walker.ifStatement();
                 return (StringTemplate)r.getTemplate();
             }
         };
@@ -101,13 +255,17 @@ public class STGrammarRulesTestCase extends TestCase {
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             celluloidParser parser = new celluloidParser(tokens); // create parser
 
-            BufferedTreeNodeStream nodes = new BufferedTreeNodeStream(this.getTree(parser));
+            CommonTree tree = this.getTree(parser);
+            System.out.println(tree.toStringTree());
+            BufferedTreeNodeStream nodes = new BufferedTreeNodeStream(tree);
             nodes.setTokenStream(tokens);
 
             celluloidWalker walker = new celluloidWalker(nodes);
             walker.setTemplateLib(templates);
             StringTemplate output = this.getTemplate(walker);
-            System.out.println(output.toString());
+            String outputText = output.toString();
+            System.out.println(outputText);
+            System.out.println();
         }
     }
 

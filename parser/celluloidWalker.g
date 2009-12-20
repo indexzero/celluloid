@@ -29,7 +29,7 @@ options {
     }
   }
 
-  private HashMap<String, SymbolEntry> symbolTable;  
+  private HashMap<String, SymbolEntry> symbolTable = new HashMap<String, SymbolEntry>();
 }
 
 
@@ -76,9 +76,9 @@ constraintBlock
     :    ^(CONBLOCK constraintBlockDeclaration* ^(ANNOUNCEMENTS announcementDeclaration*))
     ;    	
 constraintBlockDeclaration
-    :	 variableDeclaration 
-    |    predicateHeader 
-    |    functionHeader 
+    :	 variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+    |    predicateHeader -> passThrough(text = { $predicateHeader.st } )
+    |    functionHeader -> passThrough(text = { $functionHeader.st } )
     ;
    	
 // Device definition
@@ -87,7 +87,7 @@ deviceDefinition
            $st = %deviceDefinition();
            %{$st}.name = $ID.text;
            %{$st}.accept = accepts != null ? "implements" : "";
-           %{$st}.accpets = $accepts.st;
+           %{$st}.accepts = $accepts.st;
            %{$st}.block = $deviceBlock.st;
          }
     ;
@@ -98,9 +98,9 @@ deviceBlock
          }
     ;
 deviceBlockDeclaration
-    :    variableDeclaration 
-    |    predicateDefinition 
-    |    functionDefinition
+    :    variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+    |    predicateDefinition -> passThrough(text = { $predicateDefinition.st } )
+    |    functionDefinition -> passThrough(text = { $functionDefinition.st } )
     ;
     	
 // Function / Predicate definitions
@@ -108,15 +108,15 @@ functionHeader
     :    ^(FUNHEAD ID ^(ARGS args = variableList?)) {
            $st = %functionHeader();
            %{$st}.name = $ID.text;
-           %{$st}.args = args != null ? $args.st : "";
+           %{$st}.args = $args.st;
          } 
     ;
 functionDefinition 
     :    ^(FUNC ID ^(ARGS args = variableList?) block = functionBlock?) {
            $st = %functionDefinition();
            %{$st}.name = $ID.text;
-           %{$st}.args = args != null ? $args.st : "";
-           %{$st}.block = block != null ? $block.st : "";
+           %{$st}.args = $args.st;
+           %{$st}.block = $block.st;
          }
     ;
 functionBlock      
@@ -126,26 +126,26 @@ functionBlock
          } 
     ;
 functionPredicateBlockDeclaration 
-    :    variableDeclaration
-    |    expression
-    |    inStatement // Remark: Unknown behavior if called from inStatement
-    |    ifStatement
-    |    functionPredicateCall
+    :    variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+    |    expression -> passThrough(text = { $expression.st } )
+    |    inStatement -> passThrough(text = { $inStatement.st } ) // Remark: Unknown behavior if called from inStatement
+    |    ifStatement -> passThrough(text = { $ifStatement.st } )
+    |    functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
     ;
 
 predicateHeader     
     :    ^(PREDHEAD ID ^(ARGS args = variableList?)) {
            $st = %predicateHeader();
            %{$st}.name = $ID.text;
-           %{$st}.args = args != null ? $args.st : "";
+           %{$st}.args = $args.st;
          } 
     ;    
 predicateDefinition 
     :    ^(PRED ID ^(ARGS args = variableList?) block = predicateBlock) {
            $st = %predicateDefinition();
            %{$st}.name = $ID.text;
-           %{$st}.args = args != null ? $args.st : "";
-           %{$st}.block = block != null ? $block.st : "";
+           %{$st}.args = $args.st;
+           %{$st}.block = $block.st;
          } 
     ;	    
 predicateBlock      
@@ -175,7 +175,7 @@ inBlock
    	 }
     ;
 inBlockDeclaration
-    :    whenStatement -> passThrough(text = { $whenStatement.st } )
+    :   whenStatement -> passThrough(text = { $whenStatement.st } )
     |   everyStatement -> passThrough(text = { $everyStatement.st } )
     |   constraintFunctionCall -> passThrough(text = { $constraintFunctionCall.st } )
     ;
@@ -210,11 +210,11 @@ elseStatement
     	}
     ;
 ifBlockDeclaration
-    :	variableDeclaration
-    |   expression 
-    |   inStatement 
-    |   ifStatement
-    |   functionPredicateCall
+    :	variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+    |   expression -> passThrough(text = { $expression.st } )
+    |   inStatement -> passThrough(text = { $inStatement.st } )
+    |   ifStatement -> passThrough(text = { $ifStatement.st } )
+    |   functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
     ;
 
 whenStatement
@@ -229,10 +229,10 @@ listenerBlock
     :  ^(LISTENBLOCK listenerBlockDeclaration*)
     ;
 listenerBlockDeclaration
-    :    constraintFunctionCall 
-    |    expression 
-    |    variableDeclaration
-    |    functionPredicateCall
+    :    constraintFunctionCall -> passThrough(text = { $constraintFunctionCall.st } )
+    |    expression -> passThrough(text = { $expression.st } )
+    |    variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+    |    functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
     ;
     
 constraintFunctionCall 
@@ -258,7 +258,7 @@ idList
     ;
 
 variableList  
-    :    variableDeclaration+
+    :    (vars += variableDeclaration)+ -> variableList(vars = { $vars })  
     ;
 
 expressionList 
@@ -267,14 +267,14 @@ expressionList
     ;
 
 variableDeclaration 
-    :    ^(VARDEF 'timeline' ID)
-    |    ^(ARG 'timeline' ID)
-    |    ^(VARDEF TYPE ID initializer?)
-    |    ^(ARG TYPE ID)
+    :    ^(VARDEF 'timeline' ID)        -> timelineDeclaration(name = { $ID.text })
+    |    ^(ARG 'timeline' ID)           -> timelineArgument(name = { $ID.text }) 
+    |    ^(VARDEF TYPE ID initializer?) -> variableDeclaration(type = { $TYPE.text }, name = { $ID.text }, init = { $initializer.st })
+    |    ^(ARG TYPE ID)                 -> variableArgument(type = { $TYPE.text }, name = { $ID.text }) 
     ;
     
 initializer      
-    :    logicalORExpression
+    :    logicalORExpression -> passThrough(text = { $logicalORExpression.st } )
     ;
     
 expression 

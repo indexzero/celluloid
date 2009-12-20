@@ -12,7 +12,7 @@ public interface <name> <requires> {
 }
 >>
 
-deviceDefinition(name, accepts)       ::=
+deviceDefinition(name, accept, accepts, block) ::=
 <<
 public class <name> <accept> <accepts> {
  <block>
@@ -20,7 +20,7 @@ public class <name> <accept> <accepts> {
 >>
 
 functionHeader(name, args)            ::= "<name>(<args>)"
-functionDefintion(name, args, block)  ::=
+functionDefinition(name, args, block)  ::=
 <<
 public void <name> (<args>) {
   <block>
@@ -108,9 +108,11 @@ in statementList
 
 >>
 
-variableDeclaration(type, name, init) ::= "<type> <name> <init>"
-timelineDeclaration(name)             ::= "timeline <name> = new timeline();"
-initializer(exp)                      ::= " = <exp>"
+variableArgument(type, name)          ::= "<type> <name>"
+variableDeclaration(type, name, init) ::= "<type> <name> <init>;"
+timelineArgument(name)                ::= "Timeline <name>"
+timelineDeclaration(name)             ::= "Timeline <name> = new Timeline();"
+initializer(exp)                      ::= " = <exp>;"
 expression()                          ::= ""
 logicalORExpression                   ::= ""
 primaryExpression                     ::= ""
