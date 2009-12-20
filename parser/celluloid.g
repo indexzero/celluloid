@@ -266,7 +266,7 @@ listenerBlockDeclaration
     ;
     
 constraintFunctionCall 
-    :    function = ID id += ID (',' id += ID)* (time = TIME ',')? expressionList? NEWLINE?
+    :    function = ID id += ID (',' id += ID)* (time = TIME (',')?)? expressionList? NEWLINE?
          -> ^(OBJCALL $id $function ^(AT $time?) ^(ARGS expressionList?))* 
     ;
     
