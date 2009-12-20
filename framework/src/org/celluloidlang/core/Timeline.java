@@ -71,6 +71,9 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		this.resetStacks();
 	}
 	
+	/**
+	 * This adds a ConstraintFunction to the timeline
+	 */
 	public void addConstraintFunction(ConstraintFunction cf) {
 		if (!inputs.contains(cf.getConstraintObject())) {
 			inputs.add(cf.getConstraintObject());
@@ -79,6 +82,9 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		willExecute.offer(cf);
 	}
 	
+	/**
+	 * Executed each time slide
+	 */
 	private synchronized void timeStep(long currentTime) {
 		long elapsed = currentTime - initialTime;
 		while ((willExecute.peek() != null) && (willExecute.peek().getTime().getView() <= elapsed)) {
@@ -99,6 +105,9 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		return inputs;
 	}
 
+	/**
+	 * Attach this timeline to the output
+	 */
 	public void attachOutput(Output out) {
 		if (out instanceof SwingOutput) {
 			((SwingOutput) out).frame.getContentPane().removeAll();
@@ -115,6 +124,13 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		}
 	}
 
+	/**
+	 * This is used to add an Event Function to the timeline,
+	 * i.e.
+	 * when [event] do
+	 * 	...
+	 * end
+	 */
 	public void addEventFunction(Input audio1, String type, EventFunction event) {
 		audio1.announcer.attach(this);
 		
@@ -126,6 +142,13 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		announceEvents.get(type).add(event);
 	}
 	
+	/**
+	 * This is used to add an Every Function to the timeline,
+	 * i.e.
+	 * every [time] do
+	 * 	...
+	 * end
+	 */
 	public void addEveryFunction(EveryFunction every) {
 		if (every != null) {
 			if (everyFunctionList.contains(every)) {
@@ -139,6 +162,9 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		}
 	}
 	
+	/**
+	 * This is executed every time slice, and evaluates the every functions
+	 */
 	private void evaluateEveryFunctions(long currentTime) {
 		long elapsed = currentTime - initialTime;
 		for (EveryFunction ef : everyFunctionList) {
