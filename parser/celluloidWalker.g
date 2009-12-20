@@ -60,33 +60,39 @@ options {
   HashMap<String, FunctionEntry> functionTable = new HashMap<String, FunctionEntry>();
 
   public static String parseTime(String time) {
+    if("@start".equals(time)) return "0D";
+    if("@now".equals(time)) return "0D"; //@TODO support @NOW
+    time = time.substring(1, time.length());
+    
+    System.out.println("dantest + " + time);
+    
+    int builtTime = 0;
+    int buildUp = 0;
+    while(time.length() > 0) {
+      char cur = time.charAt(0);
       time = time.substring(1, time.length());
-    	   //@start, @now,
-    	     switch(time.charAt(time.length()-1)) {
-    	     case 't':
-    	       time = "0l";
-    	       break;
-    	     case 'w':
-    	       //@TODO support 'now'
-    	       time = "0l";
-    	       break;
-    	     case 'd':
-    	       time = 86400000*(new Integer(time.substring(0, time.length()-1)))+"l";
-    	       break;
-    	     case 'h':
-    	       time = 3600000*(new Integer(time.substring(0, time.length()-1)))+"l";
-    	       break;
-    	     case 'm':
-    	       time = 60000*(new Integer(time.substring(0, time.length()-1)))+"l";
-    	       break;
-    	     case 's':
-    	       if(time.length()>1 && time.charAt(time.length()-1) != 'm') //s
-    	         time = 1000*(new Integer(time.substring(0, time.length()-1)))+"l";
-    	       else //ms
-    	         time = time.substring(0, time.length()-2)+"l";
-    	       break;
-    	   }
-    	   return time;
+      switch(cur) {
+        case 'd':
+          builtTime += 86400000*buildUp;
+          buildUp = 0;
+          break;
+        case 'h':
+          builtTime += 3600000*buildUp;
+          buildUp = 0;
+          break;
+        case 'm':
+          builtTime += 60000*buildUp;
+          buildUp = 0;
+          break;
+        case 's':
+          builtTime += 1000*buildUp;
+          buildUp = 0;
+          break;
+        default:
+          buildUp = buildUp*10 + new Integer(String.valueOf(cur));
+      }
+    }
+    return new String(Integer.valueOf(builtTime).toString())+"D";	 
     }
 }
 

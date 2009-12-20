@@ -166,7 +166,6 @@ functionPredicateBlockDeclaration
     |    expression
     |    inStatement // Remark: Unknown behavior if called from inStatement
     |    ifStatement
-    |    functionPredicateCall
     ;
 // End function blocks
 
@@ -238,7 +237,6 @@ ifBlockDeclaration
     |   expression 
     |   inStatement 
     |   ifStatement
-    |   functionPredicateCall
     ;
 
 whenStatement
@@ -264,7 +262,6 @@ listenerBlockDeclaration
     :    constraintFunctionCall 
     |    expression 
     |    variableDeclaration
-    |    functionPredicateCall
     ;
     
 constraintFunctionCall 
@@ -361,7 +358,7 @@ primaryExpression
 
 // Start operators
 // TODO: LOCAL OPERATORS
-ASSIGNMENT_OPERATOR      : '=' | '*=' | '/=' | '%=' | '+=' | '-=';	
+ASSIGNMENT_OPERATOR      : ':=' | '*=' | '/=' | '%=' | '+=' | '-=';	
 EQUALITY_OPERATOR        : '==' | '!=';
 RELATIONAL_OPERATOR      : '>' | '<' | '<=' | '>=';
 ADDITIVE_OPERATOR        : '+' | '-';
@@ -384,9 +381,9 @@ fragment ESCAPE  : '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\');
 
 // Start time literals	
 TIME	        : '@'(DAY | 'start' | 'now');
-fragment DAY 	: NUMBER 'd' HOUR | HOUR;
-fragment HOUR 	: NUMBER 'h' MINUTE | MINUTE;
-fragment MINUTE : NUMBER 'm' SECOND | SECOND;
+fragment DAY 	: NUMBER 'd' HOUR | NUMBER 'd' | HOUR;
+fragment HOUR 	: NUMBER 'h' MINUTE | NUMBER 'h' | MINUTE;
+fragment MINUTE : NUMBER 'm' SECOND | NUMBER 'm' | SECOND;
 fragment SECOND : NUMBER 's';
 // End time literals
 
