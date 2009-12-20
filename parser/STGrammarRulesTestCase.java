@@ -213,7 +213,7 @@ public class STGrammarRulesTestCase extends TestCase {
     public void shouldGenerateIfStatement() throws IOException, RecognitionException {
         STTestRunner testRunner = new STTestRunner(this.testPath + "ifStatement.cld", this.templatePath) {
             public CommonTree getTree(celluloidParser parser) throws RecognitionException {
-                return (CommonTree)parser.constraintDefinition().getTree();
+                return (CommonTree)parser.ifStatement().getTree();
             }
 
             public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
@@ -256,7 +256,9 @@ public class STGrammarRulesTestCase extends TestCase {
             celluloidParser parser = new celluloidParser(tokens); // create parser
 
             CommonTree tree = this.getTree(parser);
+            System.out.println("=====Parse Tree=====");
             System.out.println(tree.toStringTree());
+            System.out.println("=====End Parse Tree=====");
             BufferedTreeNodeStream nodes = new BufferedTreeNodeStream(tree);
             nodes.setTokenStream(tokens);
 
@@ -264,7 +266,9 @@ public class STGrammarRulesTestCase extends TestCase {
             walker.setTemplateLib(templates);
             StringTemplate output = this.getTemplate(walker);
             String outputText = output.toString();
+            System.out.println("=====Generated Code=====");
             System.out.println(outputText);
+            System.out.println("=====End Generated Code=====");
             System.out.println();
         }
     }

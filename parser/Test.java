@@ -10,6 +10,6 @@ public class Test {
       
      STGrammarRulesTestCase tests = new STGrammarRulesTestCase("STRules", "tests" + File.separator, "celluloid.java.stg");
      //tests.runAllTests();
-     tests.shouldGenerateInStatement();
+     tests.shouldGenerateIfStatement();
   }
 }
