@@ -36,13 +36,13 @@ public class STGrammarRulesTestCase extends TestCase {
 
     @Test
     public void shouldGenerateConstraintDefinition() throws IOException, RecognitionException {
-        STTestRunner testRunner = new STTestRunner(this.testPath + "constraintDefinition.cld", this.templatePath) {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "inStatement.cld", this.templatePath) {
             public CommonTree getTree(celluloidParser parser) throws RecognitionException {
-                return (CommonTree)parser.constraintDefinition().getTree();
+                return (CommonTree)parser.inStatement().getTree();
             }
 
             public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
-                celluloidWalker.constraintDefinition_return r = walker.constraintDefinition();
+                celluloidWalker.inStatement_return r = walker.inStatement();
                 return (StringTemplate)r.getTemplate();
             }
         };
@@ -85,7 +85,7 @@ public class STGrammarRulesTestCase extends TestCase {
 
             celluloidWalker walker = new celluloidWalker(nodes);
             walker.setTemplateLib(templates);
-            celluloidWalker.constraintDefinition_return r = walker.constraintDefinition();
+            celluloidWalker.inStatement_return r = walker.inStatement();
 
             StringTemplate output = (StringTemplate)r.getTemplate();
             System.out.println(output.toString());

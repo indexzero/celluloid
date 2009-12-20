@@ -36,7 +36,7 @@ public void <name> (<args>) {
 >>
 predicateBlock(statements, returns) ::=
 <<
-  <statements:{ statement | <statement.st> }; separator=\"\\n\">
+  <statements>
   return <returns>;
 >>
 
@@ -63,7 +63,7 @@ functionPredicateCall()               ::= ""
 idList(ids)                           ::= "<ids:{ id | <id.text> }; separator=\", \">"
 variableList(vars)                    ::= "<vars:{ var | <var.st> }; separator=\", \">"
 expressionList(exps)                  ::= "<exps:{ exp | <exp.st> }; separator=\", \">"
-statementList(statements)             ::= "<statements:{ statement | <statement.st> }; separator=\"\\n\">"
+statementList(statements)             ::= "<statements:{ statement | <statement.st> }; separator=\"\n\">"
 
 variableDeclaration(type, name, init) ::= "<type> <name> <init>"
 timelineDeclaration(name)             ::= "timeline <name> = new timeline();"
