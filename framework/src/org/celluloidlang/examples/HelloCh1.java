@@ -6,9 +6,11 @@ import java.net.MalformedURLException;
 import javax.media.Manager;
 
 import org.celluloidlang.core.*;
-import org.celluloidlang.devices.JMFAudio;
-import org.celluloidlang.devices.SwingOutput;
-import org.celluloidlang.reactive.ReactiveNumber;
+import org.celluloidlang.devices.*;
+import org.celluloidlang.reactive.*;
+import org.celluloidlang.announcment.*;
+import org.celluloidlang.constraints.buildtin.*;
+import org.celluloidlang.constraints.defined.*;
 /**
  *
 	Language Tutorial -- Chapter 1

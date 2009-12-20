@@ -1,18 +1,14 @@
 package org.celluloidlang.examples;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.net.MalformedURLException;
-
 import javax.media.Manager;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-
 import org.celluloidlang.core.*;
-import org.celluloidlang.devices.JMFVideo;
-import org.celluloidlang.devices.SwingOutput;
-import org.celluloidlang.reactive.ReactiveNumber;
+import org.celluloidlang.devices.*;
+import org.celluloidlang.reactive.*;
+import org.celluloidlang.announcment.*;
+import org.celluloidlang.constraints.buildtin.*;
+import org.celluloidlang.constraints.defined.*;
 
 public class HelloWorld {
 	
