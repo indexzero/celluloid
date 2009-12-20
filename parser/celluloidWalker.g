@@ -182,7 +182,7 @@ inBlockDeclaration
 ifStatement
     :  ^(IF exp = logicalORExpression block = ifBlock) {
     	  $st = %ifStatement();
-    	  %{$st}.exp = $exp.st;
+    	  %{$st}.exp = $exp.text; // @TODO: This is wrong
     	  %{$st}.block = $block.st;
     	}
     ;
