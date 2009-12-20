@@ -71,8 +71,7 @@ public class HelloCh2 {
 			}
 		);
 		
-		//pause audio1 @1m 
-		
+		//pause audio1 @1s 
 		timeline1.addConstraintFunction(
 				new ConstraintFunction(audio1, new ReactiveNumber(1000.0)) {
 					public void execute() {
@@ -80,7 +79,7 @@ public class HelloCh2 {
 					}
 				}
 			);
-		//play audio2 @1m 
+		//play audio2 @1s 
 		timeline1.addConstraintFunction(
 				new ConstraintFunction(audio2, new ReactiveNumber(1000.0)) {
 					public void execute() {
@@ -88,7 +87,7 @@ public class HelloCh2 {
 					}
 				}
 			);
-		//stop audio2 @2m 
+		//stop audio2 @2s 
 		timeline1.addConstraintFunction(
 				new ConstraintFunction(audio2, new ReactiveNumber(2000.0)) {
 					public void execute() {
@@ -96,7 +95,7 @@ public class HelloCh2 {
 					}
 				}
 			);
-		//play audio1 @2m 
+		//play audio1 @2s 
 		timeline1.addConstraintFunction(
 				new ConstraintFunction(audio1, new ReactiveNumber(2000.0)) {
 					public void execute() {
@@ -105,6 +104,7 @@ public class HelloCh2 {
 				});
 
 		
+		//add to global timeline
 		globalTimeline.addConstraintFunction(
 				new ConstraintFunction(timeline1, new ReactiveNumber(0.0)) {
 					public void execute() {

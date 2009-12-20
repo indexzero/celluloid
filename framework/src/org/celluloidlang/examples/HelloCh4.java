@@ -107,9 +107,11 @@ public class HelloCh4 {
 		
 		
 		/*
-every @10s when video1.isPlaying do
-		play video5 @now
-	end
+		 * not quite sure what keyword goes here, either unless or if, or something
+
+		every @10s (unless|if) video5.isPlaying do
+			play video1 @now
+		end
 		 */ 
 		timeline1.addEveryFunction(
 			new EveryFunction(new ReactiveNumber(0.0), video1, video5) {
