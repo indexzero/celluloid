@@ -228,7 +228,7 @@ elseIfStatement
         -> ^($elseIfTest ^(IFBLOCK $block))
     ;
 elseStatement 
-    :   'else' NEWLINE (block += ifBlockDeclaration)*
+    :   'else' NEWLINE (block += ifBlockDeclaration)+
         -> ^(IFBLOCK $block)
     ;
 ifBlockDeclaration

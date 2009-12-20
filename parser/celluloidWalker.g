@@ -160,14 +160,18 @@ predicateBlock
 inStatement
 scope {
   String timeline;
-}   :  ^(IN ID inBlock) 
+}   :  ^(IN ID block = inBlock) {
+	  $st = %inStatement();
+	  %{$st}.name = $ID.text;
+	  %{$st}.block = block.st;
+	}
     ;
     
 inBlock 
     :	^(INBLOCK (block += inBlockDeclaration)*) {
            $st = %statementList();
            %{$st}.statements = $block;
-    }
+   	 }
     ;
 inBlockDeclaration
     :	whenStatement 
@@ -176,17 +180,33 @@ inBlockDeclaration
     ;
 
 ifStatement
-    :  ^(IF logicalORExpression ifBlock)
+    :  ^(IF exp = logicalORExpression block = ifBlock) {
+    	  $st = %ifStatement();
+    	  %{$st}.exp = $exp.st;
+    	  %{$st}.block = $block.st;
+    	}
     ;
 ifBlock
-    :   ^(IFBLOCK ifBlockDeclaration+) ^(ELSEIF elseIfStatement*) ^(ELSE elseStatement?)
+    :   ^(IFBLOCK (block += ifBlockDeclaration)+) ^(ELSEIF (elifStmt += elseIfStatement)*) ^(ELSE elseStmt = elseStatement?) {
+    	  $st = %ifBlock();
+    	  %{$st}.block = $block;
+     	  %{$st}.elifStmt = $elifStmt;
+      	  %{$st}.elseStmt = $elseStmt.st;
+    	}
     ;    
 
-elseStatement 
-    :   ^(IFBLOCK ifBlockDeclaration)
-    ;
 elseIfStatement 
-    :   ^(logicalORExpression ^(IFBLOCK ifBlockDeclaration))
+    :   ^(exp = logicalORExpression ^(IFBLOCK (block += ifBlockDeclaration)+)) {
+    	  $st = %elseIfStatement();
+    	  %{$st}.exp = $exp.st;
+      	  %{$st}.block = $block;
+    	}
+    ;
+elseStatement 
+    :   ^(IFBLOCK (block += ifBlockDeclaration)+) {
+    	  $st = %elseStatement();
+      	  %{$st}.block = $block;
+    	}
     ;
 ifBlockDeclaration
     :	variableDeclaration
