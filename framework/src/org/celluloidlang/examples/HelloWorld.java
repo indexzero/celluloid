@@ -29,6 +29,8 @@ public class HelloWorld {
 		//this is a timeline defined in source.cld
 		Timeline timeline1 = new Timeline();
 		
+		//NOTE THE SECOND TWO ARGS ARE NOT USED, the two numbers, they can
+		//be literally anything, say -1 for convenience
 		SwingOutput output1 = new SwingOutput("Celluloid Output", 1024, 768);
 		
 		//this is an input defined in source.cld

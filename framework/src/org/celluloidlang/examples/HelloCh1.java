@@ -2,9 +2,7 @@ package org.celluloidlang.examples;
 
 import java.io.File;
 import java.net.MalformedURLException;
-
 import javax.media.Manager;
-
 import org.celluloidlang.core.*;
 import org.celluloidlang.devices.*;
 import org.celluloidlang.reactive.*;

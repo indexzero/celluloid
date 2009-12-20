@@ -16,6 +16,5 @@ public class SwingOutput implements Output {
 		frame.setLayout(new GridLayout());
 		frame.setBackground(Color.black);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(width, height);
 	}
 }
