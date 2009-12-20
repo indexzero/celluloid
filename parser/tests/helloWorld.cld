@@ -1,0 +1,21 @@
+timeline timeline1
+# Remark: should be the following, but I'm seeing token stream problems (i.e. <UP> expected again)
+# output output1 = new SwingOutput("Celluloid Ouput", 1024, 768)
+# input jmf1 = new JMFVideo("lostinspace.7.160x120.11khz.mov")
+# input jmf2 = new JMFVideo("darkcity.7.160x120.11khz.mov")
+
+input jmf1 = new JMFVideo()
+input jmf2 = new JMFVideo()
+output output1 = new SwingOutput()
+
+# Remark: We are not parsing @start properly into 0.0 yet.
+# We may have to use input stream rewriting
+in timeline1 do
+  play jmf1, jmf2 @start
+end
+
+# Remark: We are not parsing @start properly into 0.0 yet.
+# We may have to use input stream rewriting
+in output1 do
+  play timeline1 @start
+end

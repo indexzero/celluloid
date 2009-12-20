@@ -34,6 +34,9 @@ public class STGrammarRulesTestCase extends TestCase {
     }
 
     public void runAllTests() throws IOException, RecognitionException {
+        this.shouldThrowOnUndefinedInput();
+        //this.shouldThrowOnUndefinedFunction();
+
         this.shouldGenerateEventDefinition();
         this.shouldGenerateConstraintDefinition();
         this.shouldGenerateDeviceDefinition();
@@ -43,24 +46,24 @@ public class STGrammarRulesTestCase extends TestCase {
         this.shouldGeneratePredicateHeader();
         this.shouldGeneratePredicateDefinition();
 
-        this.shouldGenerateInStatement();
         this.shouldGenerateIfStatement();
 
         this.shouldGenerateVariableList();
         this.shouldGenerateIdList();
         this.shouldGenerateNumberDeclaration();
+        this.shouldGenerateNumberDeclarationWithInitializer();
         this.shouldGenerateTimelineDeclaration();
     }
 
     @Test
-    public void shouldGenerateInStatement() throws IOException, RecognitionException {
-        STTestRunner testRunner = new STTestRunner(this.testPath + "inStatement.cld", this.templatePath) {
+    public void shouldGenerateHelloWorld() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "helloWorld.cld", this.templatePath) {
             public CommonTree getTree(celluloidParser parser) throws RecognitionException {
-                return (CommonTree)parser.inStatement().getTree();
+                return (CommonTree)parser.program().getTree();
             }
 
             public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
-                celluloidWalker.inStatement_return r = walker.inStatement();
+                celluloidWalker.program_return r = walker.program();
                 return (StringTemplate)r.getTemplate();
             }
         };
@@ -180,6 +183,53 @@ public class STGrammarRulesTestCase extends TestCase {
         testRunner.RunTest();
     }
 
+
+    @Test
+    public void shouldThrowOnUndefinedInput() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "inStatement.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.inStatement().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.inStatement_return r = walker.inStatement();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
+    }
+
+    public void shouldGenerateIfStatement() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "ifStatement.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.ifStatement().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.ifStatement_return r = walker.ifStatement();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
+    }
+
+    public void shouldThrowOnUndefinedFunction() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "functionPredicateCall.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.functionPredicateCall().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.functionPredicateCall_return r = walker.functionPredicateCall();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
+    }
+
     @Test
     public void shouldGenerateIdList() throws IOException, RecognitionException {
         STTestRunner testRunner = new STTestRunner(this.testPath + "idList.cld", this.templatePath) {
@@ -230,7 +280,7 @@ public class STGrammarRulesTestCase extends TestCase {
 
     @Test
     public void shouldGenerateNumberDeclaration() throws IOException, RecognitionException {
-        STTestRunner testRunner = new STTestRunner(this.testPath + "literals" + File.separator + "numberDeclaration.cld", this.templatePath) {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "numberDeclaration.cld", this.templatePath) {
             public CommonTree getTree(celluloidParser parser) throws RecognitionException {
                 return (CommonTree)parser.variableDeclaration().getTree();
             }
@@ -240,20 +290,23 @@ public class STGrammarRulesTestCase extends TestCase {
                 return (StringTemplate)r.getTemplate();
             }
         };
+
+        testRunner.RunTest();
     }
 
-    public void shouldGenerateIfStatement() throws IOException, RecognitionException {
-        STTestRunner testRunner = new STTestRunner(this.testPath + "ifStatement.cld", this.templatePath) {
+    @Test
+    public void shouldGenerateNumberDeclarationWithInitializer() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "numberDeclarationInitializer.cld", this.templatePath) {
             public CommonTree getTree(celluloidParser parser) throws RecognitionException {
-                return (CommonTree)parser.ifStatement().getTree();
+                return (CommonTree)parser.variableDeclaration().getTree();
             }
 
             public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
-                celluloidWalker.ifStatement_return r = walker.ifStatement();
+                celluloidWalker.variableDeclaration_return r = walker.variableDeclaration();
                 return (StringTemplate)r.getTemplate();
             }
         };
-
+        
         testRunner.RunTest();
     }
 

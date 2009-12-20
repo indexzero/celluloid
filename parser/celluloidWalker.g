@@ -12,9 +12,9 @@ options {
 
 @members {
   class SymbolEntry {
-    private String name;
-    private String type;
-    private String pseudoType;
+    protected String name;
+    protected String type;
+    protected String pseudoType;
     
     public SymbolEntry(String name, String type) {
       this.name = name;
@@ -24,6 +24,7 @@ options {
     public SymbolEntry(String name, String type, String pseudoType) {
       this.name = name;
       this.type = type;
+      this.pseudoType = pseudoType;
     }
     
     public String getName() {
@@ -34,13 +35,28 @@ options {
       return this.type;
     }
     
-    public String getPseduoType() {
+    public String getPseudoType() {
       return this.pseudoType;
+    }
+  }
+  
+  class FunctionEntry extends SymbolEntry {
+    private ArrayList arguments = new ArrayList();
+    
+    public FunctionEntry(String name, String type) {
+      super(name, type);
+      this.name = name;
+      this.type = type;
+    }
+    
+    public ArrayList getArguments() {
+      return this.arguments;
     }
   }
   
   HashMap<String, String> typeMap = new HashMap<String, String>();
   HashMap<String, SymbolEntry> symbolTable = new HashMap<String, SymbolEntry>();
+  HashMap<String, FunctionEntry> functionTable = new HashMap<String, FunctionEntry>();
 }
 
 
@@ -48,6 +64,7 @@ options {
 program 
 @init {
   this.symbolTable = new HashMap<String, SymbolEntry>();
+  this.functionTable = new HashMap<String, FunctionEntry>();
   typeMap.put("number", "double");
   typeMap.put("string", "String");
   typeMap.put("time", "long");
@@ -103,8 +120,8 @@ constraintBlock
     ;    	
 constraintBlockDeclaration
     :	 variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
-    |    predicateHeader -> passThrough(text = { $predicateHeader.st } )
-    |    functionHeader -> passThrough(text = { $functionHeader.st } )
+    |    predicateHeader     -> passThrough(text = { $predicateHeader.st } )
+    |    functionHeader      -> passThrough(text = { $functionHeader.st } )
     ;
    	
 // Device definition
@@ -126,7 +143,7 @@ deviceBlock
 deviceBlockDeclaration
     :    variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
     |    predicateDefinition -> passThrough(text = { $predicateDefinition.st } )
-    |    functionDefinition -> passThrough(text = { $functionDefinition.st } )
+    |    functionDefinition  -> passThrough(text = { $functionDefinition.st } )
     ;
     	
 // Function / Predicate definitions
@@ -143,6 +160,9 @@ functionDefinition
            %{$st}.name = $ID.text;
            %{$st}.args = $args.st;
            %{$st}.block = $block.st;
+           
+           // TODO: Add arguments to the structure we store so that we can do type checking
+           this.functionTable.put($ID.text, new FunctionEntry($ID.text, "function"));
          }
     ;
 functionBlock      
@@ -172,6 +192,9 @@ predicateDefinition
            %{$st}.name = $ID.text;
            %{$st}.args = $args.st;
            %{$st}.block = $block.st;
+           
+           // TODO: Add arguments to the structure we store so that we can do type checking
+           this.functionTable.put($ID.text, new FunctionEntry($ID.text, "predicate"));
          } 
     ;	    
 predicateBlock      
@@ -195,7 +218,7 @@ inBlock[String with]
     :	^(INBLOCK (block += inBlockDeclaration[$with])*) {
            $st = %statementList();
            %{$st}.statements = $block;
-   	 }
+   	}
     ;
 inBlockDeclaration[String with]
     :   whenStatement[$with] -> passThrough(text = { $whenStatement.st } )
@@ -253,21 +276,24 @@ listenerBlock[String with]
     ;
 listenerBlockDeclaration[String with]
     :    constraintFunctionCall[$with] -> passThrough(text = { $constraintFunctionCall.st } )
-    |    expression -> passThrough(text = { $expression.st } )
-    |    variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
-    |    functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
+    |    expression                    -> passThrough(text = { $expression.st } )
+    |    variableDeclaration           -> passThrough(text = { $variableDeclaration.st } )
+    |    functionPredicateCall         -> passThrough(text = { $functionPredicateCall.st } )
     ;
     
 constraintFunctionCall[String with]
     :    ^(OBJCALL target = ID function = ID ^(AT (time = TIME)?) ^(ARGS expressionList?)) {
-           $st = %constraintFunctionCall();
+           SymbolEntry targetSymbol = this.symbolTable.get($target.text);
+           SymbolEntry withSymbol = this.symbolTable.get($with);
+           String withType = withSymbol.getType();
+           
+           $st = withType != "timeline" ? %outputConstraintFunctionCall() : %constraintFunctionCall();
            %{$st}.with = $with;
            %{$st}.target = $target.text;
            
-           SymbolEntry targetSymbol = this.symbolTable.get($target.text);
            %{$st}.type = targetSymbol.getType(); 
            %{$st}.function = $function.text;
-           %{$st}.time = $time.text != "@start" ? $time.text : 0;
+           %{$st}.time = $time.text != "@start" ? $time.text : 0; // TODO: @start should be parsed in logical or expression...
            %{$st}.args = $expressionList.st;
          }
     ;
@@ -275,8 +301,19 @@ constraintFunctionCall[String with]
       System.err.println("<Celluloid> Cannot execute constraint function on undefined media: " + $target.text); 
     }
     
+// IMPORTANT: WE ARE GETTING 'EXPECTING <UP>' FOR THIS RULE!!!
 functionPredicateCall       
-    :    ^(CALL ID ^(ARGS expressionList))
+    :    ^(CALL ID ^(ARGS args = expressionList?)) {
+           FunctionEntry symbolEntry = this.functionTable.get($ID.text);
+           if(symbolEntry == null) {
+             System.err.println("<Celluloid> Cannot execute undefined function / predicate: " + $ID.text);
+           }
+           
+           // TODO: Get arguments from FunctionEntry object and perform type checking.
+           $st = %functionPredicateCall();
+           %{$st}.name = $ID.text;
+           %{$st}.args = $args.st;
+         }
          //-> functionCall(name = { $ID.text }, args = { $expressionList.st })
     ;	
 
@@ -295,14 +332,14 @@ expressionList
     ;
 
 initializer      
-    :    logicalORExpression -> passThrough(text = { $logicalORExpression.st } )
+    :    logicalORExpression -> initializer(exp = { $logicalORExpression.st })
     ;
 
 variableDeclaration 
     :    ^(VARDEF 'timeline' ID) {
            $st = %timelineDeclaration();
            %{$st}.name = $ID.text;
-           this.symbolTable.put($ID.text, new SymbolEntry($ID.text, "timeline"));
+           this.symbolTable.put($ID.text, new SymbolEntry($ID.text, "Timeline"));
          }
     |    ^(ARG 'timeline' ID)           -> timelineArgument(name = { $ID.text }) 
     |    ^(VARDEF TYPE ID initializer?) {
@@ -340,28 +377,28 @@ variableDeclaration
            %{$st}.args = $args.st;
            
            this.symbolTable.put($name.text, new SymbolEntry($name.text, $realType.text, $PSEUDOTYPE.text));
-         } 
-        
+         }
     ;
     
-    
+// IMPORTANT: NEEDS TEMPLATE!
 expression 
     :    ^(ASSIGNMENT_OPERATOR logicalORExpression expression)
     ;
+    
+// IMPORTANT: ALL OF THESE DERIVATIONS NEED ACTIONS OR TEMPLATES
 logicalORExpression      
-    :	 ^('not' logicalORExpression)
-    |	 ^('or' logicalORExpression logicalORExpression)
-    |    ^('and' logicalORExpression logicalORExpression)
-    |    ^(EQUALITY_OPERATOR logicalORExpression logicalORExpression)
-    |    ^(RELATIONAL_OPERATOR logicalORExpression logicalORExpression)
-    |    ^(ADDITIVE_OPERATOR logicalORExpression logicalORExpression)
-    |    ^(MULTIPLICATIVE_OPERATOR logicalORExpression logicalORExpression)
-    |	 ID     -> passThrough(text = { $ID.text } )
-    |	 BOOL   -> passThrough(text = { $BOOL.text } )
-    |	 NUMBER -> passThrough(text = { $NUMBER.text } )
-    |	 STRING -> passThrough(text = { $STRING.text } )
-    |	 TIME   -> passThrough(text = { $TIME.text } )
-    |    ^(OBJDEF ID expressionList) -> passThrough(text = { $ID.text }) //THIS IS WRONG, SHOULD BE NEW ID(LIST);
+    :	 ^('not' logicalORExpression) // Needs Template
+    |	 ^('or' logicalORExpression logicalORExpression) // Needs Template
+    |    ^('and' logicalORExpression logicalORExpression) // Needs Template
+    |    ^(EQUALITY_OPERATOR logicalORExpression logicalORExpression) // Needs Template
+    |    ^(RELATIONAL_OPERATOR logicalORExpression logicalORExpression) // Needs Template
+    |    ^(ADDITIVE_OPERATOR logicalORExpression logicalORExpression) // Needs Template
+    |    ^(MULTIPLICATIVE_OPERATOR logicalORExpression logicalORExpression) // Needs Template
+    |	 ID     -> passThrough(text = { $ID.text } ) // Needs Action; Check if it exists
+    |	 BOOL   -> passThrough(text = { $BOOL.text } ) // Needs Template
+    |	 NUMBER -> passThrough(text = { $NUMBER.text } ) // Needs Template
+    |	 STRING -> passThrough(text = { $STRING.text } ) // Needs Template
+    |	 TIME   -> passThrough(text = { $TIME.text } )  // Needs Action; Needs to be parsed into Milliseconds
     |    functionPredicateCall       -> passThrough(text = { $functionPredicateCall.st })
     ;	
     

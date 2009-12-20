@@ -15,18 +15,16 @@ public class HelloWorld {
 	public static void main(String[] args) {
 
 		/*
-		 * This is the one and only global timeline.
-		 * 
-		 * THIS IS REQUIRED: global timeline is required, see the bottom
-		 * for the details
-		 */
-		Timeline globalTimeline = new Timeline();
+                 * This is the one and only global timeline.
+                 * REQUIRED: global timeline is required, see the bottom
+                 * for the details
+                 */
+                 Timeline globalTimeline = new Timeline();
+
+                 // REQUIRED: Need this set to display video
+                 Manager.setHint(Manager.LIGHTWEIGHT_RENDERER, true);
 		
-		//need this bastard to display video
-		//THIS IS REQUIRED
-		Manager.setHint(Manager.LIGHTWEIGHT_RENDERER, true);
-		
-		//this is a timeline defined in source.cld
+                //this is a timeline defined in source.cld
 		Timeline timeline1 = new Timeline();
 		
 		//NOTE THE SECOND TWO ARGS ARE NOT USED, the two numbers, they can

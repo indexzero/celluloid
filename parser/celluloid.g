@@ -72,7 +72,7 @@ program
           | functionsPredicates += predicateDefinition
           | NEWLINE)*
          NEWLINE*
-         (block += functionPredicateBlockDeclaration)*
+         (block += functionPredicateBlockDeclaration | NEWLINE)*
          NEWLINE*
          -> ^(PROGRAM 
                 ^(EVENTS $events*)
@@ -272,20 +272,9 @@ constraintFunctionCall
          -> ^(OBJCALL $id $function ^(AT $time?) ^(ARGS expressionList?))* 
     ;
     
-/*    
-f
-scope { int x; }
-   : { $f::x = 42; System.out.println($f::x); } g
-   ;
-
-g  :  h;
-
-h 	:	 {int y = $f::x; System.out.println($f::x); };	
-*/
-    
 functionPredicateCall       
-    :    ID '(' expressionList ')' NEWLINE?
-         -> ^(CALL ID ^(ARGS expressionList))
+    :    ID '(' expressionList? ')' NEWLINE?
+         -> ^(CALL ID ^(ARGS expressionList?))
          //-> functionCall(name = { $ID.text }, args = { $expressionList.st })
     ;	
 // End timeline and procedural blocks
@@ -331,7 +320,7 @@ variableDeclaration
          (NEWLINE -> ^(VARDEF TYPE ID initializer?)
          |        -> ^(ARG TYPE ID)
          )
-    |    PSEUDOTYPE name = ID '=' 'new' realType = ID '(' expressionList? ')'
+    |    PSEUDOTYPE name = ID '=' 'new' realType = ID '(' expressionList? ')' NEWLINE
          -> ^(OBJDEF PSEUDOTYPE $name $realType expressionList?)
          //-> variableDeclaration(type = { $TYPE.text }, name = { $ID.text }, init = { $initializer.st })
     ;
