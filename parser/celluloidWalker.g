@@ -66,8 +66,8 @@ options {
     
     System.out.println("dantest + " + time);
     
-    double builtTime = 0;
-    double buildUp = 0;
+    float builtTime = 0;
+    float buildUp = 0;
     boolean dot = false;
     int fraction = 1;
     while(time.length() > 0) {
@@ -96,10 +96,10 @@ options {
         default:
           if(dot)
             fraction *= 10;
-          buildUp = buildUp*10 + new Double(String.valueOf(cur));
+          buildUp = buildUp*10 + new Float(String.valueOf(cur));
       }
     }
-    return Double.valueOf(builtTime/fraction).toString()+"f";	 
+    return Float.valueOf(builtTime/fraction).toString()+"f";	 
     }
 }
 
