@@ -3,9 +3,13 @@ package org.celluloidlang.examples;
 import java.io.File;
 import java.net.MalformedURLException;
 
+import javax.media.Manager;
+
 import org.celluloidlang.constraints.defined.Input;
 import org.celluloidlang.core.*;
+import org.celluloidlang.devices.JMFAudio;
 import org.celluloidlang.devices.JMFVideo;
+import org.celluloidlang.devices.SwingOutput;
 import org.celluloidlang.reactive.ReactiveNumber;
 /**
  *
@@ -34,18 +38,21 @@ import org.celluloidlang.reactive.ReactiveNumber;
  */
 public class HelloCh2 {
 	public static void main(String[] args) {
-
+		Timeline globalTimeline = new Timeline();
 		//timeline timeline1
 		Timeline timeline1 = new Timeline();
 		
+		//need this bastard to display video
+		Manager.setHint(Manager.LIGHTWEIGHT_RENDERER, true);
+		
 		//input audio1 = new AudioFile(*somefile*)
 		try {
-		JMFVideo audio1 = new JMFVideo(
+		JMFAudio audio1 = new JMFAudio(
 				new File("acousticgrunge.wav").toURI().toURL());
 
 		//input audio2 = new AudioFile(*somefile*) 
 
-		JMFVideo audio2 = new JMFVideo(
+		JMFAudio audio2 = new JMFAudio(
 				new File("playme.wav").toURI().toURL());
 		//TODO: output output1 = new Output(*somefile*)
 		//
@@ -58,7 +65,8 @@ public class HelloCh2 {
 		timeline1.addConstraintFunction(
 			new ConstraintFunction(audio1, new ReactiveNumber(0.0)) {
 				public void execute() {
-					((JMFVideo) input).play();
+					((JMFAudio) input).play();
+					System.out.println("Testing nararation");
 				}
 			}
 		);
@@ -68,7 +76,7 @@ public class HelloCh2 {
 		timeline1.addConstraintFunction(
 				new ConstraintFunction(audio1, new ReactiveNumber(1000.0)) {
 					public void execute() {
-						((JMFVideo) input).pause();
+						((JMFAudio) input).pause();
 					}
 				}
 			);
@@ -76,7 +84,7 @@ public class HelloCh2 {
 		timeline1.addConstraintFunction(
 				new ConstraintFunction(audio2, new ReactiveNumber(1000.0)) {
 					public void execute() {
-						((JMFVideo) input).play();
+						((JMFAudio) input).play();
 					}
 				}
 			);
@@ -84,7 +92,7 @@ public class HelloCh2 {
 		timeline1.addConstraintFunction(
 				new ConstraintFunction(audio2, new ReactiveNumber(2000.0)) {
 					public void execute() {
-						((JMFVideo) input).stop();
+						((JMFAudio) input).stop();
 					}
 				}
 			);
@@ -94,15 +102,32 @@ public class HelloCh2 {
 					public void execute() {
 						((JMFVideo) input).play();
 					}
-				}
-			);
-		timeline1.play();
+				});
+
+		
+		globalTimeline.addConstraintFunction(
+				new ConstraintFunction(timeline1, new ReactiveNumber(0.0)) {
+					public void execute() {
+						((Timeline) input).play();
+					}
+				});
+		globalTimeline.addConstraintFunction(
+				 new OutputConstraintFunction(
+						timeline1, 
+						new SwingOutput("Celluloid Output", 1024, 768), 
+						new ReactiveNumber(0.0)) {
+							public void execute() {
+								((Timeline) input).attachOutput(output);
+							}
+				});
+		globalTimeline.play();
+		
 		
 
 		} catch (MalformedURLException e) {
 			System.err.println("Could not generate URL");
 			System.exit(1);
-		};
+		}
 	}
 
 }

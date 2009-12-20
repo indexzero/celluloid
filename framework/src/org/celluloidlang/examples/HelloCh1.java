@@ -3,6 +3,8 @@ package org.celluloidlang.examples;
 import java.io.File;
 import java.net.MalformedURLException;
 
+import javax.media.Manager;
+
 import org.celluloidlang.core.*;
 import org.celluloidlang.devices.JMFAudio;
 import org.celluloidlang.devices.SwingOutput;
@@ -27,9 +29,13 @@ import org.celluloidlang.reactive.ReactiveNumber;
  */
 public class HelloCh1 {
 	public static void main(String[] args) {
+		Timeline globalTimeline = new Timeline();
 
 		//timeline timeline1
 		Timeline timeline1 = new Timeline();
+		
+		//need this bastard to display video
+		Manager.setHint(Manager.LIGHTWEIGHT_RENDERER, true);
 		
 		//input audio1 = new AudioFile(*somefile*)
 		//output output1 = new Output(*somefile*)
@@ -52,10 +58,11 @@ public class HelloCh1 {
 				}
 			}
 		);
+
+		//in output1 do 
+		//	play timeline1 @start 
+		//end
 		
-		
-		//output size
-		Timeline globalTimeline = new Timeline();
 		globalTimeline.addConstraintFunction(
 				new ConstraintFunction(timeline1, new ReactiveNumber(0.0)) {
 					public void execute() {

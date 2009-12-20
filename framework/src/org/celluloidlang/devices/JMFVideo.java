@@ -1,6 +1,7 @@
 package org.celluloidlang.devices;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.net.URL;
 
 import org.celluloidlang.announcment.Announcement;
@@ -22,11 +23,13 @@ public class JMFVideo extends JMF implements Video {
 	
 	public JMFVideo(URL url) {
 		super(url);
+		super.setFixedAspectRatio(true);
 	}
 	
 	@Override
 	public void size(double x1, double y1, double x2, double y2) {
-		super.setBounds((int) x1, (int) y1, (int) Math.abs(x2 - x1), (int) Math.abs(y2 - y1));
+		super.setMinimumSize(new Dimension((int) Math.abs(x2 - x1), (int) Math.abs(y2 - y1)));
+		//TODO: this does not work
 	}
 	
 	@Override

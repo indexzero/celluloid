@@ -61,19 +61,22 @@ announcementDeclaration
     ; 
 
 constraintDefinition
-    :    ^(CONSTRAINT ID ^(REQUIRES requires = idList?) ^(ANNOUNCES announces = idList?) constraintBlock) {
+    :    ^(CONSTRAINT ID ^(REQUIRES requires = idList?) ^(ANNOUNCES announces = idList?) block = constraintBlock) {
            $st = %constraintDefinition();
            %{$st}.name = $ID.text;
            %{$st}.require = requires != null ? "implements" : ""; 
            %{$st}.requires = $requires.st;
-           %{$st}.block = $constraintBlock.st;
+           %{$st}.block = $block.st;
            
            // TODO: Semantic analysis
-           System.out.println(announces);
+           //System.out.println(announces);
          }
     ;
 constraintBlock 
-    :    ^(CONBLOCK constraintBlockDeclaration* ^(ANNOUNCEMENTS announcementDeclaration*))
+    :    ^(CONBLOCK (block += constraintBlockDeclaration)* ^(ANNOUNCEMENTS announcementDeclaration*)) {
+            $st = %statementList();
+            %{$st}.statements = $block;
+          }
     ;    	
 constraintBlockDeclaration
     :	 variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
@@ -289,7 +292,7 @@ logicalORExpression
     |	 ID -> passThrough(text = { $ID.text } )
     |	 BOOL -> passThrough(text = { $BOOL.text } )
     |	 NUMBER -> passThrough(text = { $NUMBER.text } )
-    ;
+    ;	
     
 // Start generic literals 
 literal : BOOL | NUMBER | STRING | TIME;
