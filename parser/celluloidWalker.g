@@ -60,11 +60,9 @@ options {
   HashMap<String, FunctionEntry> functionTable = new HashMap<String, FunctionEntry>();
 
   public static String parseTime(String time) {
-    if("@start".equals(time)) return "0D";
-    if("@now".equals(time)) return "0D"; //@TODO support @NOW
+    if("@start".equals(time)) return "0F";
+    if("@now".equals(time)) return "0F"; //@TODO support @NOW
     time = time.substring(1, time.length());
-    
-    System.out.println("dantest + " + time);
     
     int builtTime = 0;
     int buildUp = 0;
@@ -92,7 +90,7 @@ options {
           buildUp = buildUp*10 + new Integer(String.valueOf(cur));
       }
     }
-    return new String(Integer.valueOf(builtTime).toString())+"D";	 
+    return new String(Integer.valueOf(builtTime).toString())+"F";	 
     }
 }
 
