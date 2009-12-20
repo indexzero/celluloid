@@ -3,6 +3,8 @@ package org.celluloidlang.examples;
 import java.io.File;
 import java.net.MalformedURLException;
 
+import javax.media.Manager;
+
 import org.celluloidlang.constraints.defined.Input;
 import org.celluloidlang.core.*;
 import org.celluloidlang.devices.JMFAudio;
@@ -40,6 +42,9 @@ public class HelloCh2 {
 		//timeline timeline1
 		Timeline timeline1 = new Timeline();
 		
+		//need this bastard to display video
+		Manager.setHint(Manager.LIGHTWEIGHT_RENDERER, true);
+		
 		//input audio1 = new AudioFile(*somefile*)
 		try {
 		JMFAudio audio1 = new JMFAudio(
@@ -61,6 +66,7 @@ public class HelloCh2 {
 			new ConstraintFunction(audio1, new ReactiveNumber(0.0)) {
 				public void execute() {
 					((JMFAudio) input).play();
+					System.out.println("Testing nararation");
 				}
 			}
 		);
@@ -96,17 +102,15 @@ public class HelloCh2 {
 					public void execute() {
 						((JMFVideo) input).play();
 					}
-				}
-			);
-		//output size
+				});
+
 		
 		globalTimeline.addConstraintFunction(
 				new ConstraintFunction(timeline1, new ReactiveNumber(0.0)) {
 					public void execute() {
 						((Timeline) input).play();
 					}
-				}
-		);
+				});
 		globalTimeline.addConstraintFunction(
 				 new OutputConstraintFunction(
 						timeline1, 
@@ -115,15 +119,15 @@ public class HelloCh2 {
 							public void execute() {
 								((Timeline) input).attachOutput(output);
 							}
-				}
-				);
+				});
+		globalTimeline.play();
 		
 		
 
 		} catch (MalformedURLException e) {
 			System.err.println("Could not generate URL");
 			System.exit(1);
-		};
+		}
 	}
 
 }

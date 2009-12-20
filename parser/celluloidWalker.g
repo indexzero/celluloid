@@ -191,12 +191,12 @@ inBlockDeclaration[String with]
 ifStatement
     :  ^(IF exp = logicalORExpression block = ifBlock) {
     	  $st = %ifStatement();
-    	  %{$st}.exp = $exp.text; // @TODO: This is wrong
+    	  %{$st}.exp = $exp.text; // @TODO: This is a hack (possibly wrong)
     	  %{$st}.block = $block.st;
     	}
     ;
 ifBlock
-    :   ^(IFBLOCK (block += ifBlockDeclaration)+) ^(ELSEIF (elifStmt += elseIfStatement)*) ^(ELSE elseStmt = elseStatement?) {
+    :   ^(IFBLOCK (block += ifBlockDeclaration)+) ^(ELSEIFS (elifStmt += elseIfStatement)*) ^(ELSE elseStmt = elseStatement?) {
     	  $st = %ifBlock();
     	  %{$st}.block = $block;
      	  %{$st}.elifStmt = $elifStmt;
@@ -205,9 +205,9 @@ ifBlock
     ;    
 
 elseIfStatement 
-    :   ^(exp = logicalORExpression ^(IFBLOCK (block += ifBlockDeclaration)+)) {
+    :   ^(ELSEIF (exp = logicalORExpression) ^(IFBLOCK (block += ifBlockDeclaration)+)) {
     	  $st = %elseIfStatement();
-    	  %{$st}.exp = $exp.st;
+    	  %{$st}.exp = $exp.text; // @todo: This is a hack (possibly wrong)
       	  %{$st}.block = $block;
     	}
     ;
@@ -289,21 +289,18 @@ expression
     :    ^(ASSIGNMENT_OPERATOR logicalORExpression expression)
     ;
 logicalORExpression      
-    :    ^('or' 'not'? exp1 = logicalORExpression exp2 = logicalORExpression) 
-          //-> expression(lhand = { $exp1.st }, op = { '||' }, rhand = { $exp2.st }) 
+    :	 ^('not' logicalORExpression)
+    |	 ^('or' logicalORExpression logicalORExpression)
     |    ^('and' logicalORExpression logicalORExpression)
     |    ^(EQUALITY_OPERATOR logicalORExpression logicalORExpression)
     |    ^(RELATIONAL_OPERATOR logicalORExpression logicalORExpression)
     |    ^(ADDITIVE_OPERATOR logicalORExpression logicalORExpression)
-    |    ^(MULTIPLICATIVE_OPERATOR primaryExpression logicalORExpression)
+    |    ^(MULTIPLICATIVE_OPERATOR logicalORExpression logicalORExpression)
+    |	 ID -> passThrough(text = { $ID.text } )
+    |	 BOOL -> passThrough(text = { $BOOL.text } )
+    |	 NUMBER -> passThrough(text = { $NUMBER.text } )
     ;	
-primaryExpression
-    :	 ID
-    |	 ID expressionList	
-    |	 literal
-    |	 functionPredicateCall
-    ;
-
+    
 // Start generic literals 
 literal : BOOL | NUMBER | STRING | TIME;
 

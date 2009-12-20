@@ -2,11 +2,13 @@ package org.celluloidlang.examples;
 
 import java.io.File;
 import java.net.MalformedURLException;
-
+import javax.media.Manager;
 import org.celluloidlang.core.*;
-import org.celluloidlang.devices.JMFVideo;
-import org.celluloidlang.devices.SwingOutput;
-import org.celluloidlang.reactive.ReactiveNumber;
+import org.celluloidlang.devices.*;
+import org.celluloidlang.reactive.*;
+import org.celluloidlang.announcment.*;
+import org.celluloidlang.constraints.buildtin.*;
+import org.celluloidlang.constraints.defined.*;
 
 public class HelloWorld {
 	
@@ -14,19 +16,28 @@ public class HelloWorld {
 
 		/*
 		 * This is the one and only global timeline.
+		 * 
+		 * THIS IS REQUIRED: global timeline is required, see the bottom
+		 * for the details
 		 */
 		Timeline globalTimeline = new Timeline();
+		
+		//need this bastard to display video
+		//THIS IS REQUIRED
+		Manager.setHint(Manager.LIGHTWEIGHT_RENDERER, true);
 		
 		//this is a timeline defined in source.cld
 		Timeline timeline1 = new Timeline();
 		
-		//output size
+		//NOTE THE SECOND TWO ARGS ARE NOT USED, the two numbers, they can
+		//be literally anything, say -1 for convenience
 		SwingOutput output1 = new SwingOutput("Celluloid Output", 1024, 768);
 		
 		//this is an input defined in source.cld
-		JMFVideo jmf;
+		JMFVideo jmf, jmf2;
 		try {
-			jmf = new JMFVideo(new File("june_chorus.wav").toURI().toURL());
+			jmf = new JMFVideo(new File("lostinspace.7.160x120.11khz.mov").toURI().toURL());
+			jmf2 = new JMFVideo(new File("darkcity.7.160x120.11khz.mov").toURI().toURL());
 		} catch (MalformedURLException e) {
 			System.err.println("Could not generate URL");
 			return;
@@ -39,31 +50,9 @@ public class HelloWorld {
 			}
 		});
 		
-		//ffwd at time 2
-		timeline1.addConstraintFunction(new ConstraintFunction(jmf, new ReactiveNumber(2000.0)) {
-			public void execute() {
-				((JMFVideo) input).ffwd(new ReactiveNumber(2.0));
-			}
-		});
-		
-		//ffwd rate back to 1
-		timeline1.addConstraintFunction(new ConstraintFunction(jmf, new ReactiveNumber(4000.0)) {
-			public void execute() {
-				((JMFVideo) input).ffwd(new ReactiveNumber(1.0));
-			}
-		});
-		
-		//play every second
-		timeline1.addEveryFunction(new EveryFunction(new ReactiveNumber((float)1000), jmf)  {
+		timeline1.addConstraintFunction(new ConstraintFunction(jmf2, new ReactiveNumber(8000.0)) {
 			public void execute() {
 				((JMFVideo) input).play();
-			}
-		});
-		
-		//stop every two seconds
-		timeline1.addEveryFunction(new EveryFunction(new ReactiveNumber((float)2000), jmf)  {
-			public void execute() {
-				((JMFVideo) input).stop();
 			}
 		});
 		
