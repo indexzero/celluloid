@@ -50,10 +50,10 @@ if (<exp>)
 ifBlock(block, elifStmt, elseStmt)    ::=
 <<
 {
-  block
+  <block>
 }
-elifStmt
-elseStmt
+<elifStmt>
+<elseStmt>
 >>
 elseIfStatement(exp, block)           ::=
 <<
