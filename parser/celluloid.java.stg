@@ -1,5 +1,35 @@
 group jcelluloid;
 
+program(
+ events, constraints,
+ devices, predicates, 
+ functions, code)  ::=
+<<
+  package org.celluloidlang.program;
+
+  import java.io.File;
+  import java.net.MalformedURLException;
+
+  import org.celluloidlang.core.*;
+  import org.celluloidlang.devices.JMFVideo;
+  import org.celluloidlang.devices.SwingOutput;
+  import org.celluloidlang.reactive.ReactiveNumber;
+
+  <constraints:{ constraint | <constraint>}; separator="\r\n">
+  <devices:{ device | <device> }; separator="\r\n">
+
+  public class CelluloidProgram {
+  	<events:{ event | <event> }; separator="\r\n">
+  	<functions:{ function | <function> }; separator="\r\n">
+  	<predicates:{ predicate | <predicates> }; separator="\r\n">
+
+  	public static void main(String[] args) {
+  	  <code:{ code | <code>}; separator="\r\n">
+  	}
+  }
+
+>>
+
 announcementDefinition()              ::= ""
 eventDefinition(name)                 ::= "private String <name>_event = \"<name>\";"
 
@@ -7,19 +37,19 @@ constraintDefinition(
  name, require,
  requires, block)                     ::=
 <<
-public interface <name> <requires> {
+interface <name> <requires> {
   <block>
 }
 >>
 
 deviceDefinition(name, accept, accepts, block) ::=
 <<
-public class <name> <accept> <accepts> {
+class <name> <accept> <accepts> {
  <block>
 }
 >>
 
-functionHeader(name, args)            ::= "<name>(<args>)"
+functionHeader(name, args)             ::= "<name>(<args>)"
 functionDefinition(name, args, block)  ::=
 <<
 public void <name> (<args>) {
@@ -76,11 +106,11 @@ else
 whenEveryStatement()                  ::= ""
 
 constraintFunctionCall(
- timeline, target,
+ with, target,
  type, function,
  time, args)                          ::=
 <<
-<timeline>.addConstraintFunction(
+<with>.addConstraintFunction(
   new ConstraintFunction(<target>, new ReactiveNumber(<time>)) {
                 public void execute() {
                     ((<type>) input).<function>(<args.st>);
@@ -92,8 +122,8 @@ constraintFunctionCall(
 functionPredicateCall()               ::= ""
 
 idList(ids)                           ::= "<ids:{ id | <id.text> }; separator=\", \">"
-variableList(vars)                    ::= "<vars:{ var | <var.st> }; separator=\", \">"
-expressionList(exps)                  ::= "<exps:{ exp | <exp.st> }; separator=\", \">"
+variableList(vars)                    ::= "<vars:{ var | <var> }; separator=\", \">"
+expressionList(exps)                  ::= "<exps:{ exp | <exp> }; separator=\", \">"
 statementList(statements)             ::=
 <<
 <statements:{ statement | <statement>}; separator="\r\n">

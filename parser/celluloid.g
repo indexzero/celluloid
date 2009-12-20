@@ -194,7 +194,7 @@ predicateBlock
 
 // Begin timline and procedural blocks
 inStatement
-    :  'in' ID inBlock
+    :  'in' ID inBlock 
         -> ^(IN ID inBlock)
         //-> inStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
@@ -270,6 +270,17 @@ constraintFunctionCall
     :    function = ID id += ID (',' id += ID)* (time = TIME (',')?)? expressionList? NEWLINE?
          -> ^(OBJCALL $id $function ^(AT $time?) ^(ARGS expressionList?))* 
     ;
+    
+/*    
+f
+scope { int x; }
+   : { $f::x = 42; System.out.println($f::x); } g
+   ;
+
+g  :  h;
+
+h 	:	 {int y = $f::x; System.out.println($f::x); };	
+*/
     
 functionPredicateCall       
     :    ID '(' expressionList ')' NEWLINE?
