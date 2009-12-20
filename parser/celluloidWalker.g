@@ -60,8 +60,8 @@ options {
   HashMap<String, FunctionEntry> functionTable = new HashMap<String, FunctionEntry>();
 
   public static String parseTime(String time) {
-    if("@start".equals(time)) return "0F";
-    if("@now".equals(time)) return "0F"; //@TODO support @NOW
+    if("@start".equals(time)) return "0f";
+    if("@now".equals(time)) return "0f"; //@TODO support @NOW
     time = time.substring(1, time.length());
     
     System.out.println("dantest + " + time);
@@ -99,7 +99,7 @@ options {
           buildUp = buildUp*10 + new Double(String.valueOf(cur));
       }
     }
-    return Double.valueOf(builtTime/fraction).toString()+"F";	 
+    return Double.valueOf(builtTime/fraction).toString()+"f";	 
     }
 }
 
@@ -386,7 +386,7 @@ variableDeclaration
            typeMap = new HashMap<String, String>();
            typeMap.put("number", "double");
 	   typeMap.put("string", "String");
-	   typeMap.put("time", "long");
+	   typeMap.put("time", "float");
 	   typeMap.put("boolean", "boolean");
     
            $st = %variableDeclaration();
@@ -401,7 +401,7 @@ variableDeclaration
            typeMap = new HashMap<String, String>();
            typeMap.put("number", "double");
 	   typeMap.put("string", "String");
-	   typeMap.put("time", "long");
+	   typeMap.put("time", "float");
 	   typeMap.put("boolean", "boolean");
     
            $st = %variableArgument();
