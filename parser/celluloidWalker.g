@@ -287,7 +287,7 @@ constraintFunctionCall[String with]
            SymbolEntry withSymbol = this.symbolTable.get($with);
            String withType = withSymbol.getType();
            
-           $st = withType != "timeline" ? %outputConstraintFunctionCall() : %constraintFunctionCall();
+           $st = withType != "Timeline" ? %outputConstraintFunctionCall() : %constraintFunctionCall();
            %{$st}.with = $with;
            %{$st}.target = $target.text;
            
