@@ -40,7 +40,15 @@ predicateBlock(statements, returns) ::=
   return <returns>;
 >>
 
-inStatement(name, block)              ::= "<block>"
+passThrough(text)  ::= "<text>"
+
+inStatement(block)              ::=
+<<
+in inStatement
+<block>
+
+>>
+
 ifStatement(exp, block)               ::=
 <<
 if (<exp>)
@@ -77,6 +85,8 @@ constraintFunctionCall(
  type, function,
  time, args)                          ::=
 <<
+
+in cfc
 <timeline>.addConstraintFunction(
   new ConstraintFunction(<target>, new ReactiveNumber(<time>)) {
                 public void execute() {
@@ -91,7 +101,12 @@ functionPredicateCall()               ::= ""
 idList(ids)                           ::= "<ids:{ id | <id.text> }; separator=\", \">"
 variableList(vars)                    ::= "<vars:{ var | <var.st> }; separator=\", \">"
 expressionList(exps)                  ::= "<exps:{ exp | <exp.st> }; separator=\", \">"
-statementList(statements)             ::= "<statements>"
+statementList(statements)             ::=
+<<
+in statementList
+<statements>
+
+>>
 
 variableDeclaration(type, name, init) ::= "<type> <name> <init>"
 timelineDeclaration(name)             ::= "timeline <name> = new timeline();"
