@@ -39,11 +39,19 @@ program
   this.symbolTable = new HashMap<String, SymbolEntry>();
 }
     :    ^(PROGRAM 
-             ^(EVENTS eventDefinition NEWLINE*)
-             ^(CONSTRAINTS constraintDefinition NEWLINE*)
-             ^(DEVICES deviceDefinition NEWLINE*)
-             ^(FUNCTIONS (functionDefinition | predicateDefinition)*)
-             ^(PROGBLOCK functionPredicateBlockDeclaration*))
+             ^(EVENTS (events += eventDefinition)*)
+             ^(CONSTRAINTS (constraints += constraintDefinition)*)
+             ^(DEVICES (devices += deviceDefinition)*)
+             ^(FUNCTIONS (functions += functionDefinition | predicates += predicateDefinition)*)
+             ^(PROGBLOCK (code += functionPredicateBlockDeclaration)*)) {
+            $st = %program();
+            %{$st}.events = $events;
+            %{$st}.constraints = $constraints;
+            %{$st}.devices = $devices;
+            %{$st}.functions = $functions;
+            %{$st}.predicates = $predicates;
+            %{$st}.code = $code;
+         }        
     ;
 
 // Event definition
@@ -162,24 +170,22 @@ predicateBlock
 // Timline and procedural blocks
 
 inStatement
-scope {
-  String timeline;
-}   :  ^(IN ID block = inBlock) {
-	$st = %inStatement();
+    :  ^(IN ID block = inBlock[$ID.text]) {
+        $st = %inStatement();
 	%{$st}.block = $block.st;
        }
     ;
     
-inBlock 
-    :	^(INBLOCK (block += inBlockDeclaration)*) {
+inBlock[String with] 
+    :	^(INBLOCK (block += inBlockDeclaration[$with])*) {
            $st = %statementList();
            %{$st}.statements = $block;
    	 }
     ;
-inBlockDeclaration
-    :   whenStatement -> passThrough(text = { $whenStatement.st } )
-    |   everyStatement -> passThrough(text = { $everyStatement.st } )
-    |   constraintFunctionCall -> passThrough(text = { $constraintFunctionCall.st } )
+inBlockDeclaration[String with]
+    :   whenStatement[$with] -> passThrough(text = { $whenStatement.st } )
+    |   everyStatement[$with] -> passThrough(text = { $everyStatement.st } )
+    |   constraintFunctionCall[$with] -> passThrough(text = { $constraintFunctionCall.st } )
     ;
 
 ifStatement
@@ -214,39 +220,39 @@ elseStatement
 ifBlockDeclaration
     :	variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
     |   expression -> passThrough(text = { $expression.st } )
-    |   inStatement -> passThrough(text = { $inStatement.st } )
+    //|   inStatement -> passThrough(text = { $inStatement.st } )
     |   ifStatement -> passThrough(text = { $ifStatement.st } )
     |   functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
     ;
 
-whenStatement
-    :   ^(LISTENER ^(ARG ID?) EVERY ^(COND 'when'? 'unless' ID?) listenerBlock)
+whenStatement[String with]
+    :   ^(LISTENER ^(ARG ID?) EVERY ^(COND 'when'? 'unless' ID?) listenerBlock[$with])
         //-> whenStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
-everyStatement
-    :   ^(LISTENER ^(ARG ID?) ^(EVERY TIME) ^(COND 'when'? 'unless'? ID?) listenerBlock)
+everyStatement[String with]
+    :   ^(LISTENER ^(ARG ID?) ^(EVERY TIME) ^(COND 'when'? 'unless'? ID?) listenerBlock[$with])
         //-> everyStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
-listenerBlock
-    :  ^(LISTENBLOCK listenerBlockDeclaration*)
+listenerBlock[String with]
+    :  ^(LISTENBLOCK listenerBlockDeclaration[$with]*)
     ;
-listenerBlockDeclaration
-    :    constraintFunctionCall -> passThrough(text = { $constraintFunctionCall.st } )
+listenerBlockDeclaration[String with]
+    :    constraintFunctionCall[$with] -> passThrough(text = { $constraintFunctionCall.st } )
     |    expression -> passThrough(text = { $expression.st } )
     |    variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
     |    functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
     ;
     
-constraintFunctionCall 
-    :    ^(OBJCALL target = ID function = ID ^(AT (time = TIME)?) ^(ARGS expressionList?)) {
-         $st = %constraintFunctionCall();
-         %{$st}.timeline = $inStatement::timeline;
-         %{$st}.target = $target.text;
-         %{$st}.type = "JMFAudio"; // TODO: inter timeline through semantic analysis
-         %{$st}.function = $function.text;
-         %{$st}.time = $time.text != "@start" ? $time.text : 0;
-         %{$st}.args = $expressionList.st;
-    }
+constraintFunctionCall[String with]
+    :    ^(OBJCALL function = ID target = ID ^(AT (time = TIME)?) ^(ARGS expressionList?)) {
+           $st = %constraintFunctionCall();
+           %{$st}.with = $with;
+           %{$st}.target = $target.text;
+           %{$st}.type = "JMFAudio"; // TODO: inter timeline through semantic analysis
+           %{$st}.function = $function.text;
+           %{$st}.time = $time.text != "@start" ? $time.text : 0;
+           %{$st}.args = $expressionList.st;
+         }
     ;
     
 functionPredicateCall       

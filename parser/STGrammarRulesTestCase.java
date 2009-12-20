@@ -6,7 +6,6 @@ import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.TokenRewriteStream;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
-import org.antlr.runtime.tree.BufferedTreeNodeStream;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.antlr.stringtemplate.StringTemplate;
 import java.io.*;
@@ -41,15 +40,16 @@ public class STGrammarRulesTestCase extends TestCase {
 
         this.shouldGenerateFunctionHeader();
         this.shouldGenerateFunctionDefinition();
+        //this.shouldGeneratePredicateHeader();
+        //this.shouldGeneratePredicateDefinition();
 
-        //this.shouldGenerateInStatement();
+        this.shouldGenerateInStatement();
+        this.shouldGenerateIfStatement();
 
         this.shouldGenerateVariableList();
         this.shouldGenerateIdList();
         this.shouldGenerateTimelineDeclaration();
         this.shouldGenerateNumberDeclaration();
-        //this.shouldGenerateConstraintDefinition();
-        this.shouldGenerateIfStatement();
     }
 
     @Test
@@ -149,6 +149,38 @@ public class STGrammarRulesTestCase extends TestCase {
     }
 
     @Test
+    public void shouldGeneratePredicateHeader() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "predicateHeader.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.predicateHeader().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.predicateHeader_return r = walker.predicateHeader();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
+    }
+
+    @Test
+    public void shouldGeneratePredicateDefinition() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "predicateDefinition.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.predicateDefinition().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.predicateDefinition_return r = walker.predicateDefinition();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
+    }
+
+    @Test
     public void shouldGenerateIdList() throws IOException, RecognitionException {
         STTestRunner testRunner = new STTestRunner(this.testPath + "idList.cld", this.templatePath) {
             public CommonTree getTree(celluloidParser parser) throws RecognitionException {
@@ -225,10 +257,42 @@ public class STGrammarRulesTestCase extends TestCase {
         testRunner.RunTest();
     }
 
+    /*public void shouldCommunicate() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "ifStatement.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.f().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                return null;
+            }
+
+            public void RunTest() throws IOException, RecognitionException {
+                System.out.println("Testing " + this.testPath);
+                FileReader groupFileR = new FileReader(this.templatePath);
+                StringTemplateGroup templates = new StringTemplateGroup(groupFileR);
+                groupFileR.close();
+
+                FileInputStream inputFileS = new FileInputStream(this.testPath);
+                ANTLRInputStream input = new ANTLRInputStream(inputFileS);
+                celluloidLexer lexer = new celluloidLexer(input); // create lexer
+                CommonTokenStream tokens = new CommonTokenStream(lexer);
+                celluloidParser parser = new celluloidParser(tokens); // create parser
+
+                CommonTree tree = this.getTree(parser);
+                System.out.println("=====Parse Tree=====");
+                System.out.println(tree.toStringTree());
+                System.out.println("=====End Parse Tree=====");
+            }
+        };
+
+        testRunner.RunTest();
+    }*/
+
     private class STTestRunner {
 
-        private String testPath;
-        private String templatePath;
+        protected String testPath;
+        protected String templatePath;
 
         public STTestRunner(String testPath, String templatePath) {
             this.testPath = testPath;
@@ -259,7 +323,7 @@ public class STGrammarRulesTestCase extends TestCase {
             System.out.println("=====Parse Tree=====");
             System.out.println(tree.toStringTree());
             System.out.println("=====End Parse Tree=====");
-            BufferedTreeNodeStream nodes = new BufferedTreeNodeStream(tree);
+            CommonTreeNodeStream nodes = new CommonTreeNodeStream(tree);
             nodes.setTokenStream(tokens);
 
             celluloidWalker walker = new celluloidWalker(nodes);
