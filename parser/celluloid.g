@@ -166,7 +166,6 @@ functionPredicateBlockDeclaration
     |    expression
     |    inStatement // Remark: Unknown behavior if called from inStatement
     |    ifStatement
-    |    functionPredicateCall
     ;
 // End function blocks
 
@@ -238,7 +237,6 @@ ifBlockDeclaration
     |   expression 
     |   inStatement 
     |   ifStatement
-    |   functionPredicateCall
     ;
 
 whenStatement
@@ -264,7 +262,6 @@ listenerBlockDeclaration
     :    constraintFunctionCall 
     |    expression 
     |    variableDeclaration
-    |    functionPredicateCall
     ;
     
 constraintFunctionCall 
