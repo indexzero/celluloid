@@ -34,26 +34,58 @@ public class STGrammarRulesTestCase extends TestCase {
     }
 
     public void runAllTests() throws IOException, RecognitionException {
-        this.shouldThrowOnUndefinedInput();
+        //this.shouldThrowOnUndefinedInput();
         //this.shouldThrowOnUndefinedFunction();
+        this.shouldGenerateHelloCh1();
+        this.shouldGenerateHelloCh2();
+        //this.shouldGenerateHelloWorld();
+        //this.shouldGenerateEventDefinition();
+        //this.shouldGenerateConstraintDefinition();
+        //this.shouldGenerateDeviceDefinition();
 
-        this.shouldGenerateHelloWorld();
-        this.shouldGenerateEventDefinition();
-        this.shouldGenerateConstraintDefinition();
-        this.shouldGenerateDeviceDefinition();
-
-        this.shouldGenerateFunctionHeader();
-        this.shouldGenerateFunctionDefinition();
-        this.shouldGeneratePredicateHeader();
+        //this.shouldGenerateFunctionHeader();
+        //this.shouldGenerateFunctionDefinition();
+        //this.shouldGeneratePredicateHeader();
         this.shouldGeneratePredicateDefinition();
 
-        this.shouldGenerateIfStatement();
+        //this.shouldGenerateIfStatement();
 
-        this.shouldGenerateVariableList();
-        this.shouldGenerateIdList();
-        this.shouldGenerateNumberDeclaration();
-        this.shouldGenerateNumberDeclarationWithInitializer();
-        this.shouldGenerateTimelineDeclaration();
+        //this.shouldGenerateVariableList();
+        //this.shouldGenerateIdList();
+        //this.shouldGenerateNumberDeclaration();
+        //this.shouldGenerateNumberDeclarationWithInitializer();
+        //this.shouldGenerateTimelineDeclaration();
+    }
+
+    @Test
+    public void shouldGenerateHelloCh1() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "helloCh1.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.program().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.program_return r = walker.program();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
+    }
+
+    public void shouldGenerateHelloCh2() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "helloCh2.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.program().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.program_return r = walker.program();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
     }
 
     @Test

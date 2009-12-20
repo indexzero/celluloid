@@ -6,7 +6,8 @@ options {
 	output=template;
 }
 
-@header { 
+
+@header {
   import java.util.HashMap;  
 }
 
@@ -57,6 +58,36 @@ options {
   HashMap<String, String> typeMap = new HashMap<String, String>();
   HashMap<String, SymbolEntry> symbolTable = new HashMap<String, SymbolEntry>();
   HashMap<String, FunctionEntry> functionTable = new HashMap<String, FunctionEntry>();
+
+  public static String parseTime(String time) {
+      time = time.substring(1, time.length());
+    	   //@start, @now,
+    	     switch(time.charAt(time.length()-1)) {
+    	     case 't':
+    	       time = "0l";
+    	       break;
+    	     case 'w':
+    	       //@TODO support 'now'
+    	       time = "0l";
+    	       break;
+    	     case 'd':
+    	       time = 86400000*(new Integer(time.substring(0, time.length()-1)))+"l";
+    	       break;
+    	     case 'h':
+    	       time = 3600000*(new Integer(time.substring(0, time.length()-1)))+"l";
+    	       break;
+    	     case 'm':
+    	       time = 60000*(new Integer(time.substring(0, time.length()-1)))+"l";
+    	       break;
+    	     case 's':
+    	       if(time.length()>1 && time.charAt(time.length()-1) != 'm') //s
+    	         time = 1000*(new Integer(time.substring(0, time.length()-1)))+"l";
+    	       else //ms
+    	         time = time.substring(0, time.length()-2)+"l";
+    	       break;
+    	   }
+    	   return time;
+    }
 }
 
 
@@ -283,20 +314,16 @@ listenerBlockDeclaration[String with]
 constraintFunctionCall[String with]
     :    ^(OBJCALL target = ID function = ID ^(AT (time = TIME)?) ^(ARGS expressionList?)) {
            SymbolEntry targetSymbol = this.symbolTable.get($target.text);
-           System.out.println("target text="+$target.text);
-           System.out.println("function text="+$function.text);
-           System.out.println("time text="+$time.text);
            SymbolEntry withSymbol = this.symbolTable.get($with);
            String withType = withSymbol.getType();
-           System.out.println("withType = "+withType);
-           
+         
            $st = withType != "Timeline" ? %outputConstraintFunctionCall() : %constraintFunctionCall();
            %{$st}.with = $with;
            %{$st}.target = $target.text;
            
            %{$st}.type = targetSymbol.getType(); 
            %{$st}.function = $function.text;
-           %{$st}.time = $time.text != "@start" ? $time.text : 0; // TODO: @start should be parsed in logical or expression...
+           %{$st}.time = parseTime(new String($time.text));; // TODO: @start should be parsed in logical or expression...
            %{$st}.args = $expressionList.st;
          }
     ;
@@ -369,12 +396,26 @@ variableDeclaration
            %{$st}.type = this.typeMap.get($TYPE.text);
          }
     |    ^(OBJDEF PSEUDOTYPE name = ID realType = ID args = expressionList?) {
-           $st = %deviceDeclaration();
-           %{$st}.type = $realType;
-           %{$st}.name = $name;
-           %{$st}.args = $args.st;
+           typeMap =  new HashMap<String, String>();
+           typeMap.put("AudioFile", "JMFAudio");
+           typeMap.put("Output", "output");
+           typeMap.put("input", "input");
+           if($realType.text .equals("AudioFile")) {
+           	$st = %audioDeviceDeclaration();
+           }
+           else if($realType.text.equals("Output")){
+           	$st = %outputDeclaration();
+           }
+           else{
+          	$st = %deviceDeclaration();
+           }
            
-           this.symbolTable.put($name.text, new SymbolEntry($name.text, $realType.text, $PSEUDOTYPE.text));
+                     	%{$st}.type   = this.typeMap.get($realType.text);
+         	%{$st}.name = $name;
+          	%{$st}.args   = $args.st;
+          
+           
+           this.symbolTable.put($name.text, new SymbolEntry($name.text, this.typeMap.get($realType.text), $PSEUDOTYPE.text));
          }
     ;
 
@@ -384,19 +425,31 @@ initializer
     
 // IMPORTANT: NEEDS TEMPLATE!
 expression 
-    :    ^(ASSIGNMENT_OPERATOR expression expression) 
-    |    ^('not' expression) // Needs Template
-   |     ^('or 'expression expression) // Needs Template
-    |    ^('and' expression expression) // Needs Template
-    |    ^(EQUALITY_OPERATOR expression expression) // Needs Template
-    |    ^(RELATIONAL_OPERATOR expression expression) // Needs Template
-    |    ^(ADDITIVE_OPERATOR expression expression) // Needs Template
-    |    ^(MULTIPLICATIVE_OPERATOR expression expression) // Needs Template
+    :    ^(ASSIGNMENT_OPERATOR lhs = expression rhs = expression) {
+    	   $st = %expressionLine();
+           %{$st}.lhand = $lhs.st;
+           if(":=".equals($ASSIGNMENT_OPERATOR.text)) {
+             %{$st}.op = new String("=");
+           } else {
+             %{$st}.op = $ASSIGNMENT_OPERATOR.text;
+           }
+           %{$st}.rhand = $rhs.st;
+    	}
+    |    ^('not' lhs = expression) -> simpleExpression(lhand = { $lhs.st })
+    |    ^('or' lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { "or" }, rhand = { $rhs.st })
+    |    ^('and' lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { "and" }, rhand = { $rhs.st })
+    |    ^(EQUALITY_OPERATOR lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { $EQUALITY_OPERATOR.text }, rhand = { $rhs.st })
+    |    ^(RELATIONAL_OPERATOR lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { $RELATIONAL_OPERATOR.text }, rhand = { $rhs.st })
+    |    ^(ADDITIVE_OPERATOR lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { $ADDITIVE_OPERATOR.text }, rhand = { $rhs.st })
+    |    ^(MULTIPLICATIVE_OPERATOR lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { $MULTIPLICATIVE_OPERATOR.text }, rhand = { $rhs.st })
     |	 ID     -> passThrough(text = { $ID.text } ) // Needs Action; Check if it exists
     |	 BOOL   -> passThrough(text = { $BOOL.text } ) // Needs Template
     |	 NUMBER -> passThrough(text = { $NUMBER.text } ) // Needs Template
     |	 STRING -> passThrough(text = { $STRING.text } ) // Needs Template
-    |	 TIME   -> passThrough(text = { $TIME.text } )  // Needs Action; Needs to be parsed into Milliseconds
+    |	 TIME  {
+    	   $st = %passThrough();
+    	   %{$st}.text = parseTime(new String($TIME.text));
+    	 }  // Needs Action; Needs to be parsed into Milliseconds
     |    functionPredicateCall       -> passThrough(text = { $functionPredicateCall.st })
     ;	
     

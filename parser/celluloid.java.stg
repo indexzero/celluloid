@@ -137,17 +137,24 @@ outputConstraintFunctionCall(
  type, function,
  time, args)                          ::=
 <<
-globalTimeline.addConstraintFunction(new OutputConstraintFunction(<target>, <with>, new ReactiveNumber(<time>)) {
-  public void execute() {
-    ((<type>) input).attachOutput(output);
-  }
-});
-
 globalTimeline.addConstraintFunction(new ConstraintFunction(<target>, new ReactiveNumber(<time>)) {
   public void execute() {
     ((<type>) input).<function>(<args>);
   }
 });
+
+globalTimeline.addConstraintFunction(
+    new OutputConstraintFunction(
+        <target>,
+        new SwingOutput("Celluloid Output", 1024, 768).
+        new ReactiveNumber(<time>)) {
+                                        public void execute() {
+                                            ((<type>) input).attachOutput(output);
+                                        }
+                                    }
+);
+
+
 >>
 
 passThrough(text)  ::= "<text>"
@@ -161,9 +168,18 @@ statementList(statements)             ::=
 
 variableArgument(type, name)          ::= "<type> <name>"
 timelineArgument(name)                ::= "Timeline <name>"
-deviceDeclaration(type, name, args)   ::= "<type> <name> = new <type>(<args>);"
+outputDeclaration(type, name, args)   ::= ""
+audioDeviceDeclaration(type, name, args) ::= "<type> <name> = new <type>(new File(<args>).toURI().toURL());"
+deviceDeclaration(type, name, args)   ::=
+<<
+try {
+ <type> <name> = new <type>(<args>);
+} catch (MalformedURLException e) { System.err.println(e); return; }
+>>
 variableDeclaration(type, name, init) ::= "<type> <name> <init>;"
 timelineDeclaration(name)             ::= "Timeline <name> = new Timeline();"
 initializer(exp)                      ::= " = <exp>"
+expressionLine(lhand,op,rhand)        ::= "<lhand> <op> <rhand>;"
 expression(lhand,op,rhand)            ::= "<lhand> <op> <rhand>"
+simpleExpression(lhand)               ::= "<lhand>"
 primaryExpression                     ::= ""
