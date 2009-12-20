@@ -37,12 +37,14 @@ program(
       // REQUIRED: Need this set to display video
       Manager.setHint(Manager.LIGHTWEIGHT_RENDERER, true);
 
-  	  <code:{ code | <code>}; separator="\r\n">
+      try {
+  	    <code:{ code | <code>}; separator="\r\n">
   	  
-      /*
-       * EXECUTION BEGINS HERE
-       */
-      globalTimeline.play();
+        /*
+         * EXECUTION BEGINS HERE
+         */
+        globalTimeline.play();
+     } catch (MalformedURLException e) { System.err.println(e); return; }
   	}
   }
 
@@ -138,9 +140,9 @@ outputConstraintFunctionCall(
  time, args)                          ::=
 <<
 globalTimeline.addConstraintFunction(new ConstraintFunction(<target>, new ReactiveNumber(<time>)) {
-  public void execute() {
-    ((<type>) input).<function>(<args>);
-  }
+    public void execute() {
+        ((<type>) input).<function>(<args>);
+    }
 });
 
 globalTimeline.addConstraintFunction(
@@ -151,10 +153,8 @@ globalTimeline.addConstraintFunction(
                                         public void execute() {
                                             ((<type>) input).attachOutput(output);
                                         }
-                                    }
+                                     }
 );
-
-
 >>
 
 passThrough(text)  ::= "<text>"
@@ -170,12 +170,7 @@ variableArgument(type, name)          ::= "<type> <name>"
 timelineArgument(name)                ::= "Timeline <name>"
 outputDeclaration(type, name, args)   ::= ""
 audioDeviceDeclaration(type, name, args) ::= "<type> <name> = new <type>(new File(<args>).toURI().toURL());"
-deviceDeclaration(type, name, args)   ::=
-<<
-try {
- <type> <name> = new <type>(<args>);
-} catch (MalformedURLException e) { System.err.println(e); return; }
->>
+deviceDeclaration(type, name, args)   ::= "<type> <name> = new <type>(<args>);"
 variableDeclaration(type, name, init) ::= "<type> <name> <init>;"
 timelineDeclaration(name)             ::= "Timeline <name> = new Timeline();"
 initializer(exp)                      ::= " = <exp>"

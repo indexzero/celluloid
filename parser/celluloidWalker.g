@@ -63,13 +63,17 @@ options {
     if("@start".equals(time)) return "0f";
     if("@now".equals(time)) return "0f"; //@TODO support @NOW
     time = time.substring(1, time.length());
-    
-    System.out.println("dantest + " + time);
-    
+        
     float builtTime = 0;
     float buildUp = 0;
     boolean dot = false;
     int fraction = 1;
+    if("@start".equals(time)) return "0F";
+    if("@now".equals(time)) return "0F"; //@TODO support @NOW
+    time = time.substring(1, time.length());
+    
+    int builtTime = 0;
+    int buildUp = 0;
     while(time.length() > 0) {
       char cur = time.charAt(0);
       time = time.substring(1, time.length());
