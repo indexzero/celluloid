@@ -1,8 +1,10 @@
 package org.celluloidlang.devices;
 
 import java.awt.Color;
+import java.awt.GridLayout;
 
 import javax.swing.JFrame;
+
 import org.celluloidlang.constraints.defined.Output;
 
 public class SwingOutput implements Output {
@@ -11,9 +13,10 @@ public class SwingOutput implements Output {
 	
 	public SwingOutput(String title, int width, int height) {
 		frame = new JFrame(title);
-		frame.setLayout(null);
+		frame.setLayout(new GridLayout());
 		frame.setBackground(Color.black);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setBounds(0, 0, width, height);
+		frame.setResizable(false);
+		frame.setSize(width, height);
 	}
 }

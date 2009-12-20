@@ -1,5 +1,6 @@
 package org.celluloidlang.core;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -101,14 +102,15 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 
 	public void attachOutput(Output out) {
 		if (out instanceof SwingOutput) {
-			((SwingOutput) out).frame.removeAll();
+			((SwingOutput) out).frame.getContentPane().removeAll();
 			for (Input i : inputs) {
 				Component ret = i.getVisualData();
 				
 				if (ret != null) {
-					((SwingOutput) out).frame.add(ret);
+					((SwingOutput) out).frame.getContentPane().add(ret);
 				}
 			}
+			((SwingOutput) out).frame.pack();
 			((SwingOutput) out).frame.setVisible(true);
 		}
 	}

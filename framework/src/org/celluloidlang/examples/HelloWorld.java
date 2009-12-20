@@ -3,6 +3,8 @@ package org.celluloidlang.examples;
 import java.io.File;
 import java.net.MalformedURLException;
 
+import javax.media.Manager;
+
 import org.celluloidlang.core.*;
 import org.celluloidlang.devices.JMFVideo;
 import org.celluloidlang.devices.SwingOutput;
@@ -17,16 +19,23 @@ public class HelloWorld {
 		 */
 		Timeline globalTimeline = new Timeline();
 		
+		//need this bastard to display video
+		Manager.setHint(Manager.LIGHTWEIGHT_RENDERER, true);
+		
 		//this is a timeline defined in source.cld
 		Timeline timeline1 = new Timeline();
+		Timeline timeline2 = new Timeline();
 		
 		//output size
 		SwingOutput output1 = new SwingOutput("Celluloid Output", 1024, 768);
 		
 		//this is an input defined in source.cld
-		JMFVideo jmf;
+		JMFVideo jmf, jmf2, jmf3, jmf4;
 		try {
-			jmf = new JMFVideo(new File("june_chorus.wav").toURI().toURL());
+			jmf = new JMFVideo(new File("lostinspace.7.160x120.11khz.mov").toURI().toURL());
+			jmf2 = new JMFVideo(new File("darkcity.7.160x120.11khz.mov").toURI().toURL());
+			jmf3 = new JMFVideo(new File("lostinspace.7.160x120.11khz.mov").toURI().toURL());
+			jmf4 = new JMFVideo(new File("darkcity.7.160x120.11khz.mov").toURI().toURL());
 		} catch (MalformedURLException e) {
 			System.err.println("Could not generate URL");
 			return;
@@ -39,6 +48,26 @@ public class HelloWorld {
 			}
 		});
 		
+		timeline1.addConstraintFunction(new ConstraintFunction(jmf2, new ReactiveNumber(0000.0)) {
+			public void execute() {
+				((JMFVideo) input).play();
+			}
+		});
+		
+		//play the file at time 0 (MUST BE IN MILLISECONDS)
+		timeline2.addConstraintFunction(new ConstraintFunction(jmf3, new ReactiveNumber(0000.0)) {
+			public void execute() {
+				((JMFVideo) input).play();
+			}
+		});
+		
+		timeline2.addConstraintFunction(new ConstraintFunction(jmf4, new ReactiveNumber(0000.0)) {
+			public void execute() {
+				((JMFVideo) input).play();
+			}
+		});
+		
+		/*
 		//ffwd at time 2
 		timeline1.addConstraintFunction(new ConstraintFunction(jmf, new ReactiveNumber(2000.0)) {
 			public void execute() {
@@ -87,6 +116,18 @@ public class HelloWorld {
 		});
 		
 		globalTimeline.addConstraintFunction(new ConstraintFunction(timeline1, new ReactiveNumber(0.0)) {
+			public void execute() {
+				((Timeline) input).play();
+			}
+		});
+		
+		globalTimeline.addConstraintFunction(new OutputConstraintFunction(timeline2, output1, new ReactiveNumber(8000.0)) {
+			public void execute() {
+				((Timeline) input).attachOutput(output);
+			}
+		});
+		
+		globalTimeline.addConstraintFunction(new ConstraintFunction(timeline2, new ReactiveNumber(8000.0)) {
 			public void execute() {
 				((Timeline) input).play();
 			}
