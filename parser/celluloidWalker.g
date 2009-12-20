@@ -60,14 +60,16 @@ options {
   HashMap<String, FunctionEntry> functionTable = new HashMap<String, FunctionEntry>();
 
   public static String parseTime(String time) {
-    if("@start".equals(time)) return "0D";
-    if("@now".equals(time)) return "0D"; //@TODO support @NOW
+    if("@start".equals(time)) return "0F";
+    if("@now".equals(time)) return "0F"; //@TODO support @NOW
     time = time.substring(1, time.length());
     
     System.out.println("dantest + " + time);
     
-    int builtTime = 0;
-    int buildUp = 0;
+    double builtTime = 0;
+    double buildUp = 0;
+    boolean dot = false;
+    int fraction = 1;
     while(time.length() > 0) {
       char cur = time.charAt(0);
       time = time.substring(1, time.length());
@@ -88,11 +90,16 @@ options {
           builtTime += 1000*buildUp;
           buildUp = 0;
           break;
+        case '.':
+          dot = true;
+          break;
         default:
-          buildUp = buildUp*10 + new Integer(String.valueOf(cur));
+          if(dot)
+            fraction *= 10;
+          buildUp = buildUp*10 + new Double(String.valueOf(cur));
       }
     }
-    return new String(Integer.valueOf(builtTime).toString())+"D";	 
+    return Double.valueOf(builtTime/fraction).toString()+"F";	 
     }
 }
 
@@ -104,7 +111,7 @@ program
   this.functionTable = new HashMap<String, FunctionEntry>();
   typeMap.put("number", "double");
   typeMap.put("string", "String");
-  typeMap.put("time", "long");
+  typeMap.put("time", "float");
   typeMap.put("boolean", "boolean");
 }
     :    ^(PROGRAM 
