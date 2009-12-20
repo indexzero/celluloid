@@ -28,7 +28,7 @@ public class Test {
     //testCase.TestAllGrammarRules();
     //ASTGrammarRulesTestCase testCase = new ASTGrammarRulesTestCase("ASTTests", "tests/");
     //testCase.runAllTests();
-    STGrammarRulesTestCase testCase = new STGrammarRulesTestCase("STTests", "tests/", "celluloid.java.stg");
+    STGrammarRulesTestCase testCase = new STGrammarRulesTestCase("STTests", "tests"+File.separator, "celluloid.java.stg");
     testCase.shouldGenerateConstraintDefinition();
     //testCase.printTestResults(testCase.shouldParseConstraintBlock());
   }

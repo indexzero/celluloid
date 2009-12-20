@@ -84,7 +84,7 @@ public class ASTGrammarRulesTestCase extends TestCase {
 
 
     public CommonTree shouldParseNumberLiteral() throws IOException, RecognitionException {
-        System.out.println("Testing number: literals\\number.cld");
+        System.out.println("Testing number: literals"+File.separator+"number.cld");
         celluloidParser parser = this.createParserFromFile("literals/number.cld");
         return (CommonTree)parser.primaryExpression().getTree();
     }
