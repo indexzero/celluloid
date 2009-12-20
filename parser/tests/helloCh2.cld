@@ -1,0 +1,10 @@
+timeline timeline1
+	input audio1 = new AudioFile("../framework/acousticgrunge.wav")
+	input audio2 = new AudioFile("../framework/playme.wav")
+
+	in timeline1 do
+	    play audio1 @start
+	    pause audio1 @1m
+	    play audio2 @1m
+	end
+	

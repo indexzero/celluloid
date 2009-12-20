@@ -1,2 +1,10 @@
 timeline timeline1
+	input audio1 = new AudioFile("../framework/playme.wav")
+	output output1 = new Output("../framework/out_playme.wav")
+	in timeline1 do
+	    play audio1 @start
+	end
+	in output1 do
+	    play timeline1 @start
+	end
 	
