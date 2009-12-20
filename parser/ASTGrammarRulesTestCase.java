@@ -78,14 +78,14 @@ public class ASTGrammarRulesTestCase extends TestCase {
      */
     public CommonTree shouldParseStringLiteral() throws IOException, RecognitionException {
         System.out.println("Testing string literals: string.cld");
-        celluloidParser parser = this.createParserFromFile("literals\\string.cld");
+        celluloidParser parser = this.createParserFromFile("literals/string.cld");
         return (CommonTree)parser.primaryExpression().getTree();
     }
 
 
     public CommonTree shouldParseNumberLiteral() throws IOException, RecognitionException {
-        System.out.println("Testing number: literals\\number.cld");
-        celluloidParser parser = this.createParserFromFile("literals\\number.cld");
+        System.out.println("Testing number: literals"+File.separator+"number.cld");
+        celluloidParser parser = this.createParserFromFile("literals/number.cld");
         return (CommonTree)parser.primaryExpression().getTree();
     }
 
@@ -101,7 +101,7 @@ public class ASTGrammarRulesTestCase extends TestCase {
     }
 
     /**
-     * Tests the initializer rule in celluloid.g 
+     * Tests the initializer rule in celluloid.g
      * @throws IOException
      * @throws RecognitionException
      */

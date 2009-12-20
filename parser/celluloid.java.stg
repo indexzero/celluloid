@@ -1,31 +1,106 @@
 group jcelluloid;
 
-variableDeclaration(type, name, init) ::= "<type> <name> <init>"
-initializer(exp)                      ::= " = <exp>"
+announcementDefinition()              ::= ""
+eventDefinition(name)                 ::= "public class <name> extends event { /* <name> event */ }"
+
+constraintDefinition(
+ name, require,
+ requires, block)                     ::=
+<<
+public interface <name> <requires> {
+  <block>
+}
+>>
+
+deviceDefinition(name, accept, accepts, block) ::=
+<<
+public class <name> <accept> <accepts> {
+ <block>
+}
+>>
+
+functionHeader(name, args)            ::= "<name>(<args>)"
+functionDefinition(name, args, block)  ::=
+<<
+public void <name> (<args>) {
+  <block>
+}
+>>
+
+predicateHeader(name, args)           ::= "public bool <name> (<args>)"
+predicateDefintion(name, args, block) ::=
+<<
+public void <name> (<args>) {
+  <block>
+}
+>>
+predicateBlock(statements, returns) ::=
+<<
+  <statements>
+  return <returns>;
+>>
+
+passThrough(text)  ::= "<text>"
+
+inStatement(block)              ::= "<block>"
+
+ifStatement(exp, block)               ::=
+<<
+if (<exp>)
+<block>
+
+>>
+ifBlock(block, elifStmt, elseStmt)    ::=
+<<
+{
+  <block>
+}
+<elifStmt>
+<elseStmt>
+>>
+elseIfStatement(exp, block)           ::=
+<<
+else if (<exp>)
+{
+  <block>
+}
+>>
+elseStatement(block)           ::=
+<<
+else
+{
+  <block>
+}
+>>
+
+whenEveryStatement()                  ::= ""
+
+constraintFunctionCall(
+ timeline, target,
+ type, function,
+ time, args)                          ::=
+<<
+<timeline>.addConstraintFunction(
+  new ConstraintFunction(<target>, new ReactiveNumber(<time>)) {
+                public void execute() {
+                    ((<type>) input).<function>(<args.st>);
+                }
+            }
+        );
+>>
+
+functionPredicateCall()               ::= ""
 
 idList(ids)                           ::= "<ids:{ id | <id.text> }; separator=\", \">"
 variableList(vars)                    ::= "<vars:{ var | <var.st> }; separator=\", \">"
 expressionList(exps)                  ::= "<exps:{ exp | <exp.st> }; separator=\", \">"
+statementList(statements)             ::= "<statements:{ statement | <statement>}; separator=\"\\n\">"
 
-functionDefintion(name, args, block)      ::=
-<<
-public void <name> (<args>) "{"
-  <block>
-"}"
->>
-functionBlock(statements)             ::= "<statements:{ statement | <statement.st> }; separator=\"\\n\">"
-functionCall(name, args)              ::=  "<name>(<args>);"
-
-predicateHeader(name, args)           ::= "public bool <name> (<args>)"
-predicateDefinition (header, block)   ::= << <header> "{" <block> "}" >>
-predicateBlock(block, exp)            ::= "<block> \\n returns <exp>;"
-predicateCall(name,args)              ::= "<name>(<args>);"
-
-eventDefinition(name)                 ::= "public class name extends event { }"
-
-constraintDefinition(name, requires)  ::= "public interface <name> <requires> { TODO: Members }"
-constraintList( ids )                 ::= "implements <ids>"
-
-deviceDefinition(name, accepts)       ::= "public class <name> extends device <accepts> { TODO: Members }"
-
-timelineDeclaration(name)             ::= "timeline <name> = new timeline();"
+variableArgument(type, name)          ::= "<type> <name>"
+variableDeclaration(type, name, init) ::= "<type> <name> <init>;"
+timelineArgument(name)                ::= "Timeline <name>"
+timelineDeclaration(name)             ::= "Timeline <name> = new Timeline();"
+initializer(exp)                      ::= " = <exp>;"
+expression()                          ::= ""
+logicalORExpression                   ::= ""
+primaryExpression                     ::= ""

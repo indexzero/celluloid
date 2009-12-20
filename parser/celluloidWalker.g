@@ -29,7 +29,7 @@ options {
     }
   }
 
-  private HashMap<String, SymbolEntry> symbolTable;  
+  private HashMap<String, SymbolEntry> symbolTable = new HashMap<String, SymbolEntry>();
 }
 
 
@@ -64,8 +64,11 @@ constraintDefinition
     :    ^(CONSTRAINT ID ^(REQUIRES requires = idList?) ^(ANNOUNCES announces = idList?) constraintBlock) {
            $st = %constraintDefinition();
            %{$st}.name = $ID.text;
+           %{$st}.require = requires != null ? "implements" : ""; 
            %{$st}.requires = $requires.st;
+           %{$st}.block = $constraintBlock.st;
            
+           // TODO: Semantic analysis
            System.out.println(announces);
          }
     ;
@@ -73,85 +76,144 @@ constraintBlock
     :    ^(CONBLOCK constraintBlockDeclaration* ^(ANNOUNCEMENTS announcementDeclaration*))
     ;    	
 constraintBlockDeclaration
-    :	 variableDeclaration 
-    |    predicateHeader 
-    |    functionHeader 
+    :	 variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+    |    predicateHeader -> passThrough(text = { $predicateHeader.st } )
+    |    functionHeader -> passThrough(text = { $functionHeader.st } )
     ;
    	
 // Device definition
 deviceDefinition     
-    :    ^(DEVICE ID ^(ACCEPTS  idList?) deviceBlock)
+    :    ^(DEVICE ID ^(ACCEPTS accepts = idList?) deviceBlock) {
+           $st = %deviceDefinition();
+           %{$st}.name = $ID.text;
+           %{$st}.accept = accepts != null ? "implements" : "";
+           %{$st}.accepts = $accepts.st;
+           %{$st}.block = $deviceBlock.st;
+         }
     ;
 deviceBlock 
-    :    ^(DEVBLOCK deviceBlockDeclaration*)
+    :    ^(DEVBLOCK (block += deviceBlockDeclaration)*) {
+           $st = %statementList();
+           %{$st}.statements = $block;
+         }
     ;
 deviceBlockDeclaration
-    :    variableDeclaration 
-    |    predicateDefinition 
-    |    functionDefinition
+    :    variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+    |    predicateDefinition -> passThrough(text = { $predicateDefinition.st } )
+    |    functionDefinition -> passThrough(text = { $functionDefinition.st } )
     ;
     	
 // Function / Predicate definitions
 functionHeader
-    :    ^(FUNHEAD ID ^(ARGS variableList))
+    :    ^(FUNHEAD ID ^(ARGS args = variableList?)) {
+           $st = %functionHeader();
+           %{$st}.name = $ID.text;
+           %{$st}.args = $args.st;
+         } 
     ;
 functionDefinition 
-    :    ^(FUNC ID ^(ARGS variableList) functionBlock?)
+    :    ^(FUNC ID ^(ARGS args = variableList?) block = functionBlock?) {
+           $st = %functionDefinition();
+           %{$st}.name = $ID.text;
+           %{$st}.args = $args.st;
+           %{$st}.block = $block.st;
+         }
     ;
 functionBlock      
-    :    ^(FUNBLOCK RETURN functionPredicateBlockDeclaration*) 
+    :    ^(FUNBLOCK RETURN (block += functionPredicateBlockDeclaration)*) {
+           $st = %statementList();
+           %{$st}.statements = $block;
+         } 
     ;
 functionPredicateBlockDeclaration 
-    :    variableDeclaration
-    |    expression
-    |    inStatement // Remark: Unknown behavior if called from inStatement
-    |    ifStatement
-    |    functionPredicateCall
+    :    variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+    |    expression -> passThrough(text = { $expression.st } )
+    |    inStatement -> passThrough(text = { $inStatement.st } ) // Remark: Unknown behavior if called from inStatement
+    |    ifStatement -> passThrough(text = { $ifStatement.st } )
+    |    functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
     ;
 
 predicateHeader     
-    :    ^(PREDHEAD ID ^(ARGS variableList))
+    :    ^(PREDHEAD ID ^(ARGS args = variableList?)) {
+           $st = %predicateHeader();
+           %{$st}.name = $ID.text;
+           %{$st}.args = $args.st;
+         } 
     ;    
 predicateDefinition 
-    :    ^(PRED ID ^(ARGS variableList) predicateBlock)
+    :    ^(PRED ID ^(ARGS args = variableList?) block = predicateBlock) {
+           $st = %predicateDefinition();
+           %{$st}.name = $ID.text;
+           %{$st}.args = $args.st;
+           %{$st}.block = $block.st;
+         } 
     ;	    
 predicateBlock      
-    :    ^(FUNBLOCK ^(RETURN expression) functionPredicateBlockDeclaration*) 
+    :    ^(FUNBLOCK ^(RETURN retexp = expression) (block += functionPredicateBlockDeclaration)*) {
+           $st = %predicateBlock();
+           %{$st}.statements = $block;
+           %{$st}.returns = $retexp.st;
+         }  
     ;
 
 // Timline and procedural blocks
+
 inStatement
-    :  ^(IN ID inBlock)
-        //-> inStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
+scope {
+  String timeline;
+}   :  ^(IN ID block = inBlock) {
+	$st = %inStatement();
+	%{$st}.block = $block.st;
+       }
     ;
+    
 inBlock 
-    :	^(INBLOCK inBlockDeclaration *)
+    :	^(INBLOCK (block += inBlockDeclaration)*) {
+           $st = %statementList();
+           %{$st}.statements = $block;
+   	 }
     ;
 inBlockDeclaration
-    :	whenStatement 
-    |   everyStatement 
-    |   constraintFunctionCall
+    :   whenStatement -> passThrough(text = { $whenStatement.st } )
+    |   everyStatement -> passThrough(text = { $everyStatement.st } )
+    |   constraintFunctionCall -> passThrough(text = { $constraintFunctionCall.st } )
     ;
 
 ifStatement
-    :  ^(IF logicalORExpression ifBlock)
+    :  ^(IF exp = logicalORExpression block = ifBlock) {
+    	  $st = %ifStatement();
+    	  %{$st}.exp = $exp.text; // @TODO: This is wrong
+    	  %{$st}.block = $block.st;
+    	}
     ;
 ifBlock
-    :   ^(IFBLOCK ifBlockDeclaration+) ^(ELSEIF elseIfStatement*) ^(ELSE elseStatement?)
+    :   ^(IFBLOCK (block += ifBlockDeclaration)+) ^(ELSEIF (elifStmt += elseIfStatement)*) ^(ELSE elseStmt = elseStatement?) {
+    	  $st = %ifBlock();
+    	  %{$st}.block = $block;
+     	  %{$st}.elifStmt = $elifStmt;
+      	  %{$st}.elseStmt = $elseStmt.st;
+    	}
     ;    
 
-elseStatement 
-    :   ^(IFBLOCK ifBlockDeclaration)
-    ;
 elseIfStatement 
-    :   ^(logicalORExpression ^(IFBLOCK ifBlockDeclaration))
+    :   ^(exp = logicalORExpression ^(IFBLOCK (block += ifBlockDeclaration)+)) {
+    	  $st = %elseIfStatement();
+    	  %{$st}.exp = $exp.st;
+      	  %{$st}.block = $block;
+    	}
+    ;
+elseStatement 
+    :   ^(IFBLOCK (block += ifBlockDeclaration)+) {
+    	  $st = %elseStatement();
+      	  %{$st}.block = $block;
+    	}
     ;
 ifBlockDeclaration
-    :	variableDeclaration
-    |   expression 
-    |   inStatement 
-    |   ifStatement
-    |   functionPredicateCall
+    :	variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+    |   expression -> passThrough(text = { $expression.st } )
+    |   inStatement -> passThrough(text = { $inStatement.st } )
+    |   ifStatement -> passThrough(text = { $ifStatement.st } )
+    |   functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
     ;
 
 whenStatement
@@ -166,14 +228,22 @@ listenerBlock
     :  ^(LISTENBLOCK listenerBlockDeclaration*)
     ;
 listenerBlockDeclaration
-    :    constraintFunctionCall 
-    |    expression 
-    |    variableDeclaration
-    |    functionPredicateCall
+    :    constraintFunctionCall -> passThrough(text = { $constraintFunctionCall.st } )
+    |    expression -> passThrough(text = { $expression.st } )
+    |    variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+    |    functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
     ;
     
 constraintFunctionCall 
-    :    ^(OBJCALL ID ID ^(ARGS expressionList?)) 
+    :    ^(OBJCALL target = ID function = ID ^(AT (time = TIME)?) ^(ARGS expressionList?)) {
+         $st = %constraintFunctionCall();
+         %{$st}.timeline = $inStatement::timeline;
+         %{$st}.target = $target.text;
+         %{$st}.type = "JMFAudio"; // TODO: inter timeline through semantic analysis
+         %{$st}.function = $function.text;
+         %{$st}.time = $time.text != "@start" ? $time.text : 0;
+         %{$st}.args = $expressionList.st;
+    }
     ;
     
 functionPredicateCall       
@@ -187,23 +257,23 @@ idList
     ;
 
 variableList  
-    :    variableDeclaration+
+    :    (vars += variableDeclaration)+ -> variableList(vars = { $vars })  
     ;
 
 expressionList 
-    :    expression+
+    :    (exps += expression)+ -> expressionList(exps = { $exps })
          //-> expressionList(exps = { $exps })
     ;
 
 variableDeclaration 
-    :    ^(VARDEF 'timeline' ID)
-    |    ^(ARG 'timeline' ID)
-    |    ^(VARDEF TYPE ID initializer?)
-    |    ^(ARG TYPE ID)
+    :    ^(VARDEF 'timeline' ID)        -> timelineDeclaration(name = { $ID.text })
+    |    ^(ARG 'timeline' ID)           -> timelineArgument(name = { $ID.text }) 
+    |    ^(VARDEF TYPE ID initializer?) -> variableDeclaration(type = { $TYPE.text }, name = { $ID.text }, init = { $initializer.st })
+    |    ^(ARG TYPE ID)                 -> variableArgument(type = { $TYPE.text }, name = { $ID.text }) 
     ;
     
 initializer      
-    :    logicalORExpression
+    :    logicalORExpression -> passThrough(text = { $logicalORExpression.st } )
     ;
     
 expression 

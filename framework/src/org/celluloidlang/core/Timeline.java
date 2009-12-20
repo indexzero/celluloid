@@ -15,7 +15,6 @@ import org.celluloidlang.announcment.Announcement;
 import org.celluloidlang.announcment.AnnouncementListener;
 import org.celluloidlang.constraints.defined.Input;
 import org.celluloidlang.constraints.defined.Output;
-import org.celluloidlang.devices.JMFVideo;
 import org.celluloidlang.devices.SwingOutput;
 import org.celluloidlang.reactive.ReactiveListener;
 import org.celluloidlang.reactive.ReactiveUpdate;
@@ -87,7 +86,7 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 			didExecute.push(cf);
 			cf.execute();
 		}
-		this.evaluateEveryFunction(currentTime);
+		this.evaluateEveryFunctions(currentTime);
 	}
 	
 	private synchronized void resetStacks() {
@@ -138,7 +137,7 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		}
 	}
 	
-	private void evaluateEveryFunction(long currentTime) {
+	private void evaluateEveryFunctions(long currentTime) {
 		long elapsed = currentTime - initialTime;
 		for (EveryFunction ef : everyFunctionList) {
 			ArrayList<Float> oldAl = everyFunctionHash.get(ef);

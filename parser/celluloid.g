@@ -14,6 +14,7 @@ tokens {
   ARG;
   ARGS;
   OBJCALL;
+  AT;
   CALL;
   PROGRAM;
   EVENTS;
@@ -141,12 +142,12 @@ deviceBlockDeclaration
 
 // Start function blocks
 functionHeader
-    :    'function' ID '(' variableList ')' NEWLINE
-         -> ^(FUNHEAD ID ^(ARGS variableList))
+    :    'function' ID '(' variableList? ')' NEWLINE
+         -> ^(FUNHEAD ID ^(ARGS variableList?))
     ;
 functionDefinition 
-    :    'function' ID '(' variableList ')' functionBlock 
-         -> ^(FUNC ID ^(ARGS variableList) functionBlock?)
+    :    'function' ID '(' variableList? ')' functionBlock 
+         -> ^(FUNC ID ^(ARGS variableList?) functionBlock)
          //-> functionDefinition(name = { $ID.text}, args = { variableList.st }, block = { $functionBlock.st })
     ;
 functionBlock      
@@ -169,13 +170,13 @@ functionPredicateBlockDeclaration
 
 // Start predicate blocks
 predicateHeader     
-    :    'predicate' ID '(' variableList ')' NEWLINE
-         -> ^(PREDHEAD ID ^(ARGS variableList))
+    :    'predicate' ID '(' variableList? ')' NEWLINE
+         -> ^(PREDHEAD ID ^(ARGS variableList?))
          //-> predicateHeader(name = { $ID.text }, args = { $variableList.st }) 
     ;	
 predicateDefinition 
-    :    'predicate' ID '(' variableList ')' predicateBlock 
-    	 -> ^(PRED ID ^(ARGS variableList) predicateBlock)
+    :    'predicate' ID '(' variableList? ')' predicateBlock 
+    	 -> ^(PRED ID ^(ARGS variableList?) predicateBlock)
          //-> predicateDefinition(header = { $predicateHeader.st}, block = { $predicateBlock.st})
     ;
 predicateBlock      
@@ -227,7 +228,7 @@ elseIfStatement
         -> ^($elseIfTest ^(IFBLOCK $block))
     ;
 elseStatement 
-    :   'else' NEWLINE (block += ifBlockDeclaration)*
+    :   'else' NEWLINE (block += ifBlockDeclaration)+
         -> ^(IFBLOCK $block)
     ;
 ifBlockDeclaration
@@ -265,8 +266,8 @@ listenerBlockDeclaration
     ;
     
 constraintFunctionCall 
-    :    function = ID id += ID (',' id += ID)* expressionList? NEWLINE?
-         -> ^(OBJCALL $id $function ^(ARGS expressionList?))* 
+    :    function = ID id += ID (',' id += ID)* (time = TIME (',')?)? expressionList? NEWLINE?
+         -> ^(OBJCALL $id $function ^(AT $time?) ^(ARGS expressionList?))* 
     ;
     
 functionPredicateCall       
