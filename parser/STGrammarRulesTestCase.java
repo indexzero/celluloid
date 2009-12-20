@@ -36,7 +36,7 @@ public class STGrammarRulesTestCase extends TestCase {
 
     public void runAllTests() throws IOException, RecognitionException {
         //this.shouldGenerateConstraintDefinition();
-        this.shouldGenerateInStatement();
+        this.shouldGenerateIfStatement();
     }
 
     @Test
@@ -64,6 +64,22 @@ public class STGrammarRulesTestCase extends TestCase {
 
             public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
                 celluloidWalker.constraintDefinition_return r = walker.constraintDefinition();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
+    }
+
+    @Test
+    public void shouldGenerateIfStatement() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "ifStatement.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.constraintDefinition().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.ifStatement_return r = walker.ifStatement();
                 return (StringTemplate)r.getTemplate();
             }
         };
