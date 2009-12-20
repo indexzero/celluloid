@@ -3,6 +3,8 @@ package org.celluloidlang.examples;
 import java.io.File;
 import java.net.MalformedURLException;
 
+import javax.media.Manager;
+
 import org.celluloidlang.constraints.defined.Input;
 import org.celluloidlang.core.*;
 import org.celluloidlang.devices.JMFVideo;
@@ -34,7 +36,8 @@ import org.celluloidlang.reactive.ReactiveNumber;
 public class HelloEvents {
 	public static void main(String[] args) {
 		
-		
+		//need this bastard to display video
+		Manager.setHint(Manager.LIGHTWEIGHT_RENDERER, true);
 		
 		//timeline timeline1
 		Timeline timeline1 = new Timeline();

@@ -3,6 +3,8 @@ package org.celluloidlang.examples;
 import java.io.File;
 import java.net.MalformedURLException;
 
+import javax.media.Manager;
+
 import org.celluloidlang.core.*;
 import org.celluloidlang.devices.JMFAudio;
 import org.celluloidlang.devices.SwingOutput;
@@ -31,6 +33,9 @@ public class HelloCh1 {
 
 		//timeline timeline1
 		Timeline timeline1 = new Timeline();
+		
+		//need this bastard to display video
+		Manager.setHint(Manager.LIGHTWEIGHT_RENDERER, true);
 		
 		//input audio1 = new AudioFile(*somefile*)
 		//output output1 = new Output(*somefile*)
