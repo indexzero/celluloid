@@ -358,7 +358,7 @@ primaryExpression
 
 // Start operators
 // TODO: LOCAL OPERATORS
-ASSIGNMENT_OPERATOR      : '=' | '*=' | '/=' | '%=' | '+=' | '-=';	
+ASSIGNMENT_OPERATOR      : ':=' | '*=' | '/=' | '%=' | '+=' | '-=';	
 EQUALITY_OPERATOR        : '==' | '!=';
 RELATIONAL_OPERATOR      : '>' | '<' | '<=' | '>=';
 ADDITIVE_OPERATOR        : '+' | '-';

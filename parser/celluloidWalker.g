@@ -6,6 +6,7 @@ options {
 	output=template;
 }
 
+
 @header { 
   import java.util.HashMap;  
 }
@@ -384,14 +385,23 @@ initializer
     
 // IMPORTANT: NEEDS TEMPLATE!
 expression 
-    :    ^(ASSIGNMENT_OPERATOR expression expression) 
-    |    ^('not' expression) // Needs Template
-   |     ^('or 'expression expression) // Needs Template
-    |    ^('and' expression expression) // Needs Template
-    |    ^(EQUALITY_OPERATOR expression expression) // Needs Template
-    |    ^(RELATIONAL_OPERATOR expression expression) // Needs Template
-    |    ^(ADDITIVE_OPERATOR expression expression) // Needs Template
-    |    ^(MULTIPLICATIVE_OPERATOR expression expression) // Needs Template
+    :    ^(ASSIGNMENT_OPERATOR lhs = expression rhs = expression) {
+    	   $st = %expressionLine();
+           %{$st}.lhand = $lhs.st;
+           if(":=".equals($ASSIGNMENT_OPERATOR.text)) {
+             %{$st}.op = new String("=");
+           } else {
+             %{$st}.op = $ASSIGNMENT_OPERATOR.text;
+           }
+           %{$st}.rhand = $rhs.st;
+    	}
+    |    ^('not' lhs = expression) -> simpleExpression(lhand = { $lhs.st })
+    |    ^('or' lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { "or" }, rhand = { $rhs.st })
+    |    ^('and' lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { "and" }, rhand = { $rhs.st })
+    |    ^(EQUALITY_OPERATOR lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { $EQUALITY_OPERATOR.text }, rhand = { $rhs.st })
+    |    ^(RELATIONAL_OPERATOR lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { $RELATIONAL_OPERATOR.text }, rhand = { $rhs.st })
+    |    ^(ADDITIVE_OPERATOR lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { $ADDITIVE_OPERATOR.text }, rhand = { $rhs.st })
+    |    ^(MULTIPLICATIVE_OPERATOR lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { $MULTIPLICATIVE_OPERATOR.text }, rhand = { $rhs.st })
     |	 ID     -> passThrough(text = { $ID.text } ) // Needs Action; Check if it exists
     |	 BOOL   -> passThrough(text = { $BOOL.text } ) // Needs Template
     |	 NUMBER -> passThrough(text = { $NUMBER.text } ) // Needs Template
