@@ -236,13 +236,13 @@ listenerBlockDeclaration
     ;
     
 constraintFunctionCall 
-    :    ^(OBJCALL function = ID target = ID ^(AT (time = TIME)?) ^(ARGS expressionList?)) {
+    :    ^(OBJCALL target = ID function = ID ^(AT (time = TIME)?) ^(ARGS expressionList?)) {
          $st = %constraintFunctionCall();
          %{$st}.timeline = $inStatement::timeline;
          %{$st}.target = $target.text;
-         %{$st}.type = ""; // TODO: inter timeline through semantic analysis
+         %{$st}.type = "JMFAudio"; // TODO: inter timeline through semantic analysis
          %{$st}.function = $function.text;
-         %{$st}.time = time != null ? $time.text : 0;
+         %{$st}.time = $time != @start ? $time.text : 0;
          %{$st}.args = $expressionList.st;
     }
     ;
