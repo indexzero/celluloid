@@ -45,8 +45,16 @@ public class HelloCh3 {
 		//JMFVideo is a video and out.
 		try {
 		JMFVideo video1 = new JMFVideo(
-				new File("snagItNarration.avi").toURI().toURL());
-		video1.size(0,0,100,100);
+				new File("lostinspace.7.160x120.11khz.mov").toURI().toURL());
+		
+		
+		timeline1.addConstraintFunction(
+				new ConstraintFunction(video1, new ReactiveNumber(0.0)) {
+					public void execute() {
+						((JMFVideo) input).size(0,0,500,500);
+					}
+				}
+			);
 		
 		
 		/*
@@ -55,12 +63,12 @@ public class HelloCh3 {
 		 *end
 		 */ 
 		timeline1.addConstraintFunction(
-			new ConstraintFunction(video1, new ReactiveNumber(0.0)) {
-				public void execute() {
-					((JMFVideo) input).play();
+				new ConstraintFunction(video1, new ReactiveNumber(0.0)) {
+					public void execute() {
+						((JMFVideo) input).play();
+					}
 				}
-			}
-		);
+			);
 		
 
 		globalTimeline.addConstraintFunction(
@@ -78,8 +86,8 @@ public class HelloCh3 {
 							public void execute() {
 								((Timeline) input).attachOutput(output);
 							}
-				}
-				);
+				});
+		globalTimeline.play();
 		
 		
 
