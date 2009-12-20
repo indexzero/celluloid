@@ -6,6 +6,7 @@ import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.TokenRewriteStream;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
+import org.antlr.runtime.tree.BufferedTreeNodeStream;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.antlr.stringtemplate.StringTemplate;
 import java.io.*;
@@ -33,6 +34,26 @@ public class STGrammarRulesTestCase extends TestCase {
         this.templatePath = "celluloid.java.stg";
     }
 
+    public void runAllTests() throws IOException, RecognitionException {
+        //this.shouldGenerateConstraintDefinition();
+        this.shouldGenerateInStatement();
+    }
+
+    @Test
+    public void shouldGenerateInStatement() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "inStatement.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.inStatement().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.inStatement_return r = walker.inStatement();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
+    }
 
     @Test
     public void shouldGenerateConstraintDefinition() throws IOException, RecognitionException {
@@ -80,14 +101,12 @@ public class STGrammarRulesTestCase extends TestCase {
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             celluloidParser parser = new celluloidParser(tokens); // create parser
 
-            CommonTreeNodeStream nodes = new CommonTreeNodeStream(this.getTree(parser));
+            BufferedTreeNodeStream nodes = new BufferedTreeNodeStream(this.getTree(parser));
             nodes.setTokenStream(tokens);
 
             celluloidWalker walker = new celluloidWalker(nodes);
             walker.setTemplateLib(templates);
-            celluloidWalker.constraintDefinition_return r = walker.constraintDefinition();
-
-            StringTemplate output = (StringTemplate)r.getTemplate();
+            StringTemplate output = this.getTemplate(walker);
             System.out.println(output.toString());
         }
     }
