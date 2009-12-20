@@ -22,6 +22,7 @@ public class JMFVideo extends JMF implements Video {
 	
 	public JMFVideo(URL url) {
 		super(url);
+		this.setFixedAspectRatio(true);
 	}
 	
 	@Override
