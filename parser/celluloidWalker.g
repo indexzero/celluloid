@@ -76,9 +76,9 @@ constraintBlock
     :    ^(CONBLOCK constraintBlockDeclaration* ^(ANNOUNCEMENTS announcementDeclaration*))
     ;    	
 constraintBlockDeclaration
-    :	 variableDeclaration 
-    |    predicateHeader 
-    |    functionHeader 
+    :	 variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+    |    predicateHeader -> passThrough(text = { $predicateHeader.st } )
+    |    functionHeader -> passThrough(text = { $functionHeader.st } )
     ;
    	
 // Device definition
@@ -98,9 +98,9 @@ deviceBlock
          }
     ;
 deviceBlockDeclaration
-    :    variableDeclaration 
-    |    predicateDefinition 
-    |    functionDefinition
+    :    variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+    |    predicateDefinition -> passThrough(text = { $predicateDefinition.st } )
+    |    functionDefinition -> passThrough(text = { $functionDefinition.st } )
     ;
     	
 // Function / Predicate definitions
@@ -126,11 +126,11 @@ functionBlock
          } 
     ;
 functionPredicateBlockDeclaration 
-    :    variableDeclaration
-    |    expression
-    |    inStatement // Remark: Unknown behavior if called from inStatement
-    |    ifStatement
-    |    functionPredicateCall
+    :    variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+    |    expression -> passThrough(text = { $expression.st } )
+    |    inStatement -> passThrough(text = { $inStatement.st } ) // Remark: Unknown behavior if called from inStatement
+    |    ifStatement -> passThrough(text = { $ifStatement.st } )
+    |    functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
     ;
 
 predicateHeader     
@@ -175,7 +175,7 @@ inBlock
    	 }
     ;
 inBlockDeclaration
-    :    whenStatement -> passThrough(text = { $whenStatement.st } )
+    :   whenStatement -> passThrough(text = { $whenStatement.st } )
     |   everyStatement -> passThrough(text = { $everyStatement.st } )
     |   constraintFunctionCall -> passThrough(text = { $constraintFunctionCall.st } )
     ;
@@ -210,11 +210,11 @@ elseStatement
     	}
     ;
 ifBlockDeclaration
-    :	variableDeclaration
-    |   expression 
-    |   inStatement 
-    |   ifStatement
-    |   functionPredicateCall
+    :	variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+    |   expression -> passThrough(text = { $expression.st } )
+    |   inStatement -> passThrough(text = { $inStatement.st } )
+    |   ifStatement -> passThrough(text = { $ifStatement.st } )
+    |   functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
     ;
 
 whenStatement
@@ -229,10 +229,10 @@ listenerBlock
     :  ^(LISTENBLOCK listenerBlockDeclaration*)
     ;
 listenerBlockDeclaration
-    :    constraintFunctionCall 
-    |    expression 
-    |    variableDeclaration
-    |    functionPredicateCall
+    :    constraintFunctionCall -> passThrough(text = { $constraintFunctionCall.st } )
+    |    expression -> passThrough(text = { $expression.st } )
+    |    variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+    |    functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
     ;
     
 constraintFunctionCall 
@@ -274,7 +274,7 @@ variableDeclaration
     ;
     
 initializer      
-    :    logicalORExpression
+    :    logicalORExpression -> passThrough(text = { $logicalORExpression.st } )
     ;
     
 expression 

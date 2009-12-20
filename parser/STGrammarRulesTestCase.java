@@ -48,6 +48,8 @@ public class STGrammarRulesTestCase extends TestCase {
         this.shouldGenerateIdList();
         this.shouldGenerateTimelineDeclaration();
         this.shouldGenerateNumberDeclaration();
+        //this.shouldGenerateConstraintDefinition();
+        this.shouldGenerateIfStatement();
     }
 
     @Test
@@ -203,6 +205,19 @@ public class STGrammarRulesTestCase extends TestCase {
 
             public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
                 celluloidWalker.variableDeclaration_return r = walker.variableDeclaration();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+    }
+
+    public void shouldGenerateIfStatement() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "ifStatement.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.constraintDefinition().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.ifStatement_return r = walker.ifStatement();
                 return (StringTemplate)r.getTemplate();
             }
         };
