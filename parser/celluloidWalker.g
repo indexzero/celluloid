@@ -182,12 +182,12 @@ inBlockDeclaration
 ifStatement
     :  ^(IF exp = logicalORExpression block = ifBlock) {
     	  $st = %ifStatement();
-    	  %{$st}.exp = $exp.text; // @TODO: This is wrong
+    	  %{$st}.exp = $exp.text; // @TODO: This is a hack (possibly wrong)
     	  %{$st}.block = $block.st;
     	}
     ;
 ifBlock
-    :   ^(IFBLOCK (block += ifBlockDeclaration)+) ^(ELSEIF (elifStmt += elseIfStatement)*) ^(ELSE elseStmt = elseStatement?) {
+    :   ^(IFBLOCK (block += ifBlockDeclaration)+) ^(ELSEIFS (elifStmt += elseIfStatement)*) ^(ELSE elseStmt = elseStatement?) {
     	  $st = %ifBlock();
     	  %{$st}.block = $block;
      	  %{$st}.elifStmt = $elifStmt;
@@ -196,9 +196,9 @@ ifBlock
     ;    
 
 elseIfStatement 
-    :   ^(exp = logicalORExpression ^(IFBLOCK (block += ifBlockDeclaration)+)) {
+    :   ^(ELSEIF (exp = logicalORExpression) ^(IFBLOCK (block += ifBlockDeclaration)+)) {
     	  $st = %elseIfStatement();
-    	  %{$st}.exp = $exp.st;
+    	  %{$st}.exp = $exp.text; // @todo: This is a hack (possibly wrong)
       	  %{$st}.block = $block;
     	}
     ;
@@ -280,20 +280,17 @@ expression
     :    ^(ASSIGNMENT_OPERATOR logicalORExpression expression)
     ;
 logicalORExpression      
-    :    ^('or' 'not'? logicalORExpression logicalORExpression)
+    :	 ^('or' 'not'? logicalORExpression logicalORExpression)
     |    ^('and' logicalORExpression logicalORExpression)
     |    ^(EQUALITY_OPERATOR logicalORExpression logicalORExpression)
     |    ^(RELATIONAL_OPERATOR logicalORExpression logicalORExpression)
     |    ^(ADDITIVE_OPERATOR logicalORExpression logicalORExpression)
-    |    ^(MULTIPLICATIVE_OPERATOR primaryExpression logicalORExpression)
-    ;	
-primaryExpression
-    :	 ID
-    |	 ID expressionList
-    |	 literal
-    |	 functionPredicateCall
+    |    ^(MULTIPLICATIVE_OPERATOR logicalORExpression logicalORExpression)
+    |	 ID -> passThrough(text = { $ID.text } )
+    |	 BOOL -> passThrough(text = { $BOOL.text } )
+    |	 NUMBER -> passThrough(text = { $NUMBER.text } )
     ;
-
+    
 // Start generic literals 
 literal : BOOL | NUMBER | STRING | TIME;
 
