@@ -15,16 +15,10 @@
     <option name="historyRevisionsNumber" value="4" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" name="Default" comment="">
+    <list default="true" name="Default" comment="inStatement block">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/parser.iws" afterPath="$PROJECT_DIR$/parser.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/STGrammarRulesTestCase.java" afterPath="$PROJECT_DIR$/STGrammarRulesTestCase.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tests/inStatement.cld" afterPath="$PROJECT_DIR$/tests/inStatement.cld" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/celluloidWalker.g" afterPath="$PROJECT_DIR$/celluloidWalker.g" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Test.java" afterPath="$PROJECT_DIR$/Test.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ASTGrammarRulesTestCase.java" afterPath="$PROJECT_DIR$/ASTGrammarRulesTestCase.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/parser.iml" afterPath="$PROJECT_DIR$/parser.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/celluloid.java.stg" afterPath="$PROJECT_DIR$/celluloid.java.stg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/parser.ipr" afterPath="$PROJECT_DIR$/parser.ipr" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/celluloid.g" afterPath="$PROJECT_DIR$/celluloid.g" />
     </list>
     <ignored path=".idea/workspace.xml" />
     <ignored path="parser.iws" />
@@ -97,7 +91,7 @@
     <favorites_list name="parser" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5137957">
+    <splitter split-orientation="horizontal" split-proportion="0.45454547">
       <split-first>
         <leaf>
           <file leaf-file-name="predicateDefinition.cld" pinned="false" current="false" current-in-tab="false">
@@ -112,7 +106,7 @@
           <file leaf-file-name="inStatement.cld" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/tests/inStatement.cld">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+                <state line="1" column="12" selection-start="28" selection-end="28" vertical-scroll-proportion="0.0">
                   <folding />
                 </state>
               </provider>
@@ -121,16 +115,7 @@
           <file leaf-file-name="Test.java" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Test.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="2" column="69" selection-start="104" selection-end="104" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="STGrammarRulesTestCase.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/STGrammarRulesTestCase.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="83" column="44" selection-start="2984" selection-end="2984" vertical-scroll-proportion="-37.92">
+                <state line="10" column="0" selection-start="371" selection-end="371" vertical-scroll-proportion="0.0">
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -138,10 +123,30 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="celluloidWalker.g" pinned="false" current="false" current-in-tab="true">
+          <file leaf-file-name="STGrammarRulesTestCase.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/STGrammarRulesTestCase.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="38" column="43" selection-start="1271" selection-end="1271" vertical-scroll-proportion="-8.52">
+                  <folding>
+                    <element signature="imports" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="celluloidWalker.g" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/celluloidWalker.g">
               <provider selected="true" editor-type-id="grammar">
                 <state />
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="celluloidWalker.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/celluloidWalker.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="2871" column="63" selection-start="103952" selection-end="103952" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
               </provider>
             </entry>
           </file>
@@ -166,33 +171,50 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf>
-          <file leaf-file-name="celluloid.java.stg" pinned="false" current="true" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/celluloid.java.stg">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="52" column="57" selection-start="971" selection-end="971" vertical-scroll-proportion="0.496337">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="celluloid.g" pinned="false" current="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/celluloid.g">
-              <provider selected="true" editor-type-id="grammar">
-                <state />
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="HelloCh1.java" pinned="false" current="false" current-in-tab="false">
-            <entry file="file:///home/sean/plt_project/celluloid/framework/src/org/celluloidlang/examples/HelloCh1.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
+        <splitter split-orientation="vertical" split-proportion="0.5925373">
+          <split-first>
+            <leaf>
+              <file leaf-file-name="celluloid.g" pinned="false" current="false" current-in-tab="true">
+                <entry file="file://$PROJECT_DIR$/celluloid.g">
+                  <provider selected="true" editor-type-id="grammar">
+                    <state />
+                  </provider>
+                </entry>
+              </file>
+              <file leaf-file-name="HelloCh1.java" pinned="false" current="false" current-in-tab="false">
+                <entry file="file:///home/sean/plt_project/celluloid/framework/src/org/celluloidlang/examples/HelloCh1.java">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state line="12" column="54" selection-start="310" selection-end="310" vertical-scroll-proportion="0.0">
+                      <folding />
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+              <file leaf-file-name="HelloWorld.java" pinned="false" current="false" current-in-tab="false">
+                <entry file="file:///home/sean/plt_project/celluloid/framework/src/org/celluloidlang/examples/HelloWorld.java">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+                      <folding />
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+            </leaf>
+          </split-first>
+          <split-second>
+            <leaf>
+              <file leaf-file-name="celluloid.java.stg" pinned="false" current="false" current-in-tab="true">
+                <entry file="file://$PROJECT_DIR$/celluloid.java.stg">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state line="81" column="30" selection-start="1233" selection-end="1233" vertical-scroll-proportion="-0.23580787">
+                      <folding />
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+            </leaf>
+          </split-second>
+        </splitter>
       </split-second>
     </splitter>
   </component>
@@ -288,24 +310,6 @@
     <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RunManager" selected="Application.Test">
-    <tempConfiguration default="false" name="Test" type="Application" factoryName="Application" enabled="false" merge="false" sample_coverage="true" runner="emma">
-      <option name="MAIN_CLASS_NAME" value="Test" />
-      <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" value="" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="parser" />
-      <envs />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method>
-        <option name="Make" value="true" />
-      </method>
-    </tempConfiguration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -417,6 +421,24 @@
         <option name="Make" value="true" />
       </method>
     </configuration>
+    <configuration default="false" name="Test" type="Application" factoryName="Application" enabled="false" merge="false" sample_coverage="true" runner="emma">
+      <option name="MAIN_CLASS_NAME" value="Test" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="parser" />
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method>
+        <option name="Make" value="true" />
+      </method>
+    </configuration>
     <list size="3">
       <item index="0" class="java.lang.String" itemvalue="Application.ANTLRWorks" />
       <item index="1" class="java.lang.String" itemvalue="Application.testWalker" />
@@ -479,25 +501,25 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="25" width="1682" height="1005" extended-state="0" />
-    <editor active="false" />
+    <frame x="-1" y="25" width="1682" height="1005" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32982457" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="1" side_tool="false" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1887456" sideWeight="0.5" order="1" side_tool="false" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29787233" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="Dataflow to this" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24267292" sideWeight="0.5" order="7" side_tool="false" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3024619" sideWeight="0.5" order="7" side_tool="false" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2063306" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3292797" sideWeight="0.7553192" order="3" side_tool="false" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17340687" sideWeight="0.68933177" order="0" side_tool="false" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17340687" sideWeight="0.7854631" order="0" side_tool="false" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24150059" sideWeight="0.5" order="2" side_tool="false" />
@@ -577,27 +599,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file:///home/sean/plt_project/celluloid/framework/src/org/celluloidlang/examples/HelloCh1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/constraintDefinition.cld">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="38" selection-start="140" selection-end="140" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/constraintFunctionCall.cld">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/expression.cld">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
@@ -626,20 +627,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/predicateDefinition.cld">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/inStatement.cld">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/helloCh1.cld">
       <provider selected="true" editor-type-id="text-editor">
         <state line="1" column="4" selection-start="20" selection-end="20" vertical-scroll-proportion="0.0">
@@ -654,24 +641,61 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/celluloid.g">
-      <provider selected="true" editor-type-id="grammar">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Test.java">
+    <entry file="file://$PROJECT_DIR$/tests/predicateDefinition.cld">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="69" selection-start="104" selection-end="104" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/STGrammarRulesTestCase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="44" selection-start="2984" selection-end="2984" vertical-scroll-proportion="-37.92">
+        <state line="38" column="43" selection-start="1271" selection-end="1271" vertical-scroll-proportion="-8.52">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///home/sean/plt_project/celluloid/framework/src/org/celluloidlang/examples/HelloCh1.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="54" selection-start="310" selection-end="310" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///home/sean/plt_project/celluloid/framework/src/org/celluloidlang/examples/HelloWorld.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Test.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="0" selection-start="371" selection-end="371" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/inStatement.cld">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="12" selection-start="28" selection-end="28" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/celluloid.g">
+      <provider selected="true" editor-type-id="grammar">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/celluloid.java.stg">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="81" column="30" selection-start="1233" selection-end="1233" vertical-scroll-proportion="-0.23580787">
+          <folding />
         </state>
       </provider>
     </entry>
@@ -680,9 +704,9 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/celluloid.java.stg">
+    <entry file="file://$PROJECT_DIR$/celluloidWalker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="57" selection-start="971" selection-end="971" vertical-scroll-proportion="0.496337">
+        <state line="2871" column="63" selection-start="103952" selection-end="103952" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
