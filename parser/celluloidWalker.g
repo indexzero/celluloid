@@ -283,7 +283,8 @@ expression
     :    ^(ASSIGNMENT_OPERATOR logicalORExpression expression)
     ;
 logicalORExpression      
-    :	 ^('or' 'not'? logicalORExpression logicalORExpression)
+    :	 ^('not' logicalORExpression)
+    |	 ^('or' logicalORExpression logicalORExpression)
     |    ^('and' logicalORExpression logicalORExpression)
     |    ^(EQUALITY_OPERATOR logicalORExpression logicalORExpression)
     |    ^(RELATIONAL_OPERATOR logicalORExpression logicalORExpression)

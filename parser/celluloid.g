@@ -23,6 +23,7 @@ tokens {
   FUNCTIONS;
   
   IF;
+  ELSEIFS;
   ELSEIF;
   ELSE;
   LISTENER;
@@ -220,12 +221,12 @@ ifBlock
             (elseifBlock += elseIfStatement)*
             elseStatement?
         END
-        -> ^(IFBLOCK $block) ^(ELSEIF $elseifBlock?) ^(ELSE elseStatement?)
+        -> ^(IFBLOCK $block) ^(ELSEIFS $elseifBlock?) ^(ELSE elseStatement?)
     ;    
 elseIfStatement 
     :   'else if' elseIfTest = logicalORExpression NEWLINE 
           (block += ifBlockDeclaration)+
-        -> ^($elseIfTest ^(IFBLOCK $block))
+        -> ^(ELSEIF $elseIfTest ^(IFBLOCK $block))
     ;
 elseStatement 
     :   'else' NEWLINE (block += ifBlockDeclaration)+
@@ -316,7 +317,8 @@ variableDeclaration
          // TODO: What should we do about the conditional NEWLINE? Include the ';' in the NEWLINE st?
     |    TYPE ID initializer? 
          (NEWLINE -> ^(VARDEF TYPE ID initializer?)
-         |        -> ^(ARG TYPE ID))
+         |        -> ^(ARG TYPE ID)
+         )
          //-> variableDeclaration(type = { $TYPE.text }, name = { $ID.text }, init = { $initializer.st })
     ;
     
@@ -329,7 +331,8 @@ expression
     :    logicalORExpression (ASSIGNMENT_OPERATOR^ expression)? NEWLINE!?
     ;          	                 
 logicalORExpression      
-    :    'not'? logicalANDExpression ('or'^ logicalORExpression)?
+    :    logicalANDExpression ('or'^ logicalORExpression)?
+    |    ('not'^ logicalORExpression)
     ;	 
 logicalANDExpression
     :    equalityExpression ('and'^ logicalANDExpression)?
