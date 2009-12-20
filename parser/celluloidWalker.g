@@ -176,7 +176,7 @@ functionPredicateBlockDeclaration
     |    expression            -> passThrough(text = { $expression.st } )
     |    inStatement           -> passThrough(text = { $inStatement.st } ) // Remark: Unknown behavior if called from inStatement
     |    ifStatement           -> passThrough(text = { $ifStatement.st } )
-    |    functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
+//    |    functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
     ;
 
 predicateHeader     
@@ -198,7 +198,7 @@ predicateDefinition
          } 
     ;	    
 predicateBlock      
-    :    ^(FUNBLOCK ^(RETURN retexp = logicalORExpression) (block += functionPredicateBlockDeclaration)*) {
+    :    ^(FUNBLOCK ^(RETURN retexp = expression) (block += functionPredicateBlockDeclaration)*) {
            $st = %predicateBlock();
            %{$st}.statements = $block;
            %{$st}.returns = $retexp.st;
@@ -226,7 +226,7 @@ inBlockDeclaration[String with]
     ;
 
 ifStatement
-    :  ^(IF exp = logicalORExpression block = ifBlock) {
+    :  ^(IF exp = expression block = ifBlock) {
     	  $st = %ifStatement();
     	  %{$st}.exp = $exp.text; // @TODO: This is a hack (possibly wrong)
     	  %{$st}.block = $block.st;
@@ -242,7 +242,7 @@ ifBlock
     ;    
 
 elseIfStatement 
-    :   ^(ELSEIF (exp = logicalORExpression) ^(IFBLOCK (block += ifBlockDeclaration)+)) {
+    :   ^(ELSEIF (exp = expression) ^(IFBLOCK (block += ifBlockDeclaration)+)) {
     	  $st = %elseIfStatement();
     	  %{$st}.exp = $exp.text; // @todo: This is a hack (possibly wrong)
       	  %{$st}.block = $block;
@@ -259,7 +259,7 @@ ifBlockDeclaration
     |   expression            -> passThrough(text = { $expression.st } )
     //|   inStatement         -> passThrough(text = { $inStatement.st } )
     |   ifStatement           -> passThrough(text = { $ifStatement.st } )
-    |   functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
+//    |   functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
     ;
 
 whenStatement[String with]
@@ -277,14 +277,18 @@ listenerBlockDeclaration[String with]
     :    constraintFunctionCall[$with] -> passThrough(text = { $constraintFunctionCall.st } )
     |    expression                    -> passThrough(text = { $expression.st } )
     |    variableDeclaration           -> passThrough(text = { $variableDeclaration.st } )
-    |    functionPredicateCall         -> passThrough(text = { $functionPredicateCall.st } )
+ //   |    functionPredicateCall         -> passThrough(text = { $functionPredicateCall.st } )
     ;
     
 constraintFunctionCall[String with]
     :    ^(OBJCALL target = ID function = ID ^(AT (time = TIME)?) ^(ARGS expressionList?)) {
            SymbolEntry targetSymbol = this.symbolTable.get($target.text);
+           System.out.println("target text="+$target.text);
+           System.out.println("function text="+$function.text);
+           System.out.println("time text="+$time.text);
            SymbolEntry withSymbol = this.symbolTable.get($with);
            String withType = withSymbol.getType();
+           System.out.println("withType = "+withType);
            
            $st = withType != "Timeline" ? %outputConstraintFunctionCall() : %constraintFunctionCall();
            %{$st}.with = $with;
@@ -375,23 +379,19 @@ variableDeclaration
     ;
 
 initializer      
-    :    logicalORExpression -> initializer(exp = { $logicalORExpression.st })
+    :    expression -> initializer(exp = { $expression.st })
     ;
     
 // IMPORTANT: NEEDS TEMPLATE!
 expression 
-    :    ^(ASSIGNMENT_OPERATOR logicalORExpression expression)
-    ;
-    
-// IMPORTANT: ALL OF THESE DERIVATIONS NEED ACTIONS OR TEMPLATES
-logicalORExpression      
-    :	 ^('not' logicalORExpression) // Needs Template
-    |	 ^('or' logicalORExpression logicalORExpression) // Needs Template
-    |    ^('and' logicalORExpression logicalORExpression) // Needs Template
-    |    ^(EQUALITY_OPERATOR logicalORExpression logicalORExpression) // Needs Template
-    |    ^(RELATIONAL_OPERATOR logicalORExpression logicalORExpression) // Needs Template
-    |    ^(ADDITIVE_OPERATOR logicalORExpression logicalORExpression) // Needs Template
-    |    ^(MULTIPLICATIVE_OPERATOR logicalORExpression logicalORExpression) // Needs Template
+    :    ^(ASSIGNMENT_OPERATOR expression expression) 
+    |    ^('not' expression) // Needs Template
+   |     ^('or 'expression expression) // Needs Template
+    |    ^('and' expression expression) // Needs Template
+    |    ^(EQUALITY_OPERATOR expression expression) // Needs Template
+    |    ^(RELATIONAL_OPERATOR expression expression) // Needs Template
+    |    ^(ADDITIVE_OPERATOR expression expression) // Needs Template
+    |    ^(MULTIPLICATIVE_OPERATOR expression expression) // Needs Template
     |	 ID     -> passThrough(text = { $ID.text } ) // Needs Action; Check if it exists
     |	 BOOL   -> passThrough(text = { $BOOL.text } ) // Needs Template
     |	 NUMBER -> passThrough(text = { $NUMBER.text } ) // Needs Template
@@ -399,6 +399,23 @@ logicalORExpression
     |	 TIME   -> passThrough(text = { $TIME.text } )  // Needs Action; Needs to be parsed into Milliseconds
     |    functionPredicateCall       -> passThrough(text = { $functionPredicateCall.st })
     ;	
+    
+// IMPORTANT: ALL OF THESE DERIVATIONS NEED ACTIONS OR TEMPLATES
+//logicalORExpression      
+  //  :	 ^('not' logicalORExpression) // Needs Template
+   // |	 ^('or' logicalORExpression logicalORExpression) // Needs Template
+  //  |    ^('and' logicalORExpression logicalORExpression) // Needs Template
+//    |    ^(EQUALITY_OPERATOR logicalORExpression logicalORExpression) // Needs Template
+//    |    ^(RELATIONAL_OPERATOR logicalORExpression logicalORExpression) // Needs Template
+//    |    ^(ADDITIVE_OPERATOR logicalORExpression logicalORExpression) // Needs Template
+//    |    ^(MULTIPLICATIVE_OPERATOR logicalORExpression logicalORExpression) // Needs Template
+//    |	 ID     -> passThrough(text = { $ID.text } ) // Needs Action; Check if it exists
+//    |	 BOOL   -> passThrough(text = { $BOOL.text } ) // Needs Template
+//    |	 NUMBER -> passThrough(text = { $NUMBER.text } ) // Needs Template
+//    |	 STRING -> passThrough(text = { $STRING.text } ) // Needs Template
+//    |	 TIME   -> passThrough(text = { $TIME.text } )  // Needs Action; Needs to be parsed into Milliseconds
+//    |    functionPredicateCall       -> passThrough(text = { $functionPredicateCall.st })
+//    ;	
     
 // Start generic literals 
 literal : BOOL | NUMBER | STRING | TIME;
