@@ -162,10 +162,9 @@ inStatement
 scope {
   String timeline;
 }   :  ^(IN ID block = inBlock) {
-	$inStatement::timeline = $ID.text;
 	$st = %inStatement();
 	%{$st}.block = $block.st;
-	}
+       }
     ;
     
 inBlock 
@@ -242,7 +241,7 @@ constraintFunctionCall
          %{$st}.target = $target.text;
          %{$st}.type = "JMFAudio"; // TODO: inter timeline through semantic analysis
          %{$st}.function = $function.text;
-         %{$st}.time = $time != @start ? $time.text : 0;
+         %{$st}.time = $time.text != "@start" ? $time.text : 0;
          %{$st}.args = $expressionList.st;
     }
     ;
@@ -262,7 +261,7 @@ variableList
     ;
 
 expressionList 
-    :    expression+
+    :    (exps += expression)+ -> expressionList(exps = { $exps })
          //-> expressionList(exps = { $exps })
     ;
 
