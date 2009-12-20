@@ -49,7 +49,7 @@ class <name> <accept> <accepts> {
 }
 >>
 
-functionHeader(name, args)             ::= "<name>(<args>)"
+functionHeader(name, args)             ::= "<name>(<args>);"
 functionDefinition(name, args, block)  ::=
 <<
 public void <name> (<args>) {
@@ -57,22 +57,18 @@ public void <name> (<args>) {
 }
 >>
 
-predicateHeader(name, args)           ::= "public bool <name> (<args>)"
-predicateDefintion(name, args, block) ::=
+predicateHeader(name, args)           ::= "public bool <name> (<args>);"
+predicateDefinition(name, args, block) ::=
 <<
-public void <name> (<args>) {
+public boolean <name> (<args>) {
   <block>
 }
 >>
 predicateBlock(statements, returns) ::=
 <<
-  <statements>
+  <statements:{ statement | <statement>}; separator="\r\n">
   return <returns>;
 >>
-
-passThrough(text)  ::= "<text>"
-
-inStatement(block)              ::= "<block>"
 
 ifStatement(exp, block)               ::=
 <<
@@ -105,6 +101,8 @@ else
 
 whenEveryStatement()                  ::= ""
 
+functionPredicateCall()               ::= ""
+
 constraintFunctionCall(
  with, target,
  type, function,
@@ -119,8 +117,7 @@ constraintFunctionCall(
         );
 >>
 
-functionPredicateCall()               ::= ""
-
+passThrough(text)  ::= "<text>"
 idList(ids)                           ::= "<ids:{ id | <id.text> }; separator=\", \">"
 variableList(vars)                    ::= "<vars:{ var | <var> }; separator=\", \">"
 expressionList(exps)                  ::= "<exps:{ exp | <exp> }; separator=\", \">"
@@ -130,8 +127,9 @@ statementList(statements)             ::=
 >>
 
 variableArgument(type, name)          ::= "<type> <name>"
-variableDeclaration(type, name, init) ::= "<type> <name> <init>;"
 timelineArgument(name)                ::= "Timeline <name>"
+deviceDeclaration(type, name, args)   ::= "<type> <name> = new <type>(<args>);"
+variableDeclaration(type, name, init) ::= "<type> <name> <init>;"
 timelineDeclaration(name)             ::= "Timeline <name> = new Timeline();"
 initializer(exp)                      ::= " = <exp>;"
 expression(lhand,op,rhand)            ::= "<lhand> <op> <rhand>"

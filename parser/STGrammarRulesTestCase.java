@@ -40,16 +40,16 @@ public class STGrammarRulesTestCase extends TestCase {
 
         this.shouldGenerateFunctionHeader();
         this.shouldGenerateFunctionDefinition();
-        //this.shouldGeneratePredicateHeader();
-        //this.shouldGeneratePredicateDefinition();
+        this.shouldGeneratePredicateHeader();
+        this.shouldGeneratePredicateDefinition();
 
         this.shouldGenerateInStatement();
         this.shouldGenerateIfStatement();
 
         this.shouldGenerateVariableList();
         this.shouldGenerateIdList();
-        this.shouldGenerateTimelineDeclaration();
         this.shouldGenerateNumberDeclaration();
+        this.shouldGenerateTimelineDeclaration();
     }
 
     @Test
@@ -230,7 +230,7 @@ public class STGrammarRulesTestCase extends TestCase {
 
     @Test
     public void shouldGenerateNumberDeclaration() throws IOException, RecognitionException {
-        STTestRunner testRunner = new STTestRunner(this.testPath + "numberDeclaration.cld", this.templatePath) {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "literals" + File.separator + "numberDeclaration.cld", this.templatePath) {
             public CommonTree getTree(celluloidParser parser) throws RecognitionException {
                 return (CommonTree)parser.variableDeclaration().getTree();
             }
@@ -256,38 +256,6 @@ public class STGrammarRulesTestCase extends TestCase {
 
         testRunner.RunTest();
     }
-
-    /*public void shouldCommunicate() throws IOException, RecognitionException {
-        STTestRunner testRunner = new STTestRunner(this.testPath + "ifStatement.cld", this.templatePath) {
-            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
-                return (CommonTree)parser.f().getTree();
-            }
-
-            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
-                return null;
-            }
-
-            public void RunTest() throws IOException, RecognitionException {
-                System.out.println("Testing " + this.testPath);
-                FileReader groupFileR = new FileReader(this.templatePath);
-                StringTemplateGroup templates = new StringTemplateGroup(groupFileR);
-                groupFileR.close();
-
-                FileInputStream inputFileS = new FileInputStream(this.testPath);
-                ANTLRInputStream input = new ANTLRInputStream(inputFileS);
-                celluloidLexer lexer = new celluloidLexer(input); // create lexer
-                CommonTokenStream tokens = new CommonTokenStream(lexer);
-                celluloidParser parser = new celluloidParser(tokens); // create parser
-
-                CommonTree tree = this.getTree(parser);
-                System.out.println("=====Parse Tree=====");
-                System.out.println(tree.toStringTree());
-                System.out.println("=====End Parse Tree=====");
-            }
-        };
-
-        testRunner.RunTest();
-    }*/
 
     private class STTestRunner {
 

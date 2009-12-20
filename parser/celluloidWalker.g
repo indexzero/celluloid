@@ -11,11 +11,17 @@ options {
 }
 
 @members {
-  private class SymbolEntry {
+  class SymbolEntry {
     private String name;
     private String type;
+    private String pseudoType;
     
     public SymbolEntry(String name, String type) {
+      this.name = name;
+      this.type = type;
+    }
+    
+    public SymbolEntry(String name, String type, String pseudoType) {
       this.name = name;
       this.type = type;
     }
@@ -27,9 +33,14 @@ options {
     public String getType() {
       return this.type;
     }
+    
+    public String getPseduoType() {
+      return this.pseudoType;
+    }
   }
-
-  private HashMap<String, SymbolEntry> symbolTable = new HashMap<String, SymbolEntry>();
+  
+  HashMap<String, String> typeMap = new HashMap<String, String>();
+  HashMap<String, SymbolEntry> symbolTable = new HashMap<String, SymbolEntry>();
 }
 
 
@@ -37,6 +48,10 @@ options {
 program 
 @init {
   this.symbolTable = new HashMap<String, SymbolEntry>();
+  typeMap.put("number", "double");
+  typeMap.put("string", "String");
+  typeMap.put("time", "long");
+  typeMap.put("boolean", "boolean");
 }
     :    ^(PROGRAM 
              ^(EVENTS (events += eventDefinition)*)
@@ -160,7 +175,7 @@ predicateDefinition
          } 
     ;	    
 predicateBlock      
-    :    ^(FUNBLOCK ^(RETURN retexp = expression) (block += functionPredicateBlockDeclaration)*) {
+    :    ^(FUNBLOCK ^(RETURN retexp = logicalORExpression) (block += functionPredicateBlockDeclaration)*) {
            $st = %predicateBlock();
            %{$st}.statements = $block;
            %{$st}.returns = $retexp.st;
@@ -171,8 +186,8 @@ predicateBlock
 
 inStatement
     :  ^(IN ID block = inBlock[$ID.text]) {
-        $st = %inStatement();
-	%{$st}.block = $block.st;
+        $st = %passThrough();
+	%{$st}.text = $block.st;
        }
     ;
     
@@ -244,16 +259,21 @@ listenerBlockDeclaration[String with]
     ;
     
 constraintFunctionCall[String with]
-    :    ^(OBJCALL function = ID target = ID ^(AT (time = TIME)?) ^(ARGS expressionList?)) {
+    :    ^(OBJCALL target = ID function = ID ^(AT (time = TIME)?) ^(ARGS expressionList?)) {
            $st = %constraintFunctionCall();
            %{$st}.with = $with;
            %{$st}.target = $target.text;
-           %{$st}.type = "JMFAudio"; // TODO: inter timeline through semantic analysis
+           
+           SymbolEntry targetSymbol = this.symbolTable.get($target.text);
+           %{$st}.type = targetSymbol.getType(); 
            %{$st}.function = $function.text;
            %{$st}.time = $time.text != "@start" ? $time.text : 0;
            %{$st}.args = $expressionList.st;
          }
     ;
+    catch[NullPointerException ex] {
+      System.err.println("<Celluloid> Cannot execute constraint function on undefined media: " + $target.text); 
+    }
     
 functionPredicateCall       
     :    ^(CALL ID ^(ARGS expressionList))
@@ -274,16 +294,56 @@ expressionList
          //-> expressionList(exps = { $exps })
     ;
 
-variableDeclaration 
-    :    ^(VARDEF 'timeline' ID)        -> timelineDeclaration(name = { $ID.text })
-    |    ^(ARG 'timeline' ID)           -> timelineArgument(name = { $ID.text }) 
-    |    ^(VARDEF TYPE ID initializer?) -> variableDeclaration(type = { $TYPE.text }, name = { $ID.text }, init = { $initializer.st })
-    |    ^(ARG TYPE ID)                 -> variableArgument(type = { $TYPE.text }, name = { $ID.text }) 
-    ;
-    
 initializer      
     :    logicalORExpression -> passThrough(text = { $logicalORExpression.st } )
     ;
+
+variableDeclaration 
+    :    ^(VARDEF 'timeline' ID) {
+           $st = %timelineDeclaration();
+           %{$st}.name = $ID.text;
+           this.symbolTable.put($ID.text, new SymbolEntry($ID.text, "timeline"));
+         }
+    |    ^(ARG 'timeline' ID)           -> timelineArgument(name = { $ID.text }) 
+    |    ^(VARDEF TYPE ID initializer?) {
+    	   // TODO REMOVE THIS CODE BECAUSE ITS CALLED IN PROGRAM INIT!
+    	   // TODO GET THIS TEST WORKING
+           typeMap = new HashMap<String, String>();
+           typeMap.put("number", "double");
+	   typeMap.put("string", "String");
+	   typeMap.put("time", "long");
+	   typeMap.put("boolean", "boolean");
+    
+           $st = %variableDeclaration();
+           %{$st}.name = $ID.text;
+           %{$st}.type = this.typeMap.get($TYPE.text);
+           %{$st}.init = $initializer.st;
+           
+           this.symbolTable.put($ID.text, new SymbolEntry($ID.text, $TYPE.text));
+         }
+    |    ^(ARG TYPE ID) {
+           // TODO REMOVE THIS CODE BECAUSE ITS CALLED IN PROGRAM INIT!
+           typeMap = new HashMap<String, String>();
+           typeMap.put("number", "double");
+	   typeMap.put("string", "String");
+	   typeMap.put("time", "long");
+	   typeMap.put("boolean", "boolean");
+    
+           $st = %variableArgument();
+           %{$st}.name = $ID.text;
+           %{$st}.type = this.typeMap.get($TYPE.text);
+         }
+    |    ^(OBJDEF PSEUDOTYPE name = ID realType = ID args = expressionList?) {
+           $st = %deviceDeclaration();
+           %{$st}.type = $realType;
+           %{$st}.name = $name;
+           %{$st}.args = $args.st;
+           
+           this.symbolTable.put($name.text, new SymbolEntry($name.text, $realType.text, $PSEUDOTYPE.text));
+         } 
+        
+    ;
+    
     
 expression 
     :    ^(ASSIGNMENT_OPERATOR logicalORExpression expression)
@@ -296,9 +356,13 @@ logicalORExpression
     |    ^(RELATIONAL_OPERATOR logicalORExpression logicalORExpression)
     |    ^(ADDITIVE_OPERATOR logicalORExpression logicalORExpression)
     |    ^(MULTIPLICATIVE_OPERATOR logicalORExpression logicalORExpression)
-    |	 ID -> passThrough(text = { $ID.text } )
-    |	 BOOL -> passThrough(text = { $BOOL.text } )
+    |	 ID     -> passThrough(text = { $ID.text } )
+    |	 BOOL   -> passThrough(text = { $BOOL.text } )
     |	 NUMBER -> passThrough(text = { $NUMBER.text } )
+    |	 STRING -> passThrough(text = { $STRING.text } )
+    |	 TIME   -> passThrough(text = { $TIME.text } )
+    |    ^(OBJDEF ID expressionList) -> passThrough(text = { $ID.text }) //THIS IS WRONG, SHOULD BE NEW ID(LIST);
+    |    functionPredicateCall       -> passThrough(text = { $functionPredicateCall.st })
     ;	
     
 // Start generic literals 

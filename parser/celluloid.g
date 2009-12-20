@@ -8,6 +8,7 @@ options {
 
 tokens {
   VARDEF;
+  OBJDEF;
   
   FUNC;
   PRED;
@@ -184,7 +185,7 @@ predicateBlock
     :    // VERY  WEAK IMPLEMENTATION
          START
            ( block += functionPredicateBlockDeclaration | NEWLINE )* 
-           'return' retexp = expression 
+           'return' retexp = logicalORExpression NEWLINE
          END
          -> ^(FUNBLOCK[$START, "FUNBLOCK"] ^(RETURN $retexp) $block*) 
          //'return' returns = assignmentExpression 
@@ -330,6 +331,8 @@ variableDeclaration
          (NEWLINE -> ^(VARDEF TYPE ID initializer?)
          |        -> ^(ARG TYPE ID)
          )
+    |    PSEUDOTYPE name = ID '=' 'new' realType = ID '(' expressionList? ')'
+         -> ^(OBJDEF PSEUDOTYPE $name $realType expressionList?)
          //-> variableDeclaration(type = { $TYPE.text }, name = { $ID.text }, init = { $initializer.st })
     ;
     
@@ -363,14 +366,13 @@ multiplicativeExpression
 primaryExpression
     :    literal
     |    ID
-    |    'new'! ID '('! expressionList ')'!
     |    functionPredicateCall
     ;
 // End generic literals and declarations
 
 // Start operators
 // TODO: LOCAL OPERATORS
-ASSIGNMENT_OPERATOR      : '=' | '*=' | '/=' | '%=' | '+=' | '-=' ;
+ASSIGNMENT_OPERATOR      : '=' | '*=' | '/=' | '%=' | '+=' | '-=';	
 EQUALITY_OPERATOR        : '==' | '!=';
 RELATIONAL_OPERATOR      : '>' | '<' | '<=' | '>=';
 ADDITIVE_OPERATOR        : '+' | '-';
@@ -407,8 +409,9 @@ fragment EXPONENT : ('e'|'E') ('+'|'-')? ('0'..'9')+ ;
 // End number literals
 
 // Start boolean literal
-BOOL    : 'true' | 'false';
-TYPE    : 'time' | 'number' | 'string' | 'boolean' | 'input' | 'output';
+BOOL       : 'true' | 'false';
+TYPE       : 'time' | 'number' | 'string' | 'boolean';
+PSEUDOTYPE : 'input' | 'output';
 // End boolean literal
 
 // Start core literals

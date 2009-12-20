@@ -1,4 +1,8 @@
 function myFunc (number arg1) do
   timeline myTimeline
   timeline mytimeline2
+  input audio1 = new JMFAudio()
+  in myTimeline do
+     play audio1 @start
+  end
 end
