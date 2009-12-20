@@ -29,7 +29,7 @@ options {
     }
   }
 
-  private HashMap<String, SymbolEntry> symbolTable;  
+  private HashMap<String, SymbolEntry> symbolTable = new HashMap<String, SymbolEntry>();
 }
 
 
@@ -87,7 +87,7 @@ deviceDefinition
            $st = %deviceDefinition();
            %{$st}.name = $ID.text;
            %{$st}.accept = accepts != null ? "implements" : "";
-           %{$st}.accpets = $accepts.st;
+           %{$st}.accepts = $accepts.st;
            %{$st}.block = $deviceBlock.st;
          }
     ;
@@ -108,15 +108,15 @@ functionHeader
     :    ^(FUNHEAD ID ^(ARGS args = variableList?)) {
            $st = %functionHeader();
            %{$st}.name = $ID.text;
-           %{$st}.args = args != null ? $args.st : "";
+           %{$st}.args = $args.st;
          } 
     ;
 functionDefinition 
     :    ^(FUNC ID ^(ARGS args = variableList?) block = functionBlock?) {
            $st = %functionDefinition();
            %{$st}.name = $ID.text;
-           %{$st}.args = args != null ? $args.st : "";
-           %{$st}.block = block != null ? $block.st : "";
+           %{$st}.args = $args.st;
+           %{$st}.block = $block.st;
          }
     ;
 functionBlock      
@@ -137,15 +137,15 @@ predicateHeader
     :    ^(PREDHEAD ID ^(ARGS args = variableList?)) {
            $st = %predicateHeader();
            %{$st}.name = $ID.text;
-           %{$st}.args = args != null ? $args.st : "";
+           %{$st}.args = $args.st;
          } 
     ;    
 predicateDefinition 
     :    ^(PRED ID ^(ARGS args = variableList?) block = predicateBlock) {
            $st = %predicateDefinition();
            %{$st}.name = $ID.text;
-           %{$st}.args = args != null ? $args.st : "";
-           %{$st}.block = block != null ? $block.st : "";
+           %{$st}.args = $args.st;
+           %{$st}.block = $block.st;
          } 
     ;	    
 predicateBlock      
@@ -257,7 +257,7 @@ idList
     ;
 
 variableList  
-    :    variableDeclaration+
+    :    (vars += variableDeclaration)+ -> variableList(vars = { $vars })  
     ;
 
 expressionList 
@@ -266,10 +266,10 @@ expressionList
     ;
 
 variableDeclaration 
-    :    ^(VARDEF 'timeline' ID)
-    |    ^(ARG 'timeline' ID)
-    |    ^(VARDEF TYPE ID initializer?)
-    |    ^(ARG TYPE ID)
+    :    ^(VARDEF 'timeline' ID)        -> timelineDeclaration(name = { $ID.text })
+    |    ^(ARG 'timeline' ID)           -> timelineArgument(name = { $ID.text }) 
+    |    ^(VARDEF TYPE ID initializer?) -> variableDeclaration(type = { $TYPE.text }, name = { $ID.text }, init = { $initializer.st })
+    |    ^(ARG TYPE ID)                 -> variableArgument(type = { $TYPE.text }, name = { $ID.text }) 
     ;
     
 initializer      
