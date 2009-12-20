@@ -61,19 +61,22 @@ announcementDeclaration
     ; 
 
 constraintDefinition
-    :    ^(CONSTRAINT ID ^(REQUIRES requires = idList?) ^(ANNOUNCES announces = idList?) constraintBlock) {
+    :    ^(CONSTRAINT ID ^(REQUIRES requires = idList?) ^(ANNOUNCES announces = idList?) block = constraintBlock) {
            $st = %constraintDefinition();
            %{$st}.name = $ID.text;
            %{$st}.require = requires != null ? "implements" : ""; 
            %{$st}.requires = $requires.st;
-           %{$st}.block = $constraintBlock.st;
+           %{$st}.block = $block.st;
            
            // TODO: Semantic analysis
-           System.out.println(announces);
+           //System.out.println(announces);
          }
     ;
 constraintBlock 
-    :    ^(CONBLOCK constraintBlockDeclaration* ^(ANNOUNCEMENTS announcementDeclaration*))
+    :    ^(CONBLOCK (block += constraintBlockDeclaration)* ^(ANNOUNCEMENTS announcementDeclaration*)) {
+            $st = %statementList();
+            %{$st}.statements = $block;
+          }
     ;    	
 constraintBlockDeclaration
     :	 variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
@@ -280,7 +283,8 @@ expression
     :    ^(ASSIGNMENT_OPERATOR logicalORExpression expression)
     ;
 logicalORExpression      
-    :    ^('or' 'not'? logicalORExpression logicalORExpression)
+    :    ^('or' 'not'? exp1 = logicalORExpression exp2 = logicalORExpression) 
+          //-> expression(lhand = { $exp1.st }, op = { '||' }, rhand = { $exp2.st }) 
     |    ^('and' logicalORExpression logicalORExpression)
     |    ^(EQUALITY_OPERATOR logicalORExpression logicalORExpression)
     |    ^(RELATIONAL_OPERATOR logicalORExpression logicalORExpression)
@@ -289,7 +293,7 @@ logicalORExpression
     ;	
 primaryExpression
     :	 ID
-    |	 ID expressionList
+    |	 ID expressionList	
     |	 literal
     |	 functionPredicateCall
     ;
