@@ -36,54 +36,61 @@ public class STGrammarRulesTestCase extends TestCase {
 
     @Test
     public void shouldGenerateConstraintDefinition() throws IOException, RecognitionException {
-        System.out.println("Testing constraintDefinition: constraintDefinition.cld");
-        FileReader groupFileR = new FileReader(this.templatePath);
-        StringTemplateGroup templates = new StringTemplateGroup(groupFileR);
-        groupFileR.close();
-        
-        FileInputStream inputFileS = new FileInputStream(testPath + "constraintDefinition.cld");
-        ANTLRInputStream input = new ANTLRInputStream(inputFileS);
-        celluloidLexer lexer = new celluloidLexer(input); // create lexer
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        celluloidParser parser = new celluloidParser(tokens); // create parser
+        STTestRunner testRunner = new STTestRunner(this.testPath + "constraintDefinition.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.constraintDefinition().getTree();
+            }
 
-        CommonTreeNodeStream nodes = new CommonTreeNodeStream(parser.constraintDefinition().getTree());
-        nodes.setTokenStream(tokens);
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.constraintDefinition_return r = walker.constraintDefinition();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
 
-        celluloidWalker walker = new celluloidWalker(nodes);
-        walker.setTemplateLib(templates);
-        celluloidWalker.constraintDefinition_return r = walker.constraintDefinition();
-
-        StringTemplate output = (StringTemplate)r.getTemplate();
-        System.out.println(output.toString());
-
+        testRunner.RunTest();
     }
 
+    private class STTestRunner {
 
-    /**
-     * Prints the tree output
-     * @param output
-     */
-    public void printTestResults(CommonTree output) {
-        System.out.println(output.toStringTree());
-        System.out.println();
+        private String testPath;
+        private String templatePath;
+
+        public STTestRunner(String testPath, String templatePath) {
+            this.testPath = testPath;
+            this.templatePath = templatePath;
+        }
+
+        public CommonTree getTree(celluloidParser parser) throws RecognitionException  {
+            return null;
+        }
+
+        public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+            return null;
+        }
+
+        public void RunTest() throws IOException, RecognitionException {
+            System.out.println("Testing " + this.testPath);
+            FileReader groupFileR = new FileReader(this.templatePath);
+            StringTemplateGroup templates = new StringTemplateGroup(groupFileR);
+            groupFileR.close();
+
+            FileInputStream inputFileS = new FileInputStream(this.testPath);
+            ANTLRInputStream input = new ANTLRInputStream(inputFileS);
+            celluloidLexer lexer = new celluloidLexer(input); // create lexer
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
+            celluloidParser parser = new celluloidParser(tokens); // create parser
+
+            CommonTreeNodeStream nodes = new CommonTreeNodeStream(this.getTree(parser));
+            nodes.setTokenStream(tokens);
+
+            celluloidWalker walker = new celluloidWalker(nodes);
+            walker.setTemplateLib(templates);
+            celluloidWalker.constraintDefinition_return r = walker.constraintDefinition();
+
+            StringTemplate output = (StringTemplate)r.getTemplate();
+            System.out.println(output.toString());
+        }
     }
-
-    /**
-     * Creates an instance of the celluloidParser for the input at fileName
-     * @param fileName
-     * @return an instance of the celluloidParser for the input at fileName
-     * @throws IOException
-     */
-    private celluloidParser createParserFromFile(String fileName) throws IOException {
-        FileInputStream inputFileS = new FileInputStream(testPath + fileName);
-        ANTLRInputStream input = new ANTLRInputStream(inputFileS);
-        celluloidLexer lexer = new celluloidLexer(input); // create lexer
-        TokenRewriteStream tokens = new TokenRewriteStream(lexer);
-        celluloidParser parser = new celluloidParser(tokens); // create parser
-        return parser;
-    }
-
 
 
 }
