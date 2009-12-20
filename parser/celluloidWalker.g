@@ -108,7 +108,7 @@ constraintDefinition
            %{$st}.requires = $requires.st;
            %{$st}.block = $block.st;
            
-           // TODO: Semantic analysis
+           // TODO: Add the announces section to compile-time storage for later use (i.e. by device declarations)
            //System.out.println(announces);
          }
     ;
@@ -172,10 +172,10 @@ functionBlock
          } 
     ;
 functionPredicateBlockDeclaration 
-    :    variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
-    |    expression -> passThrough(text = { $expression.st } )
-    |    inStatement -> passThrough(text = { $inStatement.st } ) // Remark: Unknown behavior if called from inStatement
-    |    ifStatement -> passThrough(text = { $ifStatement.st } )
+    :    variableDeclaration   -> passThrough(text = { $variableDeclaration.st } )
+    |    expression            -> passThrough(text = { $expression.st } )
+    |    inStatement           -> passThrough(text = { $inStatement.st } ) // Remark: Unknown behavior if called from inStatement
+    |    ifStatement           -> passThrough(text = { $ifStatement.st } )
     |    functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
     ;
 
@@ -206,7 +206,6 @@ predicateBlock
     ;
 
 // Timline and procedural blocks
-
 inStatement
     :  ^(IN ID block = inBlock[$ID.text]) {
         $st = %passThrough();
@@ -221,8 +220,8 @@ inBlock[String with]
    	}
     ;
 inBlockDeclaration[String with]
-    :   whenStatement[$with] -> passThrough(text = { $whenStatement.st } )
-    |   everyStatement[$with] -> passThrough(text = { $everyStatement.st } )
+    :   whenStatement[$with]          -> passThrough(text = { $whenStatement.st } )
+    |   everyStatement[$with]         -> passThrough(text = { $everyStatement.st } )
     |   constraintFunctionCall[$with] -> passThrough(text = { $constraintFunctionCall.st } )
     ;
 
@@ -256,10 +255,10 @@ elseStatement
     	}
     ;
 ifBlockDeclaration
-    :	variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
-    |   expression -> passThrough(text = { $expression.st } )
-    //|   inStatement -> passThrough(text = { $inStatement.st } )
-    |   ifStatement -> passThrough(text = { $ifStatement.st } )
+    :	variableDeclaration   -> passThrough(text = { $variableDeclaration.st } )
+    |   expression            -> passThrough(text = { $expression.st } )
+    //|   inStatement         -> passThrough(text = { $inStatement.st } )
+    |   ifStatement           -> passThrough(text = { $ifStatement.st } )
     |   functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
     ;
 
@@ -309,12 +308,11 @@ functionPredicateCall
              System.err.println("<Celluloid> Cannot execute undefined function / predicate: " + $ID.text);
            }
            
-           // TODO: Get arguments from FunctionEntry object and perform type checking.
+           // TODO: Get arguments from FunctionEntry object and perform existence and type checking.
            $st = %functionPredicateCall();
            %{$st}.name = $ID.text;
            %{$st}.args = $args.st;
          }
-         //-> functionCall(name = { $ID.text }, args = { $expressionList.st })
     ;	
 
 // Lists of IDs, variables, and expressions
@@ -328,13 +326,9 @@ variableList
 
 expressionList 
     :    (exps += expression)+ -> expressionList(exps = { $exps })
-         //-> expressionList(exps = { $exps })
     ;
 
-initializer      
-    :    logicalORExpression -> initializer(exp = { $logicalORExpression.st })
-    ;
-
+// Variable declaration and expressions
 variableDeclaration 
     :    ^(VARDEF 'timeline' ID) {
            $st = %timelineDeclaration();
@@ -378,6 +372,10 @@ variableDeclaration
            
            this.symbolTable.put($name.text, new SymbolEntry($name.text, $realType.text, $PSEUDOTYPE.text));
          }
+    ;
+
+initializer      
+    :    logicalORExpression -> initializer(exp = { $logicalORExpression.st })
     ;
     
 // IMPORTANT: NEEDS TEMPLATE!

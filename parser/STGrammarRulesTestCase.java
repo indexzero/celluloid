@@ -37,6 +37,7 @@ public class STGrammarRulesTestCase extends TestCase {
         this.shouldThrowOnUndefinedInput();
         //this.shouldThrowOnUndefinedFunction();
 
+        this.shouldGenerateHelloWorld();
         this.shouldGenerateEventDefinition();
         this.shouldGenerateConstraintDefinition();
         this.shouldGenerateDeviceDefinition();

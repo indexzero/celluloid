@@ -9,7 +9,7 @@ public class Test {
      //astTests.runAllTests();
 
      STGrammarRulesTestCase tests = new STGrammarRulesTestCase("STRules", "tests" + File.separator, "celluloid.java.stg");
-     tests.shouldGenerateHelloWorld();
-     //tests.shouldCommunicate();
+     //tests.shouldGenerateHelloWorld();
+     tests.runAllTests();
   }
 }
