@@ -32,7 +32,7 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	private Stack<ConstraintFunction> didExecute;
 	private PriorityQueue<ConstraintFunction> willExecute;
 	private LinkedList<Input> inputs;
-	private HashMap<Input, Boolean> wasPausedInputs;
+	private LinkedList<Input> wasPausedInputs;
 	private HashMap<String, LinkedList<EventFunction>> announceEvents;
 	private HashMap<EveryFunction, ArrayList<Float>> everyFunctionHash;
 	private HashMap<EveryFunction, ArrayList<Float>>  everyFunctionHashInitial;
@@ -46,7 +46,7 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		didExecute = new Stack<ConstraintFunction>();
 		willExecute = new PriorityQueue<ConstraintFunction>();
 		inputs = new LinkedList<Input>();
-		wasPausedInputs = new HashMap<Input, Boolean>();
+		wasPausedInputs = new LinkedList<Input>();
 		announceEvents  = new HashMap<String, LinkedList<EventFunction>>();
 		everyFunctionHash = new HashMap<EveryFunction, ArrayList<Float>>();
 		everyFunctionHashInitial = new HashMap<EveryFunction, ArrayList<Float>>();
@@ -67,9 +67,8 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 			status = Status.PLAYING;
 		}
 		if (isPaused()) {
-			Iterator<Input> itr = wasPausedInputs.keySet().iterator();
-			while ((itr != null) && itr.hasNext()) {
-				itr.next().play();
+			for (Input i : wasPausedInputs) {
+				i.play();
 			}
 			timer.start();
 			status = Status.PLAYING;
@@ -82,7 +81,7 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		wasPausedInputs.clear();
 		for (Input i: inputs) {
 			if (i.isPlaying()) {
-				wasPausedInputs.put(i, true);
+				wasPausedInputs.add(i);
 			}
 			i.pause();
 		}
