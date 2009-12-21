@@ -1,0 +1,16 @@
+timeline timeline1
+
+	input jmf = new VideoFile("../framework/lostinspace.7.160x120.11khz.mov")
+	input jmf2 = new VideoFile("../framework/darkcity.7.160x120.11khz.mov")
+	output output1 = new Video("some display")
+
+	in timeline1 do
+		play jmf @start
+		play jmf2 @8s
+	end
+	in output1 do
+		play timeline1 @start
+	end
+	
+	
+	

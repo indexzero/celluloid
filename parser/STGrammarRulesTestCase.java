@@ -38,6 +38,7 @@ public class STGrammarRulesTestCase extends TestCase {
         //this.shouldThrowOnUndefinedFunction();
         this.shouldGenerateHelloCh1();
         this.shouldGenerateHelloCh2();
+        this.shouldGenerateHelloCh3();
         //this.shouldGenerateHelloWorld();
         //this.shouldGenerateEventDefinition();
         //this.shouldGenerateConstraintDefinition();
@@ -46,7 +47,7 @@ public class STGrammarRulesTestCase extends TestCase {
         //this.shouldGenerateFunctionHeader();
         //this.shouldGenerateFunctionDefinition();
         //this.shouldGeneratePredicateHeader();
-        this.shouldGeneratePredicateDefinition();
+       // this.shouldGeneratePredicateDefinition();
 
         //this.shouldGenerateIfStatement();
 
@@ -75,6 +76,21 @@ public class STGrammarRulesTestCase extends TestCase {
 
     public void shouldGenerateHelloCh2() throws IOException, RecognitionException {
         STTestRunner testRunner = new STTestRunner(this.testPath + "helloCh2.cld", this.templatePath) {
+            public CommonTree getTree(celluloidParser parser) throws RecognitionException {
+                return (CommonTree)parser.program().getTree();
+            }
+
+            public StringTemplate getTemplate(celluloidWalker walker) throws RecognitionException {
+                celluloidWalker.program_return r = walker.program();
+                return (StringTemplate)r.getTemplate();
+            }
+        };
+
+        testRunner.RunTest();
+    }
+
+    public void shouldGenerateHelloCh3() throws IOException, RecognitionException {
+        STTestRunner testRunner = new STTestRunner(this.testPath + "helloCh3.cld", this.templatePath) {
             public CommonTree getTree(celluloidParser parser) throws RecognitionException {
                 return (CommonTree)parser.program().getTree();
             }

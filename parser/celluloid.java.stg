@@ -168,8 +168,8 @@ statementList(statements)             ::=
 
 variableArgument(type, name)          ::= "<type> <name>"
 timelineArgument(name)                ::= "Timeline <name>"
-outputDeclaration(type, name, args)   ::= "<type> <name> = new <type>("Celluloid Output", 1024, 768);"
-audioDeviceDeclaration(type, name, args) ::= "<type> <name> = new <type>(new File(<args>).toURI().toURL());"
+outputDeclaration(type, name, args)   ::= "<type> <name> = new <type>(\"Celluloid Output\", 1024, 768);"
+jmfDeviceDeclaration(type, name, args) ::= "<type> <name> = new <type>(new File(<args>).toURI().toURL());"
 deviceDeclaration(type, name, args)   ::= "<type> <name> = new <type>(<args>);"
 variableDeclaration(type, name, init) ::= "<type> <name> <init>;"
 timelineDeclaration(name)             ::= "Timeline <name> = new Timeline();"

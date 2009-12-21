@@ -409,12 +409,14 @@ typeMap.put("boolean", "boolean");
     | ^(OBJDEF PSEUDOTYPE name = ID realType = ID args = expressionList?) {
            typeMap = new HashMap<String, String>();
            typeMap.put("AudioFile", "JMFAudio");
-           typeMap.put("Output", "output");
+           typeMap.put("VideoFile", "JMFVideo");
+           typeMap.put("Audio", "SwingOutput");
+           typeMap.put("Video", "SwingOutput");
            typeMap.put("input", "input");
-           if($realType.text .equals("AudioFile")) {
-            $st = %audioDeviceDeclaration();
+           if($realType.text .equals("AudioFile") || $realType.text .equals("VideoFile")) {
+            $st = %jmfDeviceDeclaration();
            }
-           else if($realType.text.equals("Output")){
+          else if($realType.text.equals("Audio") || $realType.text.equals("Video")){
             $st = %outputDeclaration();
            }
            else{

@@ -1,7 +1,7 @@
 timeline timeline1
 	input audio1 = new AudioFile("../framework/acousticgrunge.wav")
 	input audio2 = new AudioFile("../framework/playme.wav")
-	output output1 = new Output("../framework/HelloCh2.wav")
+	output output1 = new Audio("../framework/HelloCh2.wav")
 
 	in timeline1 do
 	    play audio1 @start
