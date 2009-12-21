@@ -139,6 +139,7 @@ deviceBlockDeclaration
     :    variableDeclaration 
     |    predicateDefinition 
     |    functionDefinition
+    |    languageBlockDefinition
     ;
 // End device definitions
 
@@ -376,9 +377,9 @@ MULTIPLICATIVE_OPERATOR  : '*' | '/' | '%';
 literal : BOOL | NUMBER | STRING | TIME;
 
 // Start language blocks
-//languageBlockDefinition : 'in' LANGUAGE START (lines += LANGUAGECODE)* END -> ^(LANGBLOCK $lines*);
-//LANGUAGE                : 'JAVA' | 'java' | 'Java';
-//LANGUAGECODE            : '<' '<' ANYTHING* NEWLINE;
+languageBlockDefinition : 'in' LANGUAGE START (lines += languageLine)* END -> ^(LANGBLOCK $lines*);
+languageLine : LANGUAGECODE;	
+LANGUAGE                : 'JAVA' | 'java' | 'Java';
 // End generic literals language blocks
 
 // Start string literal	
@@ -418,3 +419,5 @@ NEWLINE : '\n' | '\r\n' | '\r';
 WS      : ( ' ' | '\t' | '\r' | '\n' | '\r\n') {$channel=HIDDEN;};   
 COMMENT : '#' ~(NEWLINE)* NEWLINE {$channel=HIDDEN;};
 // End line and whitespace delimiters
+
+LANGUAGECODE            : '<' '<' ~(NEWLINE)* NEWLINE;

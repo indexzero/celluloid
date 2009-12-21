@@ -64,7 +64,7 @@ interface <name> <requires> {
 
 deviceDefinition(name, accept, accepts, block) ::=
 <<
-class <name> <accept> <accepts> {
+class <name> extends JMF <accept> <accepts> {
  <block>
 }
 >>

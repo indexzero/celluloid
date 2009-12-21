@@ -196,6 +196,7 @@ deviceBlockDeclaration
     : variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
     | predicateDefinition -> passThrough(text = { $predicateDefinition.st } )
     | functionDefinition -> passThrough(text = { $functionDefinition.st } )
+    | languageBlockDefinition -> passThrough(text = { $languageBlockDefinition.st } )
     ;
     
 // Function / Predicate definitions
@@ -500,6 +501,20 @@ expression
      } // Needs Action; Needs to be parsed into Milliseconds
     | functionPredicateCall -> passThrough(text = { $functionPredicateCall.st })
     ;
+
+languageBlockDefinition
+    :  ^(LANGBLOCK (lines += languageLine)*) {
+         $st = %statementList();
+         %{$st}.statements = $lines;
+       }
+    ;
+languageLine 
+    :    code = LANGUAGECODE {
+         $st = %passThrough();
+         %{$st}.text = $code.text.substring(2, $code.text.length());
+    }
+	;
+	
     
 // IMPORTANT: ALL OF THESE DERIVATIONS NEED ACTIONS OR TEMPLATES
 //logicalORExpression
