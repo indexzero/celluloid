@@ -20,7 +20,7 @@ import org.celluloidlang.reactive.ReactiveNumber;
 public abstract class JMF extends MediaPlayer implements StaticInput, Output, Runnable, ControllerListener {
 	
 	public enum Status{
-		PLAYING, STOPPED, PAUSED
+		INITIALIZED, PLAYING, STOPPED, PAUSED
 	}
 	
 	protected Status status;
@@ -30,7 +30,7 @@ public abstract class JMF extends MediaPlayer implements StaticInput, Output, Ru
 	 * @param url the url for this input
 	 */
 	public JMF(URL url) {
-		status = Status.STOPPED;
+		status = Status.INITIALIZED;
 		this.setMediaLocator(new MediaLocator(url));
 		this.setPlaybackLoop(false);
 		this.realize();

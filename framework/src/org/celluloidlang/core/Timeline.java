@@ -23,7 +23,7 @@ import org.celluloidlang.reactive.ReactiveUpdate;
 public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	
 	public enum Status{
-		PLAYING, STOPPED, PAUSED
+		INITIALIZED, PLAYING, STOPPED, PAUSED
 	}
 	
 	static final int TIME_GRANULARITY = 100;
@@ -45,7 +45,7 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	 */
 	public Timeline() {
 		timeElapsed = -1;
-		status = Status.STOPPED;
+		status = Status.INITIALIZED;
 		didExecute = new Stack<ConstraintFunction>();
 		willExecute = new PriorityQueue<ConstraintFunction>();
 		inputs = new LinkedList<Input>();
