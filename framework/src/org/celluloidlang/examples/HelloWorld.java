@@ -54,6 +54,30 @@ public class HelloWorld {
 			}
 		});
 		
+		timeline1.addEveryFunction(
+			new EveryFunction(new ReactiveNumber(1000.0), jmf) {
+				public void execute() {
+					((JMFVideo) input).play();
+				}
+		});
+		
+		timeline1.addEveryFunction(
+			new EveryFunction(new ReactiveNumber(2000.0), jmf) {
+				public void execute() {
+					((JMFVideo) input).stop();
+				}
+		});
+		
+		timeline1.addEventFunction(jmf, "AUDIO_GAIN" + "=" + "3",
+			new EventFunction(jmf) {
+				public void execute() {
+						System.out.println("Not Playing twice");
+						((JMFVideo) input).stop();
+						
+				}
+			}
+		);
+		
 		/* when you come across a block such as:
 		 * in output1 do
 		 * 	play timeline1 @start
@@ -74,6 +98,30 @@ public class HelloWorld {
 		});
 		
 		globalTimeline.addConstraintFunction(new ConstraintFunction(timeline1, new ReactiveNumber(0.0)) {
+			public void execute() {
+				((Timeline) input).play();
+			}
+		});
+		
+		globalTimeline.addConstraintFunction(new ConstraintFunction(timeline1, new ReactiveNumber(3000.0)) {
+			public void execute() {
+				((Timeline) input).pause();
+			}
+		});
+		
+		globalTimeline.addConstraintFunction(new ConstraintFunction(timeline1, new ReactiveNumber(6000.0)) {
+			public void execute() {
+				((Timeline) input).play();
+			}
+		});
+		
+		globalTimeline.addConstraintFunction(new ConstraintFunction(timeline1, new ReactiveNumber(9000.0)) {
+			public void execute() {
+				((Timeline) input).stop();
+			}
+		});
+		
+		globalTimeline.addConstraintFunction(new ConstraintFunction(timeline1, new ReactiveNumber(12000.0)) {
 			public void execute() {
 				((Timeline) input).play();
 			}

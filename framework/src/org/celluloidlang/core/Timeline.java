@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Stack;
@@ -25,50 +26,80 @@ import org.celluloidlang.reactive.ReactiveUpdate;
 
 public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	
+	public enum Status{
+		PLAYING, STOPPED, PAUSED
+	}
+	
 	static final int TIME_GRANULARITY = 100;
 	
 	private Timer timer;
-	private long initialTime = -1;
 	private Stack<ConstraintFunction> didExecute;
 	private PriorityQueue<ConstraintFunction> willExecute;
 	private LinkedList<Input> inputs;
+	private HashMap<Input, Boolean> wasPausedInputs;
 	private HashMap<String, LinkedList<EventFunction>> announceEvents;
 	private HashMap<EveryFunction, ArrayList<Float>> everyFunctionHash;
+	private HashMap<EveryFunction, ArrayList<Float>>  everyFunctionHashInitial;
 	private LinkedList<EveryFunction> everyFunctionList;
-	private String status; //can be "initialized", "playing", and "stopped"
+	private Status status;
+	private long timeElapsed;
 	
 	public Timeline() {
-		status = "initialized";
+		timeElapsed = -1;
+		status = Status.STOPPED;
 		didExecute = new Stack<ConstraintFunction>();
 		willExecute = new PriorityQueue<ConstraintFunction>();
 		inputs = new LinkedList<Input>();
+		wasPausedInputs = new HashMap<Input, Boolean>();
 		announceEvents  = new HashMap<String, LinkedList<EventFunction>>();
 		everyFunctionHash = new HashMap<EveryFunction, ArrayList<Float>>();
+		everyFunctionHashInitial = new HashMap<EveryFunction, ArrayList<Float>>();
 		everyFunctionList = new LinkedList<EveryFunction>();
 		ActionListener taskPerformer = new ActionListener() {
 			public void actionPerformed(ActionEvent action) {
-				timeStep(System.currentTimeMillis());
+				timeStep(timeElapsed + TIME_GRANULARITY);
+				timeElapsed += TIME_GRANULARITY;
 			}
 		};
 		timer = new Timer(TIME_GRANULARITY, taskPerformer);
 	}
 	
 	public synchronized void play() {
-		if (initialTime < 0) {
-			initialTime = System.currentTimeMillis();
+		if (timeElapsed < 0) {
+			timeElapsed = 0;
 			timer.start();
-			status = "Playing";
+			status = Status.PLAYING;
+		}
+		if (isPaused()) {
+			Iterator<Input> itr = wasPausedInputs.keySet().iterator();
+			while ((itr != null) && itr.hasNext()) {
+				itr.next().play();
+			}
+			timer.start();
+			status = Status.PLAYING;
+		}
+	}
+	
+	public synchronized void pause() {
+		timer.stop();
+		status = Status.PAUSED;
+		wasPausedInputs.clear();
+		for (Input i: inputs) {
+			if (i.isPlaying()) {
+				wasPausedInputs.put(i, true);
+			}
+			i.pause();
 		}
 	}
 	
 	public synchronized void stop() {
 		timer.stop();
-		status = "Stopped";
-		initialTime = -1;
+		status = Status.STOPPED;
+		timeElapsed = -1;
 		for (Input i: inputs) {
 			i.stop();
 		}
-		this.resetStacks();
+		this.resetTimeline();
 	}
 	
 	/**
@@ -82,23 +113,45 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		willExecute.offer(cf);
 	}
 	
+	private synchronized void resetTimeline() {
+		resetStacks();
+		resetEvents();
+		resetEverys();
+	}
+	
 	/**
-	 * Executed each time slide
+	 * Executed each time slice
 	 */
-	private synchronized void timeStep(long currentTime) {
-		long elapsed = currentTime - initialTime;
+	private synchronized void timeStep(long elapsed) {
+		if (!isPlaying()) {
+			return;
+		}
 		while ((willExecute.peek() != null) && (willExecute.peek().getTime().getView() <= elapsed)) {
 			ConstraintFunction cf = willExecute.poll();
 			didExecute.push(cf);
 			cf.execute();
 		}
-		this.evaluateEveryFunctions(currentTime);
+		this.evaluateEveryFunctions(elapsed);
 	}
 	
 	private synchronized void resetStacks() {
 		while (!didExecute.isEmpty()) {
 			willExecute.offer(didExecute.pop());
 		}
+	}
+	
+	private synchronized void resetEvents() {
+		Iterator<String> itr = announceEvents.keySet().iterator();
+		while ((itr != null) && itr.hasNext()) {
+			for (EventFunction ef : announceEvents.get(itr.next())) {
+				ef.setHasExecuted(false);
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private synchronized void resetEverys() {
+		everyFunctionHash = (HashMap<EveryFunction, ArrayList<Float>>) everyFunctionHashInitial.clone();
 	}
 	
 	public LinkedList<Input> getInputs() {
@@ -153,11 +206,13 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		if (every != null) {
 			if (everyFunctionList.contains(every)) {
 				everyFunctionHash.get(every).add(every.getExecuteTime().getView());
+				everyFunctionHashInitial.get(every).add(every.getExecuteTime().getView());
 			} else {
 				everyFunctionList.add(every);
 				ArrayList<Float> al = new ArrayList<Float>();
 				al.add(every.getExecuteTime().getView());
 				everyFunctionHash.put(every, al);
+				everyFunctionHashInitial.put(every, al);
 			}
 		}
 	}
@@ -165,13 +220,12 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	/**
 	 * This is executed every time slice, and evaluates the every functions
 	 */
-	private void evaluateEveryFunctions(long currentTime) {
-		long elapsed = currentTime - initialTime;
+	private void evaluateEveryFunctions(long elapsed) {
 		for (EveryFunction ef : everyFunctionList) {
 			ArrayList<Float> oldAl = everyFunctionHash.get(ef);
 			ArrayList<Float> newAl = new ArrayList<Float>();
 			for (Float fl : oldAl) {
-				if (fl < elapsed) {
+				if ((fl < elapsed) && isPlaying()) {
 					ef.execute();
 					newAl.add(fl + ef.getExecuteTime().getView());
 				} else {
@@ -186,11 +240,13 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	@Override
 	public synchronized void receiveAnnouncement(Announcement a) {
 		String type = a.getOwner().hashCode() + ":" + a.getType();
-		
 		LinkedList<EventFunction> constraints = announceEvents.get(type);
 		if(constraints!=null){
 			for(EventFunction c : constraints){
-				c.execute();
+				if (isPlaying() && (!c.hasExecuted())) {
+					c.execute();
+					c.setHasExecuted(true);
+				}
 			}
 		}
 	}
@@ -207,11 +263,16 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 
 	@Override
 	public boolean isPlaying() {
-		return status.equalsIgnoreCase("Playing");
+		return status == Status.PLAYING;
 	}
 
 	@Override
 	public boolean isStopped() {
-		return status.equalsIgnoreCase("Stopped");
+		return status == Status.STOPPED;
+	}
+
+	@Override
+	public boolean isPaused() {
+		return status == Status.PAUSED;
 	}
 }
