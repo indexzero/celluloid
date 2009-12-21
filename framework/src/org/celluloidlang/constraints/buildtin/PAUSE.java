@@ -10,5 +10,8 @@ public interface PAUSE {
 	 */
 	public void pause();
 	
+	/**
+	 * Gets whether the Input is paused or not
+	 */
 	public boolean isPaused();
 }

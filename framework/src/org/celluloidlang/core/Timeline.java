@@ -40,6 +40,9 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	private Status status;
 	private long timeElapsed;
 	
+	/**
+	 * Constructor for Timeline
+	 */
 	public Timeline() {
 		timeElapsed = -1;
 		status = Status.STOPPED;
@@ -60,6 +63,12 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		timer = new Timer(TIME_GRANULARITY, taskPerformer);
 	}
 	
+	/**
+	 * Defined in Input interface, starts execution of the timeline
+	 * If the timeline was previously paused, then
+	 * tell all Inputs that were previously playing to
+	 * play again
+	 */
 	public synchronized void play() {
 		if (timeElapsed < 0) {
 			timeElapsed = 0;
@@ -72,9 +81,15 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 			}
 			timer.start();
 			status = Status.PLAYING;
+			wasPausedInputs.clear();
 		}
 	}
 	
+	/**
+	 * Pauses execution of the timeline, saving
+	 * those Inputs that were playing before pause()
+	 * was called.
+	 */
 	public synchronized void pause() {
 		timer.stop();
 		status = Status.PAUSED;
@@ -87,6 +102,11 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		}
 	}
 	
+	/**
+	 * Stops execution of the timeline.  Also,
+	 * stops execution of its Inputs, and returns
+	 * the elapsed time to -1 to indicate a stop().
+	 */
 	public synchronized void stop() {
 		timer.stop();
 		status = Status.STOPPED;
@@ -108,6 +128,10 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		willExecute.offer(cf);
 	}
 	
+	/**
+	 * Resets the necessary elements of a timeline
+	 * so that it can be replayed in the exact same manner.
+	 */
 	private synchronized void resetTimeline() {
 		resetStacks();
 		resetEvents();
@@ -115,7 +139,9 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	}
 	
 	/**
-	 * Executed each time slice
+	 * Executed each time slice, executes the actions of those
+	 * ConstraintFunctions that need execution.
+	 * @param elapsed the current playback time
 	 */
 	private synchronized void timeStep(long elapsed) {
 		if (!isPlaying()) {
@@ -129,12 +155,19 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		this.evaluateEveryFunctions(elapsed);
 	}
 	
+	/**
+	 * Resets the ConstraintFunction priority queue
+	 */
 	private synchronized void resetStacks() {
 		while (!didExecute.isEmpty()) {
 			willExecute.offer(didExecute.pop());
 		}
 	}
 	
+	/**
+	 * Resets the events for this timeline so that they can be
+	 * executed again.
+	 */
 	private synchronized void resetEvents() {
 		Iterator<String> itr = announceEvents.keySet().iterator();
 		while ((itr != null) && itr.hasNext()) {
@@ -144,17 +177,26 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		}
 	}
 	
+	/**
+	 * Resets the every statements so that they will excute when play()
+	 * is called again
+	 */
 	@SuppressWarnings("unchecked")
 	private synchronized void resetEverys() {
 		everyFunctionHash = (HashMap<EveryFunction, ArrayList<Float>>) everyFunctionHashInitial.clone();
 	}
 	
+	/**
+	 * Returns the LinkedList of Inputs for this Timeline
+	 * @return LinkedList<Input>
+	 */
 	public LinkedList<Input> getInputs() {
 		return inputs;
 	}
 
 	/**
-	 * Attach this timeline to the output
+	 * Attach this timeline to the given output, and remove
+	 * anything already playing on the output
 	 */
 	public void attachOutput(Output out) {
 		if (out instanceof SwingOutput) {
@@ -178,11 +220,14 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	 * when [event] do
 	 * 	...
 	 * end
+	 * @param input the input to listen for events from
+	 * @param type the String representing the desired attribute
+	 * @param event the action to execute, encapsulated in an EventFunction
 	 */
-	public void addEventFunction(Input audio1, String type, EventFunction event) {
-		audio1.announcer.attach(this);
+	public void addEventFunction(Input input, String type, EventFunction event) {
+		input.announcer.attach(this);
 		
-		type=audio1.hashCode() +":" + type;
+		type=input.hashCode() +":" + type;
 	
 		if (!announceEvents.containsKey(type)) {
 			announceEvents.put(type, new LinkedList<EventFunction>());
@@ -196,6 +241,7 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	 * every [time] do
 	 * 	...
 	 * end
+	 * @param every the EveryFunction to be added to the Timeline
 	 */
 	public void addEveryFunction(EveryFunction every) {
 		if (every != null) {
@@ -214,6 +260,7 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	
 	/**
 	 * This is executed every time slice, and evaluates the every functions
+	 * @param elapsed the playback time for this Timeline
 	 */
 	private void evaluateEveryFunctions(long elapsed) {
 		for (EveryFunction ef : everyFunctionList) {
@@ -232,6 +279,12 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		}
 	}
 	
+	/**
+	 * This receives the events generated from the listened for
+	 * devices.  If the correct event is broadcast, then execute
+	 * the required action(s)
+	 * @param the message from the announcer containing the requisite information
+	 */
 	@Override
 	public synchronized void receiveAnnouncement(Announcement a) {
 		String type = a.getOwner().hashCode() + ":" + a.getType();
@@ -246,26 +299,43 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		}
 	}
 
+	/**
+	 * Update the queue when some ReactiveObject reacts.
+	 */
 	@Override
 	public void update(ReactiveUpdate e) {
 		//reprioritize queue
 	}
 
+	/**
+	 * Gets the visual component for this Timeline, which is null because
+	 * Timelines do not have visual components.
+	 * @return null is this case
+	 */
 	@Override
 	public Component getVisualData() {
 		return null;
 	}
 
+	/**
+	 * Gets whether this Timeline is playing or not.
+	 */
 	@Override
 	public boolean isPlaying() {
 		return status == Status.PLAYING;
 	}
 
+	/**
+	 * Gets whether this Timeline is stopped or not.
+	 */
 	@Override
 	public boolean isStopped() {
 		return status == Status.STOPPED;
 	}
 
+	/**
+	 * Gets whether this Timeline is paused or not.
+	 */
 	@Override
 	public boolean isPaused() {
 		return status == Status.PAUSED;

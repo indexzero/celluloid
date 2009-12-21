@@ -4,8 +4,9 @@ import java.awt.Component;
 import java.net.URL;
 
 import org.celluloidlang.announcment.Announcement;
+import org.celluloidlang.constraints.defined.Audio;
 
-public class JMFAudio extends JMF {
+public class JMFAudio extends JMF implements Audio {
 
 	/**
 	 * for each ENUM, must document what it does
@@ -18,10 +19,17 @@ public class JMFAudio extends JMF {
 		AUDIO_GAIN, STATUS, MEDIA_TIME
 	}
 	
+	/**
+	 * Constructor
+	 * @param url the url for this audio file
+	 */
 	public JMFAudio(URL url) {
 		super(url);
 	}
 	
+	/**
+	 * Broadcasts events for this device
+	 */
 	@Override
 	public void run() {
 		while(true){
@@ -38,6 +46,9 @@ public class JMFAudio extends JMF {
 		}
 	}
 
+	/**
+	 * Gets the visual data for this class, null since its an audio file
+	 */
 	@Override
 	public Component getVisualData() {
 		return null;

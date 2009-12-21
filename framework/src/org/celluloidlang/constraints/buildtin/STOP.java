@@ -10,5 +10,8 @@ public interface STOP {
 	 */
 	public void stop();
 	
+	/**
+	 * Gets whether the Input is stopped or not
+	 */
 	public boolean isStopped();
 }

@@ -1,9 +1,7 @@
 package org.celluloidlang.reactive;
 
 /**
- * updates for reactive classes
- * @author blake
- *
+ * Updates for reactive classes
  */
 public class ReactiveUpdate {
 	

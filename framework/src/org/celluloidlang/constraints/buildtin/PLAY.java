@@ -9,5 +9,8 @@ public interface PLAY {
 	 */
 	public void play();
 	
+	/**
+	 * Gets whether the Input is playing or not
+	 */
 	public boolean isPlaying();
 }

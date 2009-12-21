@@ -1,7 +1,6 @@
 package org.celluloidlang.devices;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.net.URL;
 
 import org.celluloidlang.announcment.Announcement;
@@ -21,17 +20,26 @@ public class JMFVideo extends JMF implements Video {
 		AUDIO_GAIN, STATUS, MEDIA_TIME, ZOOM_LEVEL
 	}
 	
+	/**
+	 * Constructor
+	 * @param url the url for this audio file
+	 */
 	public JMFVideo(URL url) {
 		super(url);
 		super.setFixedAspectRatio(true);
 	}
 	
+	/**
+	 * Sets the size of the video.  Does not currently work with SwingOutput
+	 */
 	@Override
 	public void size(double x1, double y1, double x2, double y2) {
-		super.setMinimumSize(new Dimension((int) Math.abs(x2 - x1), (int) Math.abs(y2 - y1)));
-		//TODO: this does not work
+		//super.setMinimumSize(new Dimension((int) Math.abs(x2 - x1), (int) Math.abs(y2 - y1)));
 	}
 	
+	/**
+	 * Broadcasts events for this device
+	 */
 	@Override
 	public void run() {
 		while(true){
@@ -49,6 +57,9 @@ public class JMFVideo extends JMF implements Video {
 		}
 	}
 
+	/**
+	 * Gets the visual data for this class
+	 */
 	@Override
 	public Component getVisualData() {
 		return super.getVisualComponent();

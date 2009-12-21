@@ -11,5 +11,8 @@ public interface FFWD {
 	 */
 	public void ffwd(ReactiveNumber speed);
 	
+	/**
+	 * Gets whether the Input is fast forwarding or not
+	 */
 	public boolean isFfwding();
 }

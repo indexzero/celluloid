@@ -13,5 +13,8 @@ public interface REWIND {
 	 */
 	public void rewind(ReactiveNumber speed);
 	
+	/**
+	 * Gets whether the Input is rewinding or not
+	 */
 	public boolean isRewinding();
 }

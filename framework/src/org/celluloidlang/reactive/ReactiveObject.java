@@ -4,10 +4,6 @@ import java.util.ArrayList;
 
 /**
  * Interface for reactive objects
- * 
- * 
- * @author blake
- * 
  */
 public interface ReactiveObject<T> extends ReactiveListener {
 	/**
@@ -84,7 +80,4 @@ public interface ReactiveObject<T> extends ReactiveListener {
 	 * @return
 	 */
 	public T getView();
-
-
-
 }

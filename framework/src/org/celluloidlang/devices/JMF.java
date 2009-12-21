@@ -14,6 +14,9 @@ import org.celluloidlang.constraints.defined.Output;
 import org.celluloidlang.constraints.defined.StaticInput;
 import org.celluloidlang.reactive.ReactiveNumber;
 
+/**
+ * Base class for File based input devices.
+ */
 public abstract class JMF extends MediaPlayer implements StaticInput, Output, Runnable, ControllerListener {
 	
 	public enum Status{
@@ -22,6 +25,10 @@ public abstract class JMF extends MediaPlayer implements StaticInput, Output, Ru
 	
 	protected Status status;
 	
+	/**
+	 * Constructor
+	 * @param url the url for this input
+	 */
 	public JMF(URL url) {
 		status = Status.STOPPED;
 		this.setMediaLocator(new MediaLocator(url));
@@ -32,6 +39,9 @@ public abstract class JMF extends MediaPlayer implements StaticInput, Output, Ru
 		this.addControllerListener(this);
 	}
 	
+	/**
+	 * Plays this input
+	 */
 	@Override
 	public void play() {
 		super.start();
@@ -39,6 +49,9 @@ public abstract class JMF extends MediaPlayer implements StaticInput, Output, Ru
 		new Thread(this).start();
 	}
 
+	/**
+	 * Stops this input
+	 */
 	@Override
 	public void stop() {
 		if (this.getState() == Player.Started) {
@@ -49,6 +62,9 @@ public abstract class JMF extends MediaPlayer implements StaticInput, Output, Ru
 		}
 	}
 
+	/**
+	 * Rewind by the given multiplier
+	 */
 	@Override
 	public void rewind(ReactiveNumber reactiveSpeed) {
 		double speed = reactiveSpeed.getView();
@@ -63,6 +79,9 @@ public abstract class JMF extends MediaPlayer implements StaticInput, Output, Ru
 		}
 	}
 
+	/**
+	 * Seeks to the specified time
+	 */
 	@Override
 	public void seek(ReactiveNumber reactiveTime) {
 		double time = reactiveTime.getView();
@@ -72,6 +91,9 @@ public abstract class JMF extends MediaPlayer implements StaticInput, Output, Ru
 		}
 	}
 
+	/**
+	 * Fast forward by the given multiplier
+	 */
 	@Override
 	public void ffwd(ReactiveNumber reactiveSpeed) {
 		double speed = reactiveSpeed.getView();
@@ -88,6 +110,9 @@ public abstract class JMF extends MediaPlayer implements StaticInput, Output, Ru
 		}
 	}
 
+	/**
+	 * Pauses this input
+	 */
 	@Override
 	public void pause() {
 		if (super.getState() == Player.Started) {
@@ -96,6 +121,10 @@ public abstract class JMF extends MediaPlayer implements StaticInput, Output, Ru
 		}
 	}
 	
+	/**
+	 * Wait for this input to grab the file from the file system
+	 * and load it completely.
+	 */
 	public void waitForPrefetch(){
 		while(!(super.getState() == MediaPlayer.Prefetched)){
 			try {
@@ -106,31 +135,49 @@ public abstract class JMF extends MediaPlayer implements StaticInput, Output, Ru
 		}
 	}
 
+	/**
+	 * Gets whether this Input is playing.
+	 */
 	@Override
 	public boolean isPlaying() {
 		return status.equals(Status.PLAYING);
 	}
 
+	/**
+	 * Gets whether this Input is stopped.
+	 */
 	@Override
 	public boolean isStopped() {
 		return status.equals(Status.STOPPED);
 	}
 
+	/**
+	 * Gets whether this Input is paused.
+	 */
 	@Override
 	public boolean isPaused() {
 		return status.equals(Status.PAUSED);
 	}
 
+	/**
+	 * Gets whether this Input is rewinding.
+	 */
 	@Override
 	public boolean isRewinding() {
 		return super.getRate() < 0;
 	}
 
+	/**
+	 * Gets whether this Input is fast forwarding.
+	 */
 	@Override
 	public boolean isFfwding() {
 		return (super.getRate() > 0) && (super.getRate() != 1);
 	}
 
+	/**
+	 * Called when this Input gets to the end of the file.
+	 */
 	@Override
 	public void controllerUpdate(ControllerEvent event) {
 		if (event instanceof EndOfMediaEvent) {
