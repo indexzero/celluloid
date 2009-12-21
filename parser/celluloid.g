@@ -247,9 +247,9 @@ whenStatement
     ;
 everyStatement
     :   'every' TIME 
-        ((when = 'when' | unless = 'unless') (target = ID)? (event = ID))? 
+        (unless = 'unless' (target = ID)?)? 
           listenerBlock
-        -> ^(LISTENER ^(ARG $target?) ^(EVERY TIME) ^(COND $when? $unless? $event?) listenerBlock)
+        -> ^(LISTENER ^(ARG $target?) ^(EVERY TIME) ^(COND $unless?) listenerBlock)
         //-> everyStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
 listenerBlock
