@@ -36,10 +36,10 @@ public class STGrammarRulesTestCase extends TestCase {
     public void runAllTests() throws IOException, RecognitionException {
         //this.shouldThrowOnUndefinedInput();
         //this.shouldThrowOnUndefinedFunction();
-        //this.shouldGenerateHelloCh1();
+        this.shouldGenerateHelloCh1();
         //this.shouldGenerateHelloCh2();
        // this.shouldGenerateHelloCh3();
-        this.shouldGenerateHelloEvents();
+        //this.shouldGenerateHelloEvents();
         //this.shouldGenerateHelloWorld();
         //this.shouldGenerateEventDefinition();
         //this.shouldGenerateConstraintDefinition();
