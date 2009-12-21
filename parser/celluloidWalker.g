@@ -329,7 +329,17 @@ whenStatement[String with]
         //-> whenStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
 everyStatement[String with]
-    : ^(LISTENER ^(ARG ID?) ^(EVERY TIME) ^(COND 'unless'? ID?) listenerBlock[$with])
+    : ^(LISTENER ^(ARG name=ID?) ^(EVERY TIME) ^(COND 'unless'? event=ID?) lblock=listenerBlock[$with]) {
+    	typeMap = new HashMap<String, String>();
+          	 typeMap.put("STOPPED", "STATUS=STOPPED");
+          	 typeMap.put("PLAYING", "STATUS=PLAYING");
+    	$st = %everyStatement();
+    	%{$st}.with = $with;
+    	%{$st}.name = $name.text;
+    	%{$st}.time = parseTime(new String($TIME.text));
+    	%{$st}.event =this.typeMap.get($event.text);
+    	%{$st}.lblock = $lblock.st;
+    }
         //-> everyStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
 listenerBlock[String with]

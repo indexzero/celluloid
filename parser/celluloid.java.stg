@@ -126,7 +126,12 @@ whenStatement(with, name, event, lblock)  ::=
 );
 >>
 
-whenEveryStatement()                  ::= ""
+everyStatement(with, name, event, time, lblock) ::=
+<<
+<with>.addEveryStatement(
+    new EveryFunction(new ReactiveNumber(<time>), 
+
+>>
 
 functionPredicateCall(name, args)     ::= "<name>(<args>)"
 
