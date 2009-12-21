@@ -119,6 +119,13 @@ else
 }
 >>
 
+whenStatement(with, name, event, lblock)  ::= 
+<<
+<with>.addEventFunction(<name>, "<event>",
+    <lblock>
+);
+>>
+
 whenEveryStatement()                  ::= ""
 
 functionPredicateCall(name, args)     ::= "<name>(<args>)"
@@ -134,6 +141,16 @@ constraintFunctionCall(
   }
 );
 >>
+
+eventFunctionCall(with, function, name, type)  ::=
+<<
+new EventFunction(<name>) {
+	public void execute() {
+	    ((<type>) input).<function>();
+	}
+}
+>>
+
 outputConstraintFunctionCall(
  with, target,
  type, function,

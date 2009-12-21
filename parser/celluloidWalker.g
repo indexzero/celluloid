@@ -315,7 +315,16 @@ ifBlockDeclaration
     ;
  
 whenStatement[String with]
-    : ^(LISTENER ^(ARG ID?) EVERY ^(COND 'when'? 'unless' ID?) listenerBlock[$with])
+    : ^(LISTENER ^(ARG name=ID?) EVERY ^(COND 'when'? 'unless'? event=ID) lblock=listenerBlock[$with]) {
+    	 typeMap = new HashMap<String, String>();
+          	 typeMap.put("STOPPED", "STATUS=STOPPED");
+          	 typeMap.put("PLAYING", "STATUS=PLAYING");
+    	$st = %whenStatement();
+    	%{$st}.with = $with;
+    	%{$st}.name = $name.text;
+    	%{$st}.event =this.typeMap.get($event.text);
+    	%{$st}.lblock = $lblock.st;
+    }
         //-> whenStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
 everyStatement[String with]
@@ -323,17 +332,33 @@ everyStatement[String with]
         //-> everyStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
 listenerBlock[String with]
-    : ^(LISTENBLOCK listenerBlockDeclaration[$with]*)
+    : ^(LISTENBLOCK (block += listenerBlockDeclaration[$with])*) {
+    	$st = %statementList();
+	%{$st}.statements = $block;
+    }
     ;
 listenerBlockDeclaration[String with]
-    : constraintFunctionCall[$with] -> passThrough(text = { $constraintFunctionCall.st } )
+    : eventFunctionCall[$with]   ->  passThrough(text = { $eventFunctionCall.st } )
     | expression -> passThrough(text = { $expression.st } )
-    | variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+   | variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+    
  // | functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
     ;
-    
+ 
+ eventFunctionCall[String with]
+  : ^(EVENTCALL target =ID function =ID)  {
+  	SymbolEntry nameSymbol = this.symbolTable.get($target.text);
+  	String nameType = nameSymbol.getType();
+  	$st = %eventFunctionCall();
+  	%{$st}.with = $with;
+  	%{$st}.function = $function.text;
+  	%{$st}.name = $target.text;
+  	%{$st}.type = nameType;
+	}		
+;
+ 
 constraintFunctionCall[String with]
-    : ^(OBJCALL target = ID function = ID ^(AT (time = TIME)?) ^(ARGS expressionList?)) {
+    : ^(OBJCALL target = ID function = ID ^(AT (time = TIME)) ^(ARGS expressionList?)) {
            SymbolEntry targetSymbol = this.symbolTable.get($target.text);
            SymbolEntry withSymbol = this.symbolTable.get($with);
            String withType = withSymbol.getType();
@@ -501,4 +526,5 @@ literal : BOOL | NUMBER | STRING | TIME;
 //LANGUAGE : 'JAVA' | 'java' | 'Java';
 //LANGUAGECODE : '<' '<' ANYTHING* NEWLINE;
 // End generic literals language blocks
+
  
