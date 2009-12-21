@@ -184,7 +184,7 @@ public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 		audio1.announcer.attach(this);
 		
 		type=audio1.hashCode() +":" + type;
-		System.out.println(type);
+	
 		if (!announceEvents.containsKey(type)) {
 			announceEvents.put(type, new LinkedList<EventFunction>());
 		}

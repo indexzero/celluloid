@@ -71,7 +71,6 @@ public class HelloWorld {
 		timeline1.addEventFunction(jmf, "AUDIO_GAIN" + "=" + "3",
 			new EventFunction(jmf) {
 				public void execute() {
-						System.out.println("Not Playing twice");
 						((JMFVideo) input).stop();
 						
 				}
