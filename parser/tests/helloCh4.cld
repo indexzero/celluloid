@@ -1,0 +1,14 @@
+timeline timeline1
+
+input video1 = new VideoFile("*some video 1")
+input video2 = new VideoFile("*some video 2")
+
+output output1 = new Video("*some display*")
+
+in timeline1 do
+    every @10s video1 PLAYING do
+	    play video2
+    end
+end
+
+

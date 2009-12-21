@@ -329,7 +329,18 @@ whenStatement[String with]
         //-> whenStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
 everyStatement[String with]
-    : ^(LISTENER ^(ARG ID?) ^(EVERY TIME) ^(COND 'unless'? ID?) listenerBlock[$with])
+    : ^(LISTENER ^(ARG target=ID) ^(EVERY time=TIME) ^(COND event=ID) lblock=everyBlock[$target.text]) {
+    	System.out.println("in everyStatement: target = " + $target.text);
+    	typeMap = new HashMap<String, String>();
+          	 typeMap.put("STOPPED", "STATUS=STOPPED");
+          	 typeMap.put("PLAYING", "STATUS=PLAYING");
+    	$st = %everyStatement();
+    	%{$st}.with = $with;
+    	%{$st}.name = $target.text;
+    	%{$st}.time = parseTime(new String($time.text));
+    	%{$st}.event =this.typeMap.get($event.text);
+    	%{$st}.lblock = $lblock.st;
+    }
         //-> everyStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
 listenerBlock[String with]
@@ -338,8 +349,23 @@ listenerBlock[String with]
 	%{$st}.statements = $block;
     }
     ;
+    
+everyBlock[String target]
+    : ^(EVERYBLOCK (block += everyBlockDeclaration[$target])*) {
+    	$st = %statementList();
+	%{$st}.statements = $block;
+    }
+    ;
 listenerBlockDeclaration[String with]
     : eventFunctionCall[$with]   ->  passThrough(text = { $eventFunctionCall.st } )
+    | expression -> passThrough(text = { $expression.st } )
+   | variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
+    
+ // | functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
+    ;
+    
+everyBlockDeclaration[String target]
+    : everyFunctionCall[$target]   ->  passThrough(text = { $everyFunctionCall.st } )
     | expression -> passThrough(text = { $expression.st } )
    | variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
     
@@ -355,6 +381,21 @@ listenerBlockDeclaration[String with]
   	%{$st}.function = $function.text;
   	%{$st}.name = $target.text;
   	%{$st}.type = nameType;
+	}		
+;
+
+ everyFunctionCall[String target]
+  : ^(EVERYCALL name =ID function =ID)  {
+  	SymbolEntry nameSymbol = this.symbolTable.get($name.text);
+  	String nameType = nameSymbol.getType();
+  	System.out.println("in everyFunctionCall: target = " + target);
+  	
+ 	$st = %everyFunctionCall();
+//  	%{$st.}.target = $target;
+  	%{$st}.function = $function.text;
+  	%{$st}.name = $name.text;
+ 	%{$st}.type = nameType;
+ 	%{$st}.target = $target;
 	}		
 ;
  

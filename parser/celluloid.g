@@ -16,6 +16,7 @@ tokens {
   ARGS;
   OBJCALL;
   EVENTCALL;
+  EVERYCALL;
   AT;
   CALL;
   PROGRAM;
@@ -44,6 +45,7 @@ tokens {
   CONBLOCK;
   DEVBLOCK;
   LANGBLOCK;
+  EVERYBLOCK;
   
   FUNHEAD;
   PREDHEAD;
@@ -248,12 +250,19 @@ whenStatement
         //-> whenStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
 everyStatement
-    :   'every' TIME 
-        (unless = 'unless' (target = ID)?)? 
-          listenerBlock
-        -> ^(LISTENER ^(ARG $target?) ^(EVERY TIME) ^(COND $unless?) listenerBlock)
+    :   'every' (time=TIME) (target = ID) (event=ID)
+          everyBlock
+        -> ^(LISTENER ^(ARG $target) ^(EVERY $time) ^(COND  $event) everyBlock)
         //-> everyStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
+
+everyBlock
+    :  START
+           (block += everyBlockDeclaration)*
+       END 
+       -> ^(EVERYBLOCK $block*)
+    ;    
+
 listenerBlock
     :  START
            (block += listenerBlockDeclaration)*
@@ -265,6 +274,18 @@ listenerBlockDeclaration
     |expression 
     |    variableDeclaration
        
+    ;
+    
+everyBlockDeclaration
+    : everyFunctionCall
+    |expression 
+    |    variableDeclaration
+       
+    ;
+    
+everyFunctionCall
+    :  function=ID id=ID NEWLINE?
+         -> ^(EVERYCALL $id $function)
     ;
     
 constraintFunctionCall 
