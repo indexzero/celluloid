@@ -146,7 +146,7 @@ constraintFunctionCall(
   public void execute() {
     ((<type>) input).<function>(<args.st>);
   }
-);
+});
 >>
 
 eventFunctionCall(with, function, name, type)  ::=

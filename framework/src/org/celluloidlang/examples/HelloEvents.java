@@ -20,10 +20,12 @@ import org.celluloidlang.reactive.ReactiveNumber;
 	output output1 = new Output(*somefile*)
 	
 	in timeline1 do 
-		play audio1 @start 
-		audio1.AudioLevel=3  @3seconds
-		when audio1.AudioLevel=3 do
-			play audio2 @start
+		play audio1 @start
+		when audio1.STATUS=STOPPED do
+			play audio2
+		end
+		every @10s if video1 PLAYING do
+		    play video5
 		end
 	end
 	
@@ -35,6 +37,8 @@ import org.celluloidlang.reactive.ReactiveNumber;
  */
 public class HelloEvents {
 	public static void main(String[] args) {
+
+	    Timeline globalTimeline = new Timeline();
 		
 		//need this bastard to display video
 		Manager.setHint(Manager.LIGHTWEIGHT_RENDERER, true);
@@ -67,79 +71,41 @@ public class HelloEvents {
 			}
 		);
 
-		timeline1.addConstraintFunction(
-				new ConstraintFunction(audio1, new ReactiveNumber(3000.0)) {
-					public void execute() {
-						((JMFVideo) input).setVolumeLevel("2");
-					}
-				}
-			);
 
-		timeline1.addConstraintFunction(
-				new ConstraintFunction(audio1, new ReactiveNumber(4000.0)) {
-					public void execute() {
-						((JMFVideo) input).setVolumeLevel("4");
-					}
-				}
-			);
-		
-		//when AudioGain=2 do 
+		//when audio1.STATUS=stopped do
 		// play audio2
-		timeline1.addEventFunction(audio1, "AUDIO_GAIN" + "=" + "2",
+		timeline1.addEventFunction(audio1, "STATUS=STOPPED",
 				new EventFunction(audio2) {
 					public void execute() {
 						((JMFVideo) input).play();
 					}
 				}
 			);
+
+           globalTimeline.addConstraintFunction(
+                 new ConstraintFunction(timeline1, new ReactiveNumber(0.0)) {
+                                  					public void execute() {
+                                  						((Timeline) input).play();
+                                  					}
+                                  				}
+                                  		);
+                                  		globalTimeline.addConstraintFunction(
+                                  				 new OutputConstraintFunction(
+                                  						timeline1,
+                                  						new SwingOutput("Celluloid Output", 1024, 768),
+                                  						new ReactiveNumber(0.0)) {
+                                  							public void execute() {
+                                  								((Timeline) input).attachOutput(output);
+                                  							}
+                                  				}
+                                  				);
+
+
+                                  		globalTimeline.play();
+
+
 		
-		
-		
-		//when AudioGain=2 unless audio2.isPlaying do
-		// play audio2
-		timeline1.addEventFunction(audio1, "AUDIO_GAIN" + "=" + "4",
-				new EventFunction(audio2, audio2) {
-					public void execute() {
-						if(!evals[0].isPlaying()){
-							System.out.println("Not Playing twice");
-							((JMFVideo) input).play();
-						}
-							
-					}
-				}
-			);
-		
-		
-		
-		timeline1.play();
-		
-		
-		/**
-		
-		
-		//when AudioGain=2 unless !audio1.isPlaying || audio3.isplaying do
-		// play audio2
-		timeline1.addEventFunction(audio1+":" + JMFVideo.Event.AUDIO_GAIN + "=" + "2",
-				new EventFunction<Input>(audio2, audio1, audio3) {
-					public void execute() {
-						if(evals[0].isPlaying || evals[1].isPlaying)
-							((JMFVideo) input).play();
-					}
-				}
-			);
-		
-		
-		//every @10 if audio1.isStopped
-		timeline1.addEveryFunction(new ReactiveNumber(10.0),
-				new EventFunction<Input>(audio2, audio1) {
-					public void execute() {
-						if(args[0].isStopped)
-							((JMFVideo) input).play();
-					}
-				}
-			);
-		
-	*/
+
 		} catch (MalformedURLException e) {
 			System.err.println("Could not generate URL");
 			System.exit(1);
