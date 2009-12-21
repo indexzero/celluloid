@@ -62,8 +62,10 @@ output=template;
   public static String parseTime(String time) {
     float builtTime = 0;
     float buildUp = 0;
+    float buildUpExponent = 0;
     boolean dot = false;
-    int fraction = 1;
+    boolean exponent = false;
+    float fraction = 1;
     if("@start".equals(time)) return "0f";
     if("@now".equals(time)) return "0f"; //@TODO support @NOW
     time = time.substring(1, time.length());
@@ -73,31 +75,39 @@ output=template;
       time = time.substring(1, time.length());
       switch(cur) {
         case 'd':
-          builtTime += 86400000*buildUp;
-          buildUp = 0;
+          builtTime += (86400000*buildUp/fraction)*Math.pow(10,buildUpExponent);
+          buildUp = 0; buildUpExponent = 0; fraction = 1; dot = false; exponent = false;
           break;
         case 'h':
-          builtTime += 3600000*buildUp;
-          buildUp = 0;
+          builtTime += (3600000*buildUp/fraction)*Math.pow(10,buildUpExponent);
+          buildUp = 0; buildUpExponent = 0; fraction = 1; dot = false; exponent = false;
           break;
         case 'm':
-          builtTime += 60000*buildUp;
-          buildUp = 0;
+          builtTime += (60000*buildUp/fraction)*Math.pow(10,buildUpExponent);
+          buildUp = 0; buildUpExponent = 0; fraction = 1; dot = false; exponent = false;
           break;
         case 's':
-          builtTime += 1000*buildUp;
-          buildUp = 0;
+          builtTime += (1000*buildUp/fraction)*Math.pow(10,buildUpExponent);
+          buildUp = 0; buildUpExponent = 0; fraction = 1; dot = false; exponent = false;
           break;
         case '.':
           dot = true;
           break;
+        case 'e':
+        case 'E':
+          exponent = true;
+          break;
         default:
-          if(dot)
+          if(exponent) {
+            buildUpExponent = buildUpExponent*10+new Float(String.valueOf(cur));
+            continue;
+          } else if(dot) {
             fraction *= 10;
+          }
           buildUp = buildUp*10 + new Float(String.valueOf(cur));
       }
     }
-    return Float.valueOf(builtTime/fraction).toString()+"f";
+    return Float.valueOf(builtTime).toString()+"f";
     }
 }
  
@@ -309,7 +319,7 @@ whenStatement[String with]
         //-> whenStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
 everyStatement[String with]
-    : ^(LISTENER ^(ARG ID?) ^(EVERY TIME) ^(COND 'when'? 'unless'? ID?) listenerBlock[$with])
+    : ^(LISTENER ^(ARG ID?) ^(EVERY TIME) ^(COND 'unless'? ID?) listenerBlock[$with])
         //-> everyStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
     ;
 listenerBlock[String with]
