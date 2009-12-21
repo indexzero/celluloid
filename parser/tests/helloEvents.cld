@@ -1,0 +1,16 @@
+timeline timeline1
+	input audio1 = new AudioFile("*somefile*")
+	input audio2 = new AudioFile("*somefile*")
+	output output1 = new Audio("*somefile*")
+
+	in timeline1 do
+		play audio1 @start
+		when audio1 STOPPED do
+			play audio2
+		end
+	end
+
+	in output1 do
+		play timeline1 @start
+	end
+	
