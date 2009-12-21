@@ -99,7 +99,7 @@ public class HelloCh2 {
 		timeline1.addConstraintFunction(
 				new ConstraintFunction(audio1, new ReactiveNumber(2000.0)) {
 					public void execute() {
-						((JMFVideo) input).play();
+						((JMFAudio) input).play();
 					}
 				});
 

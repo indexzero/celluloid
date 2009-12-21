@@ -20,10 +20,6 @@ import org.celluloidlang.devices.SwingOutput;
 import org.celluloidlang.reactive.ReactiveListener;
 import org.celluloidlang.reactive.ReactiveUpdate;
 
-/*
- * synchronized?
- */
-
 public class Timeline implements AnnouncementListener, ReactiveListener, Input {
 	
 	public enum Status{
