@@ -128,8 +128,10 @@ whenStatement(with, name, event, lblock)  ::=
 
 everyStatement(with, name, event, time, lblock) ::=
 <<
-<with>.addEveryStatement(
-    new EveryFunction(new ReactiveNumber(<time>), 
+<with>.addEveryFunction(
+    new EveryFunction(new ReactiveNumber(<time>), <lblock>
+
+)
 
 >>
 
@@ -154,6 +156,14 @@ new EventFunction(<name>) {
 	    ((<type>) input).<function>();
 	}
 }
+>>
+
+everyFunctionCall(function, name, type, target)  ::=
+<< <target>, <name>) {
+				public void execute() {
+					if(evals[0].isPlaying())
+						((<type>) input).<function>();
+				}
 >>
 
 outputConstraintFunctionCall(
