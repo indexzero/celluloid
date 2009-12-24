@@ -94,8 +94,8 @@ ifStatement(exp, block)               ::=
 <<
 if (<exp>)
 <block>
-
 >>
+
 ifBlock(block, elifStmt, elseStmt)    ::=
 <<
 {
@@ -104,6 +104,7 @@ ifBlock(block, elifStmt, elseStmt)    ::=
 <elifStmt>
 <elseStmt>
 >>
+
 elseIfStatement(exp, block)           ::=
 <<
 else if (<exp>)
@@ -111,6 +112,7 @@ else if (<exp>)
   <block>
 }
 >>
+
 elseStatement(block)           ::=
 <<
 else
@@ -130,9 +132,7 @@ everyStatement(with, name, event, time, lblock) ::=
 <<
 <with>.addEveryFunction(
     new EveryFunction(new ReactiveNumber(<time>), <lblock>
-
 )
-
 >>
 
 functionPredicateCall(name, args)     ::= "<name>(<args>)"
@@ -198,15 +198,15 @@ statementList(statements)             ::=
 <statements:{ statement | <statement>}; separator="\r\n">
 >>
 
-variableArgument(type, name)          ::= "<type> <name>"
-timelineArgument(name)                ::= "Timeline <name>"
-outputDeclaration(type, name, args)   ::= "<type> <name> = new <type>(\"Celluloid Output\", 1024, 768);"
+variableArgument(type, name)           ::= "<type> <name>"
+timelineArgument(name)                 ::= "Timeline <name>"
+outputDeclaration(type, name, args)    ::= "<type> <name> = new <type>(\"Celluloid Output\", 1024, 768);"
 jmfDeviceDeclaration(type, name, args) ::= "<type> <name> = new <type>(new File(<args>).toURI().toURL());"
-deviceDeclaration(type, name, args)   ::= "<type> <name> = new <type>(<args>);"
-variableDeclaration(type, name, init) ::= "<type> <name> <init>;"
-timelineDeclaration(name)             ::= "Timeline <name> = new Timeline();"
-initializer(exp)                      ::= " = <exp>"
-expressionLine(lhand,op,rhand)        ::= "<lhand> <op> <rhand>;"
-expression(lhand,op,rhand)            ::= "<lhand> <op> <rhand>"
-simpleExpression(lhand)               ::= "<lhand>"
-primaryExpression                     ::= ""
+deviceDeclaration(type, name, args)    ::= "<type> <name> = new <type>(<args>);"
+variableDeclaration(type, name, init)  ::= "<type> <name> <init>;"
+timelineDeclaration(name)              ::= "Timeline <name> = new Timeline();"
+initializer(exp)                       ::= " = <exp>"
+expressionLine(lhand,op,rhand)         ::= "<lhand> <op> <rhand>;"
+expression(lhand,op,rhand)             ::= "<lhand> <op> <rhand>"
+simpleExpression(lhand)                ::= "<lhand>"
+primaryExpression                      ::= ""

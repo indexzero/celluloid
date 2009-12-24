@@ -34,36 +34,32 @@ public class STGrammarRulesTestCase extends TestCase {
     }
 
     public void runAllTests() throws IOException, RecognitionException {
-        //this.shouldThrowOnUndefinedInput();
-        //this.shouldThrowOnUndefinedFunction();
-<<<<<<< HEAD
+        this.shouldThrowOnUndefinedInput();
+        this.shouldThrowOnUndefinedFunction();
+
         this.shouldGenerateHelloCh1();
-        //this.shouldGenerateHelloCh2();
-       // this.shouldGenerateHelloCh3();
-=======
-       // this.shouldGenerateHelloCh1();
-        //this.shouldGenerateHelloCh2();
-        //this.shouldGenerateHelloCh3();
+        this.shouldGenerateHelloCh2();
+        this.shouldGenerateHelloCh3();
         this.shouldGenerateHelloCh4();
->>>>>>> 46535b2a75095cf0bccd80bb95c99e2b09a1fbc1
-        //this.shouldGenerateHelloEvents();
-        //this.shouldGenerateHelloWorld();
-        //this.shouldGenerateEventDefinition();
-        //this.shouldGenerateConstraintDefinition();
-        //this.shouldGenerateDeviceDefinition();
+        this.shouldGenerateHelloEvents();
+        this.shouldGenerateHelloWorld();
+        
+        this.shouldGenerateEventDefinition();
+        this.shouldGenerateConstraintDefinition();
+        this.shouldGenerateDeviceDefinition();
 
-        //this.shouldGenerateFunctionHeader();
-        //this.shouldGenerateFunctionDefinition();
-        //this.shouldGeneratePredicateHeader();
-       // this.shouldGeneratePredicateDefinition();
+        this.shouldGenerateFunctionHeader();
+        this.shouldGenerateFunctionDefinition();
+        this.shouldGeneratePredicateHeader();
+        this.shouldGeneratePredicateDefinition();
 
-        //this.shouldGenerateIfStatement();
+        this.shouldGenerateIfStatement();
 
-        //this.shouldGenerateVariableList();
-        //this.shouldGenerateIdList();
-        //this.shouldGenerateNumberDeclaration();
-        //this.shouldGenerateNumberDeclarationWithInitializer();
-        //this.shouldGenerateTimelineDeclaration();
+        this.shouldGenerateVariableList();
+        this.shouldGenerateIdList();
+        this.shouldGenerateNumberDeclaration();
+        this.shouldGenerateNumberDeclarationWithInitializer();
+        this.shouldGenerateTimelineDeclaration();
     }
 
     @Test

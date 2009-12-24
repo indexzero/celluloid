@@ -6,9 +6,7 @@ input video2 = new VideoFile("*some video 2")
 output output1 = new Video("*some display*")
 
 in timeline1 do
-    every @10s video1 PLAYING do
-	    play video2
-    end
+  play video1 @start
 end
 
 

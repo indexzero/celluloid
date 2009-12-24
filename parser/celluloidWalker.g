@@ -1,150 +1,37 @@
 tree grammar celluloidWalker;
  
 options {
-tokenVocab=celluloid;
-ASTLabelType=CommonTree;
-output=template;
+  tokenVocab=celluloid;
+  ASTLabelType=CommonTree;
+  output=template;
+  superClass=celluloidTranslator;
 }
- 
- 
-@header {
-  import java.util.HashMap;
-}
- 
-@members {
-  class SymbolEntry {
-    protected String name;
-    protected String type;
-    protected String pseudoType;
-    
-    public SymbolEntry(String name, String type) {
-      this.name = name;
-      this.type = type;
-    }
-    
-    public SymbolEntry(String name, String type, String pseudoType) {
-      this.name = name;
-      this.type = type;
-      this.pseudoType = pseudoType;
-    }
-    
-    public String getName() {
-      return this.name;
-    }
-    
-    public String getType() {
-      return this.type;
-    }
-    
-    public String getPseudoType() {
-      return this.pseudoType;
-    }
-  }
-  
-  class FunctionEntry extends SymbolEntry {
-    private ArrayList arguments = new ArrayList();
-    
-    public FunctionEntry(String name, String type) {
-      super(name, type);
-      this.name = name;
-      this.type = type;
-    }
-    
-    public ArrayList getArguments() {
-      return this.arguments;
-    }
-  }
-  
-  HashMap<String, String> typeMap = new HashMap<String, String>();
-  HashMap<String, SymbolEntry> symbolTable = new HashMap<String, SymbolEntry>();
-  HashMap<String, FunctionEntry> functionTable = new HashMap<String, FunctionEntry>();
- 
-  public static String parseTime(String time) {
-    float builtTime = 0;
-    float buildUp = 0;
-    float buildUpExponent = 0;
-    boolean dot = false;
-    boolean exponent = false;
-    float fraction = 1;
-    if("@start".equals(time)) return "0f";
-    if("@now".equals(time)) return "0f"; //@TODO support @NOW
-    time = time.substring(1, time.length());
- 
-    while(time.length() > 0) {
-      char cur = time.charAt(0);
-      time = time.substring(1, time.length());
-      switch(cur) {
-        case 'd':
-          builtTime += (86400000*buildUp/fraction)*Math.pow(10,buildUpExponent);
-          buildUp = 0; buildUpExponent = 0; fraction = 1; dot = false; exponent = false;
-          break;
-        case 'h':
-          builtTime += (3600000*buildUp/fraction)*Math.pow(10,buildUpExponent);
-          buildUp = 0; buildUpExponent = 0; fraction = 1; dot = false; exponent = false;
-          break;
-        case 'm':
-          builtTime += (60000*buildUp/fraction)*Math.pow(10,buildUpExponent);
-          buildUp = 0; buildUpExponent = 0; fraction = 1; dot = false; exponent = false;
-          break;
-        case 's':
-          builtTime += (1000*buildUp/fraction)*Math.pow(10,buildUpExponent);
-          buildUp = 0; buildUpExponent = 0; fraction = 1; dot = false; exponent = false;
-          break;
-        case '.':
-          dot = true;
-          break;
-        case 'e':
-        case 'E':
-          exponent = true;
-          break;
-        default:
-          if(exponent) {
-            buildUpExponent = buildUpExponent*10+new Float(String.valueOf(cur));
-            continue;
-          } else if(dot) {
-            fraction *= 10;
-          }
-          buildUp = buildUp*10 + new Float(String.valueOf(cur));
-      }
-    }
-    return Float.valueOf(builtTime).toString()+"f";
-    }
-}
- 
  
 // Program main entry point
 program
-@init {
-  this.symbolTable = new HashMap<String, SymbolEntry>();
-  this.functionTable = new HashMap<String, FunctionEntry>();
-  typeMap.put("number", "double");
-  typeMap.put("string", "String");
-  typeMap.put("time", "float");
-  typeMap.put("boolean", "boolean");
-}
     : ^(PROGRAM
-             ^(EVENTS (events += eventDefinition)*)
-             ^(CONSTRAINTS (constraints += constraintDefinition)*)
-             ^(DEVICES (devices += deviceDefinition)*)
-             ^(FUNCTIONS (functions += functionDefinition | predicates += predicateDefinition)*)
-             ^(PROGBLOCK (code += functionPredicateBlockDeclaration)*)) {
-            $st = %program();
-            %{$st}.events = $events;
-            %{$st}.constraints = $constraints;
-            %{$st}.devices = $devices;
-            %{$st}.functions = $functions;
-            %{$st}.predicates = $predicates;
-            %{$st}.code = $code;
-         }
+      ^(EVENTS (events += eventDefinition)*)
+      ^(CONSTRAINTS (constraints += constraintDefinition)*)
+      ^(DEVICES (devices += deviceDefinition)*)
+      ^(FUNCTIONS (functions += functionDefinition | predicates += predicateDefinition)*)
+      ^(PROGBLOCK (code += functionPredicateBlockDeclaration)*)) {
+        $st = %program();
+        %{$st}.events = $events;
+        %{$st}.constraints = $constraints;
+        %{$st}.devices = $devices;
+        %{$st}.functions = $functions;
+        %{$st}.predicates = $predicates;
+        %{$st}.code = $code;
+      }
     ;
  
 // Event definition
 eventDefinition
     : ^(EVENT ID) {
-           $st = %eventDefinition();
-           %{$st}.name = $ID.text;
-           this.symbolTable.put($ID.text, new SymbolEntry($ID.text, "event"));
-         }
+        $st = %eventDefinition();
+        %{$st}.name = $ID.text;
+        this.symbolTable.put($ID.text, new VariableInfo($ID.text, "event"));
+      }
     ;
  
 // Announcement definition
@@ -154,244 +41,232 @@ announcementDeclaration
  
 constraintDefinition
     : ^(CONSTRAINT ID ^(REQUIRES requires = idList?) ^(ANNOUNCES announces = idList?) block = constraintBlock) {
-           $st = %constraintDefinition();
-           %{$st}.name = $ID.text;
-           %{$st}.require = requires != null ? "implements" : "";
-           %{$st}.requires = $requires.st;
-           %{$st}.block = $block.st;
+        $st = %constraintDefinition();
+        %{$st}.name = $ID.text;
+        %{$st}.require = requires != null ? "implements" : "";
+        %{$st}.requires = $requires.st;
+        %{$st}.block = $block.st;
            
-           // TODO: Add the announces section to compile-time storage for later use (i.e. by device declarations)
-           //System.out.println(announces);
-         }
+        // TODO: Add the announces section to compile-time storage for later use (i.e. by device declarations)
+        //System.out.println(announces);
+      }
     ;
 constraintBlock
     : ^(CONBLOCK (block += constraintBlockDeclaration)* ^(ANNOUNCEMENTS announcementDeclaration*)) {
-            $st = %statementList();
-            %{$st}.statements = $block;
-          }
+        $st = %statementList();
+        %{$st}.statements = $block;
+      }
     ;
 constraintBlockDeclaration
-    : variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
-    | predicateHeader -> passThrough(text = { $predicateHeader.st } )
-    | functionHeader -> passThrough(text = { $functionHeader.st } )
+    : variableDeclaration -> passThrough(text = { $variableDeclaration.st })
+    | predicateHeader     -> passThrough(text = { $predicateHeader.st })
+    | functionHeader      -> passThrough(text = { $functionHeader.st })
     ;
    
 // Device definition
 deviceDefinition
     : ^(DEVICE ID ^(ACCEPTS accepts = idList?) deviceBlock) {
-           $st = %deviceDefinition();
-           %{$st}.name = $ID.text;
-           %{$st}.accept = accepts != null ? "implements" : "";
-           %{$st}.accepts = $accepts.st;
-           %{$st}.block = $deviceBlock.st;
-         }
+        $st = %deviceDefinition();
+        %{$st}.name = $ID.text;
+        %{$st}.accept = accepts != null ? "implements" : "";
+        %{$st}.accepts = $accepts.st;
+        %{$st}.block = $deviceBlock.st;
+      }
     ;
 deviceBlock
     : ^(DEVBLOCK (block += deviceBlockDeclaration)*) {
-           $st = %statementList();
-           %{$st}.statements = $block;
-         }
+        $st = %statementList();
+        %{$st}.statements = $block;
+      }
     ;
 deviceBlockDeclaration
-    : variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
-    | predicateDefinition -> passThrough(text = { $predicateDefinition.st } )
-    | functionDefinition -> passThrough(text = { $functionDefinition.st } )
-    | languageBlockDefinition -> passThrough(text = { $languageBlockDefinition.st } )
+    : variableDeclaration     -> passThrough(text = { $variableDeclaration.st })
+    | predicateDefinition     -> passThrough(text = { $predicateDefinition.st })
+    | functionDefinition      -> passThrough(text = { $functionDefinition.st })
+    | languageBlockDefinition -> passThrough(text = { $languageBlockDefinition.st })
     ;
     
 // Function / Predicate definitions
 functionHeader
     : ^(FUNHEAD ID ^(ARGS args = variableList?)) {
-           $st = %functionHeader();
-           %{$st}.name = $ID.text;
-           %{$st}.args = $args.st;
-         }
+        $st = %functionHeader();
+        %{$st}.name = $ID.text;
+        %{$st}.args = $args.st;
+      }
     ;
 functionDefinition
     : ^(FUNC ID ^(ARGS args = variableList?) block = functionBlock?) {
-           $st = %functionDefinition();
-           %{$st}.name = $ID.text;
-           %{$st}.args = $args.st;
-           %{$st}.block = $block.st;
+        $st = %functionDefinition();
+        %{$st}.name = $ID.text;
+        %{$st}.args = $args.st;
+        %{$st}.block = $block.st;
            
-           // TODO: Add arguments to the structure we store so that we can do type checking
-           this.functionTable.put($ID.text, new FunctionEntry($ID.text, "function"));
-         }
+        // TODO: Add arguments to the structure we store so that we can do type checking
+        this.functionTable.put($ID.text, new FunctionInfo($ID.text, "function"));
+      }
     ;
 functionBlock
     : ^(FUNBLOCK RETURN (block += functionPredicateBlockDeclaration)*) {
-           $st = %statementList();
-           %{$st}.statements = $block;
-         }
+        $st = %statementList();
+        %{$st}.statements = $block;
+      }
     ;
 functionPredicateBlockDeclaration
-    : variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
-    | expression -> passThrough(text = { $expression.st } )
-    | inStatement -> passThrough(text = { $inStatement.st } ) // Remark: Unknown behavior if called from inStatement
-    | ifStatement -> passThrough(text = { $ifStatement.st } )
-// | functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
+    : variableDeclaration   -> passThrough(text = { $variableDeclaration.st })
+    | expression            -> passThrough(text = { $expression.st })
+    | inStatement           -> passThrough(text = { $inStatement.st }) // Remark: Unknown behavior if called from inStatement
+    | ifStatement           -> passThrough(text = { $ifStatement.st })
+  //| functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
     ;
  
 predicateHeader
     : ^(PREDHEAD ID ^(ARGS args = variableList?)) {
-           $st = %predicateHeader();
-           %{$st}.name = $ID.text;
-           %{$st}.args = $args.st;
-         }
+        $st = %predicateHeader();
+        %{$st}.name = $ID.text;
+        %{$st}.args = $args.st;
+      }
     ;
 predicateDefinition
     : ^(PRED ID ^(ARGS args = variableList?) block = predicateBlock) {
-           $st = %predicateDefinition();
-           %{$st}.name = $ID.text;
-           %{$st}.args = $args.st;
-           %{$st}.block = $block.st;
+        $st = %predicateDefinition();
+        %{$st}.name = $ID.text;
+        %{$st}.args = $args.st;
+        %{$st}.block = $block.st;
            
-           // TODO: Add arguments to the structure we store so that we can do type checking
-           this.functionTable.put($ID.text, new FunctionEntry($ID.text, "predicate"));
-         }
+        // TODO: Add arguments to the structure we store so that we can do type checking
+        this.functionTable.put($ID.text, new FunctionInfo($ID.text, "predicate"));
+      }
     ;
 predicateBlock
     : ^(FUNBLOCK ^(RETURN retexp = expression) (block += functionPredicateBlockDeclaration)*) {
-           $st = %predicateBlock();
-           %{$st}.statements = $block;
-           %{$st}.returns = $retexp.st;
-         }
+        $st = %predicateBlock();
+        %{$st}.statements = $block;
+        %{$st}.returns = $retexp.st;
+      }
     ;
  
 // Timline and procedural blocks
 inStatement
     : ^(IN ID block = inBlock[$ID.text]) {
         $st = %passThrough();
-%{$st}.text = $block.st;
-       }
+        %{$st}.text = $block.st;
+      }
     ;
     
 inBlock[String with]
     : ^(INBLOCK (block += inBlockDeclaration[$with])*) {
-           $st = %statementList();
-           %{$st}.statements = $block;
-    }
+        $st = %statementList();
+        %{$st}.statements = $block;
+      }
     ;
 inBlockDeclaration[String with]
-    : whenStatement[$with] -> passThrough(text = { $whenStatement.st } )
-    | everyStatement[$with] -> passThrough(text = { $everyStatement.st } )
-    | constraintFunctionCall[$with] -> passThrough(text = { $constraintFunctionCall.st } )
+    : whenStatement[$with]          -> passThrough(text = { $whenStatement.st })
+    | everyStatement[$with]         -> passThrough(text = { $everyStatement.st })
+    | constraintFunctionCall[$with] -> passThrough(text = { $constraintFunctionCall.st })
     ;
  
 ifStatement
     : ^(IF exp = expression block = ifBlock) {
-     $st = %ifStatement();
-     %{$st}.exp = $exp.text; // @TODO: This is a hack (possibly wrong)
-     %{$st}.block = $block.st;
-     }
+        $st = %ifStatement();
+        %{$st}.exp = $exp.text; // @TODO: This is a hack (possibly wrong)
+        %{$st}.block = $block.st;
+      }
     ;
 ifBlock
     : ^(IFBLOCK (block += ifBlockDeclaration)+) ^(ELSEIFS (elifStmt += elseIfStatement)*) ^(ELSE elseStmt = elseStatement?) {
-     $st = %ifBlock();
-     %{$st}.block = $block;
-      %{$st}.elifStmt = $elifStmt;
-       %{$st}.elseStmt = $elseStmt.st;
-     }
+        $st = %ifBlock();
+        %{$st}.block = $block;
+        %{$st}.elifStmt = $elifStmt;
+        %{$st}.elseStmt = $elseStmt.st;
+      }
     ;
  
 elseIfStatement
     : ^(ELSEIF (exp = expression) ^(IFBLOCK (block += ifBlockDeclaration)+)) {
-     $st = %elseIfStatement();
-     %{$st}.exp = $exp.text; // @todo: This is a hack (possibly wrong)
-       %{$st}.block = $block;
-     }
+        $st = %elseIfStatement();
+        %{$st}.exp = $exp.text; // @todo: This is a hack (possibly wrong)
+        %{$st}.block = $block;
+      }
     ;
 elseStatement
     : ^(IFBLOCK (block += ifBlockDeclaration)+) {
-     $st = %elseStatement();
-       %{$st}.block = $block;
-     }
+        $st = %elseStatement();
+        %{$st}.block = $block;
+      }
     ;
 ifBlockDeclaration
-    : variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
-    | expression -> passThrough(text = { $expression.st } )
-    //| inStatement -> passThrough(text = { $inStatement.st } )
-    | ifStatement -> passThrough(text = { $ifStatement.st } )
-// | functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
+    : variableDeclaration   -> passThrough(text = { $variableDeclaration.st })
+    | expression            -> passThrough(text = { $expression.st })
+  //| inStatement           -> passThrough(text = { $inStatement.st })
+    | ifStatement           -> passThrough(text = { $ifStatement.st })
+  //| functionPredicateCall -> passThrough(text = { $functionPredicateCall.st })
     ;
  
 whenStatement[String with]
     : ^(LISTENER ^(ARG name=ID?) EVERY ^(COND 'when'? 'unless'? event=ID) lblock=listenerBlock[$with]) {
-    	 typeMap = new HashMap<String, String>();
-          	 typeMap.put("STOPPED", "STATUS=STOPPED");
-          	 typeMap.put("PLAYING", "STATUS=PLAYING");
-    	$st = %whenStatement();
+        $st = %whenStatement();
     	%{$st}.with = $with;
     	%{$st}.name = $name.text;
     	%{$st}.event =this.typeMap.get($event.text);
     	%{$st}.lblock = $lblock.st;
-    }
-        //-> whenStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
+      }
     ;
 everyStatement[String with]
     : ^(LISTENER ^(ARG target=ID) ^(EVERY time=TIME) ^(COND event=ID) lblock=everyBlock[$target.text]) {
-    	System.out.println("in everyStatement: target = " + $target.text);
-    	typeMap = new HashMap<String, String>();
-          	 typeMap.put("STOPPED", "STATUS=STOPPED");
-          	 typeMap.put("PLAYING", "STATUS=PLAYING");
-    	$st = %everyStatement();
+        $st = %everyStatement();
     	%{$st}.with = $with;
     	%{$st}.name = $target.text;
     	%{$st}.time = parseTime(new String($time.text));
     	%{$st}.event =this.typeMap.get($event.text);
     	%{$st}.lblock = $lblock.st;
-    }
-        //-> everyStatement(name = { $ID.text }, accepts = { $assignmentExpression.st }
+      }
     ;
 listenerBlock[String with]
     : ^(LISTENBLOCK (block += listenerBlockDeclaration[$with])*) {
-    	$st = %statementList();
-	%{$st}.statements = $block;
-    }
+        $st = %statementList();
+        %{$st}.statements = $block;
+      }
     ;
     
 everyBlock[String target]
     : ^(EVERYBLOCK (block += everyBlockDeclaration[$target])*) {
-    	$st = %statementList();
-	%{$st}.statements = $block;
-    }
+        $st = %statementList();
+        %{$st}.statements = $block;
+      }
     ;
 listenerBlockDeclaration[String with]
-    : eventFunctionCall[$with]   ->  passThrough(text = { $eventFunctionCall.st } )
-    | expression -> passThrough(text = { $expression.st } )
-   | variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
-    
- // | functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
+    : eventFunctionCall[$with] ->  passThrough(text = { $eventFunctionCall.st })
+    | expression               -> passThrough(text = { $expression.st })
+    | variableDeclaration      -> passThrough(text = { $variableDeclaration.st })
+  //| functionPredicateCall    -> passThrough(text = { $functionPredicateCall.st } )
     ;
     
 everyBlockDeclaration[String target]
-    : everyFunctionCall[$target]   ->  passThrough(text = { $everyFunctionCall.st } )
-    | expression -> passThrough(text = { $expression.st } )
-   | variableDeclaration -> passThrough(text = { $variableDeclaration.st } )
-    
- // | functionPredicateCall -> passThrough(text = { $functionPredicateCall.st } )
+    : everyFunctionCall[$target]   ->  passThrough(text = { $everyFunctionCall.st })
+    | expression                   -> passThrough(text = { $expression.st })
+    | variableDeclaration          -> passThrough(text = { $variableDeclaration.st })
+  //| functionPredicateCall        -> passThrough(text = { $functionPredicateCall.st } )
     ;
  
- eventFunctionCall[String with]
-  : ^(EVENTCALL target =ID function =ID)  {
-  	SymbolEntry nameSymbol = this.symbolTable.get($target.text);
-  	String nameType = nameSymbol.getType();
-  	$st = %eventFunctionCall();
-  	%{$st}.with = $with;
-  	%{$st}.function = $function.text;
-  	%{$st}.name = $target.text;
-  	%{$st}.type = nameType;
-	}		
-;
+eventFunctionCall[String with]
+    : ^(EVENTCALL target =ID function =ID)  {
+        VariableInfo nameSymbol = this.symbolTable.get($target.text);
+        String nameType = nameSymbol.getType();
+        $st = %eventFunctionCall();
+        %{$st}.with = $with;
+        %{$st}.function = $function.text;
+        %{$st}.name = $target.text;
+        %{$st}.type = nameType;
+      }		
+    ;
 
  everyFunctionCall[String target]
   : ^(EVERYCALL name =ID function =ID)  {
-  	SymbolEntry nameSymbol = this.symbolTable.get($name.text);
+  	VariableInfo nameSymbol = this.symbolTable.get($name.text);
   	String nameType = nameSymbol.getType();
-  	System.out.println("in everyFunctionCall: target = " + target);
   	
  	$st = %everyFunctionCall();
-//  	%{$st.}.target = $target;
+        //%{$st.}.target = $target;
   	%{$st}.function = $function.text;
   	%{$st}.name = $name.text;
  	%{$st}.type = nameType;
@@ -401,42 +276,41 @@ everyBlockDeclaration[String target]
  
 constraintFunctionCall[String with]
     : ^(OBJCALL target = ID function = ID ^(AT (time = TIME)) ^(ARGS expressionList?)) {
-           SymbolEntry targetSymbol = this.symbolTable.get($target.text);
-           SymbolEntry withSymbol = this.symbolTable.get($with);
-           String withType = withSymbol.getType();
+        VariableInfo targetSymbol = this.symbolTable.get($target.text);
+        VariableInfo withSymbol = this.symbolTable.get($with);
+        String withType = withSymbol.getType();
          
-           $st = withType != "Timeline" ? %outputConstraintFunctionCall() : %constraintFunctionCall();
-           %{$st}.with = $with;
-           %{$st}.target = $target.text;
+        $st = withType != "Timeline" ? %outputConstraintFunctionCall() : %constraintFunctionCall();
+        %{$st}.with = $with;
+        %{$st}.target = $target.text;
            
-           %{$st}.type = targetSymbol.getType();
-           %{$st}.function = $function.text;
-           %{$st}.time = parseTime(new String($time.text));; // TODO: @start should be parsed in logical or expression...
-           %{$st}.args = $expressionList.st;
-         }
+        %{$st}.type = targetSymbol.getType();
+        %{$st}.function = $function.text;
+        %{$st}.time = parseTime(new String($time.text));; // TODO: @start should be parsed in logical or expression...
+        %{$st}.args = $expressionList.st;
+      }
     ;
     catch[NullPointerException ex] {
       System.err.println("<Celluloid> Cannot execute constraint function on undefined media: " + $target.text);
     }
     
-// IMPORTANT: WE ARE GETTING 'EXPECTING <UP>' FOR THIS RULE!!!
 functionPredicateCall
     : ^(CALL ID ^(ARGS args = expressionList?)) {
-           FunctionEntry symbolEntry = this.functionTable.get($ID.text);
-           if(symbolEntry == null) {
-             System.err.println("<Celluloid> Cannot execute undefined function / predicate: " + $ID.text);
-           }
+        FunctionInfo symbolEntry = this.functionTable.get($ID.text);
+        if(symbolEntry == null) {
+          System.err.println("<Celluloid> Cannot execute undefined function / predicate: " + $ID.text);
+        }
            
-           // TODO: Get arguments from FunctionEntry object and perform existence and type checking.
-           $st = %functionPredicateCall();
-           %{$st}.name = $ID.text;
-           %{$st}.args = $args.st;
-         }
+        // TODO: Get arguments from FunctionEntry object and perform existence and type checking.
+        $st = %functionPredicateCall();
+        %{$st}.name = $ID.text;
+        %{$st}.args = $args.st;
+      }
     ;
  
 // Lists of IDs, variables, and expressions
 idList
-    : ids += ID+ -> idList(ids = { $ids })
+    : (ids += ID)+ -> idList(ids = { $ids })
     ;
  
 variableList
@@ -452,61 +326,39 @@ variableDeclaration
     : ^(VARDEF 'timeline' ID) {
            $st = %timelineDeclaration();
            %{$st}.name = $ID.text;
-           this.symbolTable.put($ID.text, new SymbolEntry($ID.text, "Timeline"));
-         }
+           this.symbolTable.put($ID.text, new VariableInfo($ID.text, "Timeline"));
+      }
     | ^(ARG 'timeline' ID) -> timelineArgument(name = { $ID.text })
     | ^(VARDEF TYPE ID initializer?) {
-     // TODO REMOVE THIS CODE BECAUSE ITS CALLED IN PROGRAM INIT!
-     // TODO GET THIS TEST WORKING
-           typeMap = new HashMap<String, String>();
-           typeMap.put("number", "double");
-typeMap.put("string", "String");
-typeMap.put("time", "float");
-typeMap.put("boolean", "boolean");
-    
-           $st = %variableDeclaration();
-           %{$st}.name = $ID.text;
-           %{$st}.type = this.typeMap.get($TYPE.text);
-           %{$st}.init = $initializer.st;
+        $st = %variableDeclaration();
+        %{$st}.name = $ID.text;
+        %{$st}.type = this.typeMap.get($TYPE.text);
+        %{$st}.init = $initializer.st;
            
-           this.symbolTable.put($ID.text, new SymbolEntry($ID.text, $TYPE.text));
-         }
+        this.symbolTable.put($ID.text, new VariableInfo($ID.text, $TYPE.text));
+      }
     | ^(ARG TYPE ID) {
-           // TODO REMOVE THIS CODE BECAUSE ITS CALLED IN PROGRAM INIT!
-           typeMap = new HashMap<String, String>();
-           typeMap.put("number", "double");
-typeMap.put("string", "String");
-typeMap.put("time", "float");
-typeMap.put("boolean", "boolean");
-    
-           $st = %variableArgument();
-           %{$st}.name = $ID.text;
-           %{$st}.type = this.typeMap.get($TYPE.text);
-         }
+        $st = %variableArgument();
+        %{$st}.name = $ID.text;
+        %{$st}.type = this.typeMap.get($TYPE.text);
+      }
     | ^(OBJDEF PSEUDOTYPE name = ID realType = ID args = expressionList?) {
-           typeMap = new HashMap<String, String>();
-           typeMap.put("AudioFile", "JMFAudio");
-           typeMap.put("VideoFile", "JMFVideo");
-           typeMap.put("Audio", "SwingOutput");
-           typeMap.put("Video", "SwingOutput");
-           typeMap.put("input", "input");
-           if($realType.text .equals("AudioFile") || $realType.text .equals("VideoFile")) {
-            $st = %jmfDeviceDeclaration();
-           }
-          else if($realType.text.equals("Audio") || $realType.text.equals("Video")){
-            $st = %outputDeclaration();
-           }
-           else{
-           $st = %deviceDeclaration();
-           }
+        if($realType.text .equals("AudioFile") || $realType.text .equals("VideoFile")) {
+          $st = %jmfDeviceDeclaration();
+        }
+        else if($realType.text.equals("Audio") || $realType.text.equals("Video")){
+          $st = %outputDeclaration();
+        }
+        else{
+          $st = %deviceDeclaration();
+        }
            
-                      %{$st}.type = this.typeMap.get($realType.text);
-          %{$st}.name = $name;
-           %{$st}.args = $args.st;
-          
+        %{$st}.type = this.typeMap.get($realType.text);
+        %{$st}.name = $name;
+        %{$st}.args = $args.st;
            
-           this.symbolTable.put($name.text, new SymbolEntry($name.text, this.typeMap.get($realType.text), $PSEUDOTYPE.text));
-         }
+        this.symbolTable.put($name.text, new VariableInfo($name.text, this.typeMap.get($realType.text), $PSEUDOTYPE.text));
+      }
     ;
  
 initializer
@@ -516,71 +368,47 @@ initializer
 // IMPORTANT: NEEDS TEMPLATE!
 expression
     : ^(ASSIGNMENT_OPERATOR lhs = expression rhs = expression) {
-     $st = %expressionLine();
-           %{$st}.lhand = $lhs.st;
-           if(":=".equals($ASSIGNMENT_OPERATOR.text)) {
-             %{$st}.op = new String("=");
-           } else {
-             %{$st}.op = $ASSIGNMENT_OPERATOR.text;
-           }
-           %{$st}.rhand = $rhs.st;
-     }
-    | ^('not' lhs = expression) -> simpleExpression(lhand = { $lhs.st })
+        $st = %expressionLine();
+        %{$st}.lhand = $lhs.st;
+        if(":=".equals($ASSIGNMENT_OPERATOR.text)) {
+          %{$st}.op = new String("=");
+        } 
+        else {
+          %{$st}.op = $ASSIGNMENT_OPERATOR.text;
+        }
+        %{$st}.rhand = $rhs.st;
+      }
+    | ^('not' lhs = expression)                 -> simpleExpression(lhand = { $lhs.st })
     | ^('or' lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { "or" }, rhand = { $rhs.st })
-    | ^('and' lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { "and" }, rhand = { $rhs.st })
-    | ^(EQUALITY_OPERATOR lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { $EQUALITY_OPERATOR.text }, rhand = { $rhs.st })
-    | ^(RELATIONAL_OPERATOR lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { $RELATIONAL_OPERATOR.text }, rhand = { $rhs.st })
-    | ^(ADDITIVE_OPERATOR lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { $ADDITIVE_OPERATOR.text }, rhand = { $rhs.st })
+    | ^('and' lhs = expression rhs = expression)-> expression(lhand = { $lhs.st }, op = { "and" }, rhand = { $rhs.st })
+    | ^(EQUALITY_OPERATOR lhs = expression rhs = expression)       -> expression(lhand = { $lhs.st }, op = { $EQUALITY_OPERATOR.text }, rhand = { $rhs.st })
+    | ^(RELATIONAL_OPERATOR lhs = expression rhs = expression)     -> expression(lhand = { $lhs.st }, op = { $RELATIONAL_OPERATOR.text }, rhand = { $rhs.st })
+    | ^(ADDITIVE_OPERATOR lhs = expression rhs = expression)       -> expression(lhand = { $lhs.st }, op = { $ADDITIVE_OPERATOR.text }, rhand = { $rhs.st })
     | ^(MULTIPLICATIVE_OPERATOR lhs = expression rhs = expression) -> expression(lhand = { $lhs.st }, op = { $MULTIPLICATIVE_OPERATOR.text }, rhand = { $rhs.st })
-    | ID -> passThrough(text = { $ID.text } ) // Needs Action; Check if it exists
-    | BOOL -> passThrough(text = { $BOOL.text } ) // Needs Template
+    | ID     -> passThrough(text = { $ID.text } ) // Needs Action; Check if it exists
+    | BOOL   -> passThrough(text = { $BOOL.text } ) // Needs Template
     | NUMBER -> passThrough(text = { $NUMBER.text } ) // Needs Template
     | STRING -> passThrough(text = { $STRING.text } ) // Needs Template
     | TIME {
-     $st = %passThrough();
-     %{$st}.text = parseTime(new String($TIME.text));
-     } // Needs Action; Needs to be parsed into Milliseconds
+        $st = %passThrough();
+        %{$st}.text = parseTime(new String($TIME.text));
+      } 
     | functionPredicateCall -> passThrough(text = { $functionPredicateCall.st })
     ;
 
 languageBlockDefinition
-    :  ^(LANGBLOCK (lines += languageLine)*) {
+    : ^(LANGBLOCK (lines += languageLine)*) {
          $st = %statementList();
          %{$st}.statements = $lines;
-       }
+      }
     ;
 languageLine 
-    :    code = LANGUAGECODE {
-         $st = %passThrough();
-         %{$st}.text = $code.text.substring(2, $code.text.length());
-    }
-	;
-	
-    
-// IMPORTANT: ALL OF THESE DERIVATIONS NEED ACTIONS OR TEMPLATES
-//logicalORExpression
-  // : ^('not' logicalORExpression) // Needs Template
-   // | ^('or' logicalORExpression logicalORExpression) // Needs Template
-  // | ^('and' logicalORExpression logicalORExpression) // Needs Template
-// | ^(EQUALITY_OPERATOR logicalORExpression logicalORExpression) // Needs Template
-// | ^(RELATIONAL_OPERATOR logicalORExpression logicalORExpression) // Needs Template
-// | ^(ADDITIVE_OPERATOR logicalORExpression logicalORExpression) // Needs Template
-// | ^(MULTIPLICATIVE_OPERATOR logicalORExpression logicalORExpression) // Needs Template
-// | ID -> passThrough(text = { $ID.text } ) // Needs Action; Check if it exists
-// | BOOL -> passThrough(text = { $BOOL.text } ) // Needs Template
-// | NUMBER -> passThrough(text = { $NUMBER.text } ) // Needs Template
-// | STRING -> passThrough(text = { $STRING.text } ) // Needs Template
-// | TIME -> passThrough(text = { $TIME.text } ) // Needs Action; Needs to be parsed into Milliseconds
-// | functionPredicateCall -> passThrough(text = { $functionPredicateCall.st })
-// ;
+    : code = LANGUAGECODE {
+        $st = %passThrough();
+        %{$st}.text = $code.text.substring(2, $code.text.length());
+      }
+    ;
     
 // Start generic literals
 literal : BOOL | NUMBER | STRING | TIME;
- 
-// Start language blocks
-//languageBlockDefinition : 'in' LANGUAGE START (lines += LANGUAGECODE)* END -> ^(LANGBLOCK $lines*);
-//LANGUAGE : 'JAVA' | 'java' | 'Java';
-//LANGUAGECODE : '<' '<' ANYTHING* NEWLINE;
-// End generic literals language blocks
 
- 
